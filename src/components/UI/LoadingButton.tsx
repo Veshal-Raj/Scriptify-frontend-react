@@ -1,8 +1,12 @@
 import React, { useState } from "react";
 import { Button, CircularProgress } from "@mui/material";
 
-const LoadingButton: React.FC = () => {
-  const [loading, setLoading] = useState<boolean>(false);
+interface LoadingButtonProps {
+    title: string;
+  }
+  
+  const LoadingButton: React.FC<LoadingButtonProps> = ({ title }) => {
+    const [loading, setLoading] = useState<boolean>(false);
 
   const handleClick = () => {
     setLoading(true);
@@ -20,7 +24,7 @@ const LoadingButton: React.FC = () => {
       {loading ? (
         <CircularProgress size={24} color="inherit" /> 
       ) : (
-        "Sign up"
+        title
       )}
     </Button>
   );
