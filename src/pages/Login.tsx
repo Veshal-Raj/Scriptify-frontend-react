@@ -8,6 +8,9 @@ import Container from "@mui/material/Container";
 import { CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form"
+import { Link as RouterLink } from "react-router-dom";
+import GoogleAuthButton from "../components/UI/googleAuthButton";
+
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
@@ -114,14 +117,16 @@ export default function SignIn() {
           >
             {loading ? <CircularProgress size={24} color="inherit" /> : "Sign In"}
           </Button>
+          <GoogleAuthButton />
+
           <Grid container>
             <Grid item xs>
-              <Link href="#" variant="body2" sx={{ color: 'text.primary', textDecoration: 'none' }}>
+              <Link component={RouterLink} to="/forgot-password"  variant="body2" sx={{ color: 'text.primary', textDecoration: 'none' }}>
                 Forgot password?
               </Link>
             </Grid>
             <Grid item>
-              <Link href="#" variant="body2" sx={{ color: 'text.primary', textDecoration: 'none' }}>
+              <Link component={RouterLink} to="/sign-up" variant="body2" sx={{ color: 'text.primary', textDecoration: 'none' }}>
                 {"Don't have an account? Sign Up"}
               </Link>
             </Grid>
