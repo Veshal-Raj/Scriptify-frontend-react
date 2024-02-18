@@ -9,7 +9,8 @@ import { CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { useForm } from "react-hook-form"
 import { Link as RouterLink } from "react-router-dom";
-import GoogleAuthButton from "../components/UI/googleAuthButton";
+import GoogleAuthButton from "../../components/UI/googleAuthButton";
+// import TextField from '@mui/material/TextField';
 
 
 export default function SignIn() {
@@ -34,6 +35,12 @@ export default function SignIn() {
     }
   };
 
+  const styles = theme => ({
+    multilineColor:{
+        color:'red'
+    }
+});
+
   return (
     <Container component="main" maxWidth="xs" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "70vh", paddingTop: "50px" }}>
       <Box
@@ -44,39 +51,40 @@ export default function SignIn() {
           alignItems: "center",
         }}
       >
-        <Typography component="h1" variant="h4" sx={{mb: '20px'}}>
+        <Typography component="h1" variant="h4" sx={{ mb: '20px' }}>
           Join Scriptify.
         </Typography>
         <Box component="form" onSubmit={handleSubmit(handleFormSubmit)} noValidate sx={{ mt: 1 }}>
-        <TextField
+          <TextField
             margin="normal"
             required
             fullWidth
             label="Username"
             autoComplete="username"
             autoFocus
-            // {...register("email", { required: true })}
+          
+           
             {...register("username", {
-                required: {
-                  value: true,
-                  message: "Username is required",
-                },
-                minLength: {
-                  value: 3,
-                  message: "Username should have at least 3 letters",
-                },
-                pattern: {
-                  value: /^[A-Za-z]+$/,
-                  message: "Username should only contain letters",
-                },
-                validate: (value) => {
-                  // Custom validation to check for empty space
-                  return (
-                    !/\s/.test(value) ||
-                    "Username should not contain empty space"
-                  );
-                },
-              })}
+              required: {
+                value: true,
+                message: "Username is required",
+              },
+              minLength: {
+                value: 3,
+                message: "Username should have at least 3 letters",
+              },
+              pattern: {
+                value: /^[A-Za-z]+$/,
+                message: "Username should only contain letters",
+              },
+              validate: (value) => {
+                // Custom validation to check for empty space
+                return (
+                  !/\s/.test(value) ||
+                  "Username should not contain empty space"
+                );
+              },
+            })}
           />
           <span className="text-xs text-red-700">
             {errors?.username && errors?.username?.message}
@@ -88,7 +96,11 @@ export default function SignIn() {
             fullWidth
             label="Email Address"
             autoComplete="email"
-            
+            InputProps={{
+              className: classes.multilineColor
+            }}
+          
+
             // {...register("email", { required: true })}
             {...register("email", {
               required: "Email is a required field",
@@ -143,12 +155,12 @@ export default function SignIn() {
             type="password"
             autoComplete="current-password"
             {...register("repeat_password", {
-                required: "Confirm password is required",
-                validate: (val) => {
-                  if (val !== watch("password"))
-                    return "Confirmation password should match password.";
-                },
-              })}
+              required: "Confirm password is required",
+              validate: (val) => {
+                if (val !== watch("password"))
+                  return "Confirmation password should match password.";
+              },
+            })}
           />
           <span className="text-xs text-red-700">
             {errors?.repeat_password && errors?.repeat_password?.message}
@@ -159,13 +171,13 @@ export default function SignIn() {
             fullWidth
             variant="contained"
             sx={{
-                color: "white",
+              color: "white",
+              bgcolor: "black",
+              mt: 3,
+              mb: 3,
+              "&:hover": {
                 bgcolor: "black",
-                mt: 3,
-                mb: 3,
-                "&:hover": {
-                    bgcolor: "black",
-                },
+              },
             }}
             disabled={loading} // Disable button when loading
           >
@@ -173,14 +185,9 @@ export default function SignIn() {
           </Button>
           <GoogleAuthButton />
 
-          <Grid container>
-            <Grid item xs>
-              {/* <Link component={RouterLink} to="/forgot-password"  variant="body2" sx={{ color: 'text.primary', textDecoration: 'none' }}>
-                Forgot password?
-            </Link> */}
-            </Grid>
+          <Grid container justifyContent="center" alignItems="center" marginBottom="70px">
             <Grid item>
-              <Link component={RouterLink} to="/sign-in" variant="body2" sx={{ color: 'text.primary', textDecoration: 'none' }}>
+              <Link component={RouterLink} to="/sign-in" variant="body2" sx={{ color: 'text.primary', textDecoration: 'none', textAlign: 'center' }}>
                 {"Already have an account? Sign In"}
               </Link>
             </Grid>
