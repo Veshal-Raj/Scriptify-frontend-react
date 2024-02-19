@@ -65,7 +65,6 @@ const TestimonialSlider = () => {
           <Typography variant="h6">{testimonials[index]?.image}</Typography>
           <Typography variant="h6">{testimonials[index]?.name}</Typography>
           <Typography variant="h6">{testimonials[index]?.job}</Typography>
-          {/* <Typography variant="h6">{testimonials[index]?.image}</Typography> */}
         </motion.div>
       </AnimatePresence>
     </Box>

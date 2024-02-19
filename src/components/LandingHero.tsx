@@ -2,14 +2,12 @@ import { Box, Button, Typography } from "@mui/material";
 import GroupsIcon from '@mui/icons-material/Groups';
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 
 const imageVariants = {
   initial: { opacity: 0, scale: 0, x: "0%", y: "0%" },
   animate: { opacity: 1, scale: 1, x: ["0%", "0%", "0%"], y: ["0%", "0%", "-0%"], transition: { duration: 1.9 } },
 };
-
-
 
 const LandingHero = () => {
 
@@ -34,8 +32,6 @@ const LandingHero = () => {
         }
       }, 300); // Adjust the interval as needed
 
-
-
       return () => clearInterval(interval);
     }
   }, [animationShown]);
@@ -45,12 +41,10 @@ const LandingHero = () => {
       <Box
         sx={{
           height: "auto",
-
           padding: "100px 100px",
-          // background: "-webkit-linear-gradient(45deg, #FFFFF0, #8A2BE2)",
           color: "#000",
           "@media (max-width: 600px)": {
-            padding: "40px", // Padding for mobile view
+            padding: "40px", 
           },
 
         }}
@@ -80,7 +74,7 @@ const LandingHero = () => {
             bottom: 50,
           }}
         >
-
+          <Link to="/sign-in" style={{textDecoration: 'none'}}>
           <Button
             variant="outlined"
             sx={{
@@ -93,10 +87,8 @@ const LandingHero = () => {
               borderRadius: '45px',
               background: "-webkit-linear-gradient(45deg, #FFFFF0, #a06bd1)",
               color: 'black',
-
               transition: 'background-color 0.3s, color 0.3s',
               '&:hover': {
-
                 background: "-webkit-linear-gradient(45deg, #FFFFF0, #8540c7)",
                 color: 'black',
               }
@@ -105,21 +97,15 @@ const LandingHero = () => {
             <GroupsIcon sx={{ margin: '6px' }} /> {/* Icon */}
             Join the Community
           </Button>
+          </Link>
         </motion.div>
-
-
-
-
-
       </Box>
-
       <div className="flex relative overflow-hidden  bg-gradient-to-t from-white py-10 bg-opacity-5">
         <motion.div className="absolute top-24 -left-20 right-0 bottom-0 w-1/2 z-10  overflow-hidden "
           variants={imageVariants} initial="initial" animate="animate"
           whileHover={{ scale: 0.9 }}
           onHoverStart={() => { }}
           onHoverEnd={() => { }}
-
         >
           <img
             src={'https://cdn.hashnode.com/res/hashnode/image/upload/v1702020251641/6a7b21f7-ab01-4f24-9633-31b350fe702c.png?auto=format,compress'}
@@ -127,7 +113,6 @@ const LandingHero = () => {
             className='h-[700px] w-auto object-cover'
           />
         </motion.div>
-
         <motion.div
           className="abosulte z-1 left-10 right-0 top-0 bottom-0 mx-auto"
           variants={imageVariants}

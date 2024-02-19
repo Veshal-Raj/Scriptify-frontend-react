@@ -11,7 +11,6 @@ import { useForm } from "react-hook-form"
 import { Link as RouterLink } from "react-router-dom";
 import GoogleAuthButton from "../../components/UI/googleAuthButton";
 
-
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const {
@@ -35,10 +34,10 @@ export default function SignIn() {
   };
 
   const styles = theme => ({
-    multilineColor:{
-        color:'red'
+    multilineColor: {
+      color: 'red'
     }
-});
+  });
   return (
     <Container component="main" maxWidth="xs" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "70vh", paddingTop: "50px" }}>
       <Box
@@ -60,8 +59,6 @@ export default function SignIn() {
             label="Username"
             autoComplete="username"
             autoFocus
-          
-           
             {...register("username", {
               required: {
                 value: true,
@@ -107,7 +104,6 @@ export default function SignIn() {
           <span className="text-xs text-red-700">
             {errors?.email && errors?.email?.message}
           </span>
-
 
           <TextField
             margin="normal"
