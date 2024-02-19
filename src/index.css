@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 html {
-    background: -webkit-linear-gradient(45deg, #FFFFF0, #8A2BE2);
-    background-color: -webkit-linear-gradient(45deg, #FFFFF0, #8A2BE2);
+    background: -webkit-linear-gradient(45deg, #FDFDFE, #D6E4FB);
+    background-color: -webkit-linear-gradient(45deg, #FDFDFE, #D6E4FB);
     scroll-behavior: smooth;
     /* background-image: url('https://img.freepik.com/free-vector/creative-writing-concept-illustration_114360-8137.jpg?w=740&t=st=1708252197~exp=1708252797~hmac=6d97f7cdc4d0b2ddd2ba06d971afb7074afd166bc46ab1b8402250717f48346b'); */
     /* background-repeat: no-repeat; */
