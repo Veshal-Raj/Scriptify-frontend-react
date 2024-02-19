@@ -10,7 +10,6 @@ import { useState } from "react";
 import { useForm } from "react-hook-form"
 import { Link as RouterLink } from "react-router-dom";
 import GoogleAuthButton from "../../components/UI/googleAuthButton";
-// import TextField from '@mui/material/TextField';
 
 
 export default function SignIn() {
@@ -40,7 +39,6 @@ export default function SignIn() {
         color:'red'
     }
 });
-
   return (
     <Container component="main" maxWidth="xs" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "70vh", paddingTop: "50px" }}>
       <Box
@@ -96,10 +94,6 @@ export default function SignIn() {
             fullWidth
             label="Email Address"
             autoComplete="email"
-            InputProps={{
-              className: classes.multilineColor
-            }}
-          
 
             // {...register("email", { required: true })}
             {...register("email", {
