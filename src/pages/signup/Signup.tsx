@@ -10,34 +10,45 @@ import { useState } from "react";
 import { useForm } from "react-hook-form"
 import { Link as RouterLink } from "react-router-dom";
 import GoogleAuthButton from "../../components/UI/googleAuthButton";
+import { signup } from "../../api/user";
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
+  const [formData, setFormData] = useState({
+    username: "",
+    email: "",
+    password: "",
+    repeat_password: ""
+  });
+
   const {
     register,
     handleSubmit,
     formState: { errors },
-    watch
-  } = useForm();
+    watch,
+    // setValue
+  } = useForm({
+    defaultValues: formData // Set default values for form fields
+  });
 
-  const handleFormSubmit = async (data) => {
+  const handleInputChange = (fieldName: string, value: string) => {
+    setFormData(prevState => ({
+      ...prevState,
+      [fieldName]: value
+    }));
+  };
+
+  const handleFormSubmit = async (data: any) => {
     try {
-      setLoading(true); // Set loading state to true when form is submitted
-      console.log(data);
-      // Simulate asynchronous operation, like API call
-      setTimeout(() => {
-        setLoading(false); // Reset loading state after operation is done
-      }, 2000);
+      setLoading(true);
+      console.log('form data -->>> ',formData);
+      await signup(formData)
+      // Perform form submission logic here...
     } catch (error) {
       console.error(error);
     }
   };
 
-  const styles = theme => ({
-    multilineColor: {
-      color: 'red'
-    }
-  });
   return (
     <Container component="main" maxWidth="xs" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "70vh", paddingTop: "50px" }}>
       <Box
@@ -73,26 +84,26 @@ export default function SignIn() {
                 message: "Username should only contain letters",
               },
               validate: (value) => {
-                // Custom validation to check for empty space
                 return (
                   !/\s/.test(value) ||
                   "Username should not contain empty space"
                 );
               },
             })}
+            onChange={(e) => handleInputChange("username", e.target.value)}
           />
           <span className="text-xs text-red-700">
             {errors?.username && errors?.username?.message}
           </span>
 
+          {/* Repeat the same for other text fields */}
+          {/* Email Field */}
           <TextField
             margin="normal"
             required
             fullWidth
             label="Email Address"
             autoComplete="email"
-
-            // {...register("email", { required: true })}
             {...register("email", {
               required: "Email is a required field",
               pattern: {
@@ -100,11 +111,13 @@ export default function SignIn() {
                 message: "Invalid email format",
               },
             })}
+            onChange={(e) => handleInputChange("email", e.target.value)}
           />
           <span className="text-xs text-red-700">
             {errors?.email && errors?.email?.message}
           </span>
 
+          {/* Password Field */}
           <TextField
             margin="normal"
             required
@@ -132,11 +145,13 @@ export default function SignIn() {
                   !/\s/.test(val) || "Password should not contain spaces.",
               },
             })}
+            onChange={(e) => handleInputChange("password", e.target.value)}
           />
           <span className="text-xs text-red-700">
             {errors?.password && errors?.password?.message}
           </span>
 
+          {/* Repeat Password Field */}
           <TextField
             margin="normal"
             required
@@ -151,6 +166,7 @@ export default function SignIn() {
                   return "Confirmation password should match password.";
               },
             })}
+            onChange={(e) => handleInputChange("repeat_password", e.target.value)}
           />
           <span className="text-xs text-red-700">
             {errors?.repeat_password && errors?.repeat_password?.message}
@@ -169,7 +185,7 @@ export default function SignIn() {
                 bgcolor: "black",
               },
             }}
-            disabled={loading} // Disable button when loading
+            disabled={loading}
           >
             {loading ? <CircularProgress size={24} color="inherit" /> : "Sign In"}
           </Button>
