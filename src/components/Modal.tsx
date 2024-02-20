@@ -1,5 +1,4 @@
 import * as React from 'react';
-import Button from '@mui/material/Button';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -27,7 +26,6 @@ export default function AlertDialogSlide() {
         open={open}
         TransitionComponent={Transition}
         keepMounted
-        // onClose={handleClose}
         aria-describedby="alert-dialog-slide-description"
       >
         <DialogTitle>{"Please Enter the OTP Sent to Your Email"}</DialogTitle>
@@ -37,8 +35,6 @@ export default function AlertDialogSlide() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          {/* <Button onClick={handleClose}>Disagree</Button> */}
-          {/* <Button onClick={handleClose}>Agree</Button> */}
         </DialogActions>
       </Dialog>
     </React.Fragment>

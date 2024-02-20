@@ -13,7 +13,7 @@ function App() {
 
   return (
     <>
-      <Provider store={appStore}>
+      {/* <Provider store={appStore}> */}
         <QueryClientProvider client={queryClient}>
           <BrowserRouter>
             <Routes>
@@ -23,7 +23,7 @@ function App() {
             </Routes>
           </BrowserRouter>
         </QueryClientProvider>
-      </Provider>
+      {/* </Provider> */}
     </>
   )
 }
