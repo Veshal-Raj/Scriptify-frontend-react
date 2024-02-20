@@ -7,61 +7,66 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { CircularProgress } from "@mui/material";
 import { useState } from "react";
-import { useForm } from "react-hook-form"
+import { useForm, SubmitHandler } from "react-hook-form"
 import { Link as RouterLink } from "react-router-dom";
 import GoogleAuthButton from "../../components/UI/googleAuthButton";
 import { signup } from "../../api/user";
+import { userFormData } from "../../@types/Tuser";
+import { useMutation } from "@tanstack/react-query";
+import AlertDialogSlide from "../../components/Modal";
+
 
 export default function SignIn() {
+  const [isModalOpen, setIsModalOpen] = useState(false)
   const [loading, setLoading] = useState(false);
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<userFormData>({
     username: "",
     email: "",
     password: "",
     repeat_password: ""
   });
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-    watch,
-    // setValue
-  } = useForm({
-    defaultValues: formData // Set default values for form fields
-  });
+  const { register, handleSubmit, formState: { errors }, watch } = useForm<userFormData>({ defaultValues: formData });
+  
 
-  const handleInputChange = (fieldName: string, value: string) => {
-    setFormData(prevState => ({
-      ...prevState,
-      [fieldName]: value
-    }));
-  };
+  const {mutate: signupMutation} = useMutation({ 
+    mutationFn: signup, // Api,
+    onSuccess: (response) => {
+      console.log('success', response)
+      if (response.success)  setIsModalOpen(true)
+     
+    }
+  })
 
-  const handleFormSubmit = async (data: any) => {
+  const handleFormSubmit: SubmitHandler<userFormData> = async (data) => {
     try {
       setLoading(true);
-      console.log('form data -->>> ',formData);
-      await signup(formData)
-      // Perform form submission logic here...
+      setFormData(data);
+      console.log(' data -->>> ', data);
+      const user = {
+        username: data.username || "",
+        email: data.email || "",
+        password: data.password || "",
+        repeat_password: data.repeat_password || "",
+        // token: captcha || "",
+      };
+      console.log('form data -->>> ', user);
+      signupMutation(user);
     } catch (error) {
       console.error(error);
     }
   };
 
+
   return (
     <Container component="main" maxWidth="xs" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "70vh", paddingTop: "50px" }}>
       <Box
-        sx={{
-          marginTop: 8,
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-        }}
+        sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }}
       >
         <Typography component="h1" variant="h4" sx={{ mb: '20px' }}>
           Join Scriptify.
         </Typography>
+        {isModalOpen && <AlertDialogSlide />}
         <Box component="form" onSubmit={handleSubmit(handleFormSubmit)} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"
@@ -70,6 +75,7 @@ export default function SignIn() {
             label="Username"
             autoComplete="username"
             autoFocus
+            
             {...register("username", {
               required: {
                 value: true,
@@ -90,14 +96,11 @@ export default function SignIn() {
                 );
               },
             })}
-            onChange={(e) => handleInputChange("username", e.target.value)}
           />
           <span className="text-xs text-red-700">
             {errors?.username && errors?.username?.message}
           </span>
 
-          {/* Repeat the same for other text fields */}
-          {/* Email Field */}
           <TextField
             margin="normal"
             required
@@ -111,13 +114,11 @@ export default function SignIn() {
                 message: "Invalid email format",
               },
             })}
-            onChange={(e) => handleInputChange("email", e.target.value)}
           />
           <span className="text-xs text-red-700">
             {errors?.email && errors?.email?.message}
           </span>
 
-          {/* Password Field */}
           <TextField
             margin="normal"
             required
@@ -145,13 +146,11 @@ export default function SignIn() {
                   !/\s/.test(val) || "Password should not contain spaces.",
               },
             })}
-            onChange={(e) => handleInputChange("password", e.target.value)}
           />
           <span className="text-xs text-red-700">
             {errors?.password && errors?.password?.message}
           </span>
 
-          {/* Repeat Password Field */}
           <TextField
             margin="normal"
             required
@@ -166,7 +165,6 @@ export default function SignIn() {
                   return "Confirmation password should match password.";
               },
             })}
-            onChange={(e) => handleInputChange("repeat_password", e.target.value)}
           />
           <span className="text-xs text-red-700">
             {errors?.repeat_password && errors?.repeat_password?.message}
@@ -176,21 +174,12 @@ export default function SignIn() {
             type="submit"
             fullWidth
             variant="contained"
-            sx={{
-              color: "white",
-              bgcolor: "black",
-              mt: 3,
-              mb: 3,
-              "&:hover": {
-                bgcolor: "black",
-              },
-            }}
+            sx={{ color: "white", bgcolor: "black", mt: 3, mb: 3, "&:hover": { bgcolor: "black", } }}
             disabled={loading}
           >
             {loading ? <CircularProgress size={24} color="inherit" /> : "Sign In"}
           </Button>
           <GoogleAuthButton />
-
           <Grid container justifyContent="center" alignItems="center" marginBottom="70px">
             <Grid item>
               <Link component={RouterLink} to="/sign-in" variant="body2" sx={{ color: 'text.primary', textDecoration: 'none', textAlign: 'center' }}>
