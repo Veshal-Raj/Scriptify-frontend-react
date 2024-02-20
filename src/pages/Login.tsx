@@ -24,10 +24,7 @@ export default function SignIn() {
     try {
       setLoading(true); // Set loading state to true when form is submitted
       console.log(data);
-      // Simulate asynchronous operation, like API call
-      while (true) {
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait for 1 second
-      }
+      
     } catch (error) {
       console.error(error);
     }
