@@ -8,17 +8,17 @@ import Container from "@mui/material/Container";
 import { CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"
-import { Link as RouterLink, useNavigate } from "react-router-dom";
+import { Link as RouterLink } from "react-router-dom";
 import GoogleAuthButton from "../../components/UI/googleAuthButton";
 import { signup } from "../../api/user";
 import { userFormData } from "../../@types/Tuser";
 import { useMutation } from "@tanstack/react-query";
 import AlertDialogSlide from "../../components/Modal";
 import toast, { Toaster } from "react-hot-toast";
+import { validateEmail, validatePassword, validateUsername } from "../../utils/validationUtils";
 
 
 export default function SignIn() {
-  const navigate = useNavigate()
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [loading, setLoading] = useState(false);
@@ -77,32 +77,16 @@ export default function SignIn() {
           Join Scriptify.
         </Typography>
         <Box component="form" onSubmit={handleSubmit(handleFormSubmit)} noValidate sx={{ mt: 1 }}>
-          <TextField
+        <TextField
             margin="normal"
             required
             fullWidth
             label="Username"
             autoComplete="username"
             autoFocus
-            
             {...register("username", {
-              required: {
-                value: true,
-                message: "Username is required",
-              },
-              minLength: {
-                value: 3,
-                message: "Username should have at least 3 letters",
-              },
-              pattern: {
-                value: /^[A-Za-z]+$/,
-                message: "Username should only contain letters",
-              },
-              validate: (value) => {
-                return (
-                  !/\s/.test(value) ||
-                  "Username should not contain empty space"
-                );
+              validate: {
+                validUsername: (value) => validateUsername(value)
               },
             })}
           />
@@ -111,51 +95,36 @@ export default function SignIn() {
           </span>
 
           <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="Email Address"
-            autoComplete="email"
-            {...register("email", {
-              required: "Email is a required field",
-              pattern: {
-                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                message: "Invalid email format",
-              },
-            })}
-          />
+              margin="normal"
+              required
+              fullWidth
+              label="Email Address"
+              autoComplete="email"
+              {...register("email", {
+                required: "Email is a required field",
+                validate: {
+                  validEmail: (value) => validateEmail(value)
+                },
+              })}
+            />
           <span className="text-xs text-red-700">
             {errors?.email && errors?.email?.message}
           </span>
 
           <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="Password"
-            type="password"
-            autoComplete="current-password"
-            {...register("password", {
-              required: "Password is required",
-              validate: {
-                requireSixCharacters: (val) =>
-                  (typeof val === "string" && val.length >= 6) ||
-                  "Password should be at least 6 characters long.",
-                containAtleastOneDigit: (val) =>
-                  (typeof val === "string" && /\d/.test(val)) ||
-                  "Password should contain at least one digit.",
-                containAtleastOneAlphabet: (val) =>
-                  (typeof val === "string" && /[a-z]/.test(val)) ||
-                  "Password should contain at least one alphabet.",
-                containAtleastOneSpecialCharacter: (val) =>
-                  (typeof val === "string" &&
-                    /[!@#$%^&*(),.?":{}|<>]/.test(val)) ||
-                  "Password should contain at least one special character.",
-                noSpace: (val) =>
-                  !/\s/.test(val) || "Password should not contain spaces.",
-              },
-            })}
-          />
+              margin="normal"
+              required
+              fullWidth
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+              {...register("password", {
+                required: "Password is required",
+                validate: {
+                  validatePassword: (value) => validatePassword(value)
+                },
+              })}
+            />
           <span className="text-xs text-red-700">
             {errors?.password && errors?.password?.message}
           </span>

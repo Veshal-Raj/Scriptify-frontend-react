@@ -13,6 +13,7 @@ import GoogleAuthButton from "../components/UI/googleAuthButton";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../api/user";
 import toast, { Toaster } from 'react-hot-toast';
+import { validateEmail, validatePassword } from "../utils/validationUtils";
 
 
 export default function SignIn() {
@@ -72,19 +73,17 @@ export default function SignIn() {
           Welcome back.
         </Typography>
         <Box component="form" onSubmit={handleSubmit(handleFormSubmit)} noValidate sx={{ mt: 1 }}>
-          <TextField
+        <TextField
             margin="normal"
             required
             fullWidth
             label="Email Address"
             autoComplete="email"
             autoFocus
-            // {...register("email", { required: true })}
             {...register("email", {
               required: "Email is a required field",
-              pattern: {
-                value: /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-                message: "Invalid email format",
+              validate: {
+                validEmail: (value) => validateEmail(value)
               },
             })}
           />
@@ -94,33 +93,23 @@ export default function SignIn() {
 
 
           <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="Password"
-            type="password"
-            autoComplete="current-password"
-            {...register("password", {
-              required: "Password is required",
-              validate: {
-                requireSixCharacters: (val) =>
-                  (typeof val === "string" && val.length >= 6) ||
-                  "Password should be at least 6 characters long.",
-                containAtleastOneDigit: (val) =>
-                  (typeof val === "string" && /\d/.test(val)) ||
-                  "Password should contain at least one digit.",
-                containAtleastOneAlphabet: (val) =>
-                  (typeof val === "string" && /[a-z]/.test(val)) ||
-                  "Password should contain at least one alphabet.",
-                containAtleastOneSpecialCharacter: (val) =>
-                  (typeof val === "string" &&
-                    /[!@#$%^&*(),.?":{}|<>]/.test(val)) ||
-                  "Password should contain at least one special character.",
-                noSpace: (val) =>
-                  !/\s/.test(val) || "Password should not contain spaces.",
-              },
-            })}
-          />
+              margin="normal"
+              required
+              fullWidth
+              label="Password"
+              type="password"
+              autoComplete="current-password"
+              {...register("password", {
+                required: "Password is required",
+                validate: {
+                  requireSixCharacters: (val) => validatePassword(val),
+                  containAtleastOneDigit: (val) => validatePassword(val),
+                  containAtleastOneAlphabet: (val) => validatePassword(val),
+                  containAtleastOneSpecialCharacter: (val) => validatePassword(val),
+                  noSpace: (val) => validatePassword(val)
+                },
+              })}
+            />
           <span className="text-xs text-red-700">
             {errors?.password && errors?.password?.message}
           </span>
