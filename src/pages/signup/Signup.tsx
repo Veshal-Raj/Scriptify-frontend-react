@@ -8,15 +8,18 @@ import Container from "@mui/material/Container";
 import { CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import GoogleAuthButton from "../../components/UI/googleAuthButton";
 import { signup } from "../../api/user";
 import { userFormData } from "../../@types/Tuser";
 import { useMutation } from "@tanstack/react-query";
 import AlertDialogSlide from "../../components/Modal";
+import toast, { Toaster } from "react-hot-toast";
 
 
 export default function SignIn() {
+  const navigate = useNavigate()
+
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<userFormData>({
@@ -31,10 +34,15 @@ export default function SignIn() {
 
   const {mutate: signupMutation} = useMutation({ 
     mutationFn: signup, // Api,
+    onError: (error) => {
+      console.log(error)
+      toast.error('signup failed ')
+    },
     onSuccess: (response) => {
       console.log('success', response)
-      if (response.success)  setIsModalOpen(true)
-     
+      if (response.success) {
+        setIsModalOpen(true)
+      }
     }
   })
 
@@ -60,13 +68,14 @@ export default function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "70vh", paddingTop: "50px" }}>
+     <Toaster />
       <Box
         sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }}
       >
+        {isModalOpen && <AlertDialogSlide />}
         <Typography component="h1" variant="h4" sx={{ mb: '20px' }}>
           Join Scriptify.
         </Typography>
-        {isModalOpen && <AlertDialogSlide />}
         <Box component="form" onSubmit={handleSubmit(handleFormSubmit)} noValidate sx={{ mt: 1 }}>
           <TextField
             margin="normal"

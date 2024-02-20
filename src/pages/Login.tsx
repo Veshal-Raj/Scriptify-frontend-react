@@ -6,32 +6,60 @@ import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { CircularProgress } from "@mui/material";
-import { useState } from "react";
+import {  useState } from "react";
 import { useForm } from "react-hook-form"
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import GoogleAuthButton from "../components/UI/googleAuthButton";
+import { useMutation } from "@tanstack/react-query";
+import { login } from "../api/user";
+import toast, { Toaster } from 'react-hot-toast';
 
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate()
   const {
     register,
     handleSubmit,
     formState: { errors }
   } = useForm();
 
+ 
+  const {mutate: loginMutation} = useMutation({
+    mutationFn: login,
+    onError: (error) => {
+      console.log(error)
+      toast.error('login failed ')
+    },
+    onSuccess: (response) => {
+      console.log('success', response)
+      if (response.status === 200) {
+        toast.success('login successfull!')
+        setTimeout(()=> navigate('/'),800)
+      }
+    }
+  })
+
   const handleFormSubmit = async (data) => {
     try {
       setLoading(true); // Set loading state to true when form is submitted
       console.log(data);
+      const user = {
+        email: data.email || "",
+        password: data.password || ""
+      }
+      console.log(user)
+      loginMutation(user)
       
     } catch (error) {
       console.error(error);
     }
   };
 
+
   return (
     <Container component="main" maxWidth="xs" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "70vh", paddingTop: "50px" }}>
+      <Toaster />
       <Box
         sx={{
           marginTop: 8,
