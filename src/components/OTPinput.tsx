@@ -5,10 +5,10 @@ import React, {
     ChangeEvent,
     KeyboardEvent,
   } from "react";
-  import CircularProgress from '@mui/material/CircularProgress';
 import { useMutation } from "@tanstack/react-query";
 import { verifyOTP } from "../api/user";
 import { useNavigate } from "react-router-dom";
+import BackdropLoading from "./UI/BackdropLoading";
   
   type Props = {
     length?: number;
@@ -102,26 +102,28 @@ import { useNavigate } from "react-router-dom";
     };
   
     return (
+      <>
       <div className="text-center m-10">
         <div className="flex justify-center">
           {otp.map((value, index) => (
             <input
-              key={index}
-              type="text"
-              ref={(input) =>
-                (inputRefs.current[index] = input as HTMLInputElement)
-              }
-              value={value}
+            key={index}
+            type="text"
+            ref={(input) =>
+              (inputRefs.current[index] = input as HTMLInputElement)
+            }
+            value={value}
               onChange={(e) => handleChange(index, e)}
               onClick={() => handleClick(index)}
               onKeyDown={(e) => handleKeyDown(index, e)}
               readOnly={isSubmitting} // Make input readonly when submitting
               className="w-12 h-12 mx-1 text-2xl text-center border border-gray-300 rounded focus:outline-none focus:border-blue-500"
-            />
-          ))}
+              />
+              ))}
         </div>
-        {isSubmitting && <CircularProgress />}
+        <BackdropLoading isSubmitting={isSubmitting}/>
       </div>
+      </>
     );
   };
   

@@ -3,6 +3,8 @@ import GroupsIcon from '@mui/icons-material/Groups';
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { TableComponent } from "./UI/Table";
+// import CustomPaginationActionsTable from "./UI/TableAgain";
 
 const imageVariants = {
   initial: { opacity: 0, scale: 0, x: "0%", y: "0%" },
@@ -38,6 +40,8 @@ const LandingHero = () => {
 
   return (
     <>
+    <TableComponent />
+    {/* <CustomPaginationActionsTable /> */}
       <Box
         sx={{
           height: "auto",
