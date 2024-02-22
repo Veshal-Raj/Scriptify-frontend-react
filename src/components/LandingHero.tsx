@@ -1,9 +1,10 @@
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Button, Tooltip, Typography } from "@mui/material";
 import GroupsIcon from '@mui/icons-material/Groups';
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { TableComponent } from "./UI/Table";
+import Sidebar from "./UI/SideBar";
 // import CustomPaginationActionsTable from "./UI/TableAgain";
 
 const imageVariants = {
@@ -38,9 +39,17 @@ const LandingHero = () => {
     }
   }, [animationShown]);
 
+  //===============================
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+  //================================
   return (
     <>
-    <TableComponent />
+
+    {/* <TableComponent /> */}
     {/* <CustomPaginationActionsTable /> */}
       <Box
         sx={{
@@ -50,9 +59,10 @@ const LandingHero = () => {
           "@media (max-width: 600px)": {
             padding: "40px", 
           },
-
+          
         }}
       >
+        {/* <button onClick={toggleSidebar}>Toggle Sidebar</button> */}
         <AnimatePresence>
           <Typography variant="h2" component="h2">
             {text}
@@ -67,18 +77,7 @@ const LandingHero = () => {
             </Typography>
           </motion.div>
         </AnimatePresence>
-        <motion.div
-          whileHover={{ scale: 1, rotate: [0, -3, 3, -3, 0], transition: { duration: 1.9 } }}
-
-          drag
-          dragConstraints={{
-            top: -50,
-            left: -50,
-            right: 50,
-            bottom: 50,
-          }}
-        >
-          <Link to="/sign-in" style={{textDecoration: 'none'}}>
+        <Link to="/sign-in" style={{ textDecoration: 'none', display: 'inline-block', width: 'fit-content' }}>
           <Button
             variant="outlined"
             sx={{
@@ -97,12 +96,11 @@ const LandingHero = () => {
                 color: 'black',
               }
             }}
-          >
+            >
             <GroupsIcon sx={{ margin: '6px' }} /> {/* Icon */}
             Join the Community
           </Button>
           </Link>
-        </motion.div>
       </Box>
       <div className="flex relative overflow-hidden  bg-gradient-to-t from-white py-10 bg-opacity-5">
         <motion.div className="absolute top-24 -left-20 right-0 bottom-0 w-1/2 z-10  overflow-hidden "

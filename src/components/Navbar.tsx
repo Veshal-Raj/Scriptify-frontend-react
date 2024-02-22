@@ -1,8 +1,10 @@
 import { Box, AppBar, Toolbar, Typography, Button } from "@mui/material";
 import { Link } from "react-router-dom";
+import SideBar from "./UI/SideBar";
 
 export default function Navbar() {
   return (
+    <>
     <Box sx={{ flexGrow: 1 }}>
       <AppBar position="static" sx={{
         backgroundImage: "-webkit-linear-gradient(85deg, #FDFDFE, #D6E4FB)",
@@ -10,6 +12,8 @@ export default function Navbar() {
         borderBottom: "0.1px  #000",
       }}>
         <Toolbar>
+        <SideBar isOpen={true} onClose={false}/>
+
           <Typography variant="h4" component="h5" color="black" sx={{ flexGrow: 1, paddingLeft: 5, margin: 2 }}>
             Scriptify
           </Typography>
@@ -39,5 +43,6 @@ export default function Navbar() {
         </Toolbar>
       </AppBar>
     </Box>
+     </>
   );
 }
