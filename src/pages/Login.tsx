@@ -14,11 +14,13 @@ import { useMutation } from "@tanstack/react-query";
 import { login } from "../api/user";
 import toast, { Toaster } from 'react-hot-toast';
 import { validateEmail, validatePassword } from "../utils/validationUtils";
-
+import { setUser } from "../redux/slice/userSlice";
+import { useDispatch } from "react-redux";
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const {
     register,
     handleSubmit,
@@ -34,7 +36,9 @@ export default function SignIn() {
     },
     onSuccess: (response) => {
       console.log('success', response)
+      console.log('role -->>> ', response.data?.role)
       if (response.status === 200) {
+        dispatch(setUser(response.data))
         toast.success('login successfull!')
         setTimeout(()=> navigate('/'),800)
       }
