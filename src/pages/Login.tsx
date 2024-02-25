@@ -98,7 +98,6 @@ export default function SignIn() {
             })}
           />
           <span className="text-xs text-red-700">
-
             {errors?.email && errors?.email?.message}
           </span>
 
