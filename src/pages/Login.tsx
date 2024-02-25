@@ -38,6 +38,7 @@ export default function SignIn() {
     onError: (error) => {
       console.log(error)
       toast.error('login failed ')
+      setLoading(false)
     },
     onSuccess: (response) => {
       console.log('success', response)
