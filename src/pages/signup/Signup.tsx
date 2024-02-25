@@ -15,13 +15,15 @@ import { userFormData } from "../../@types/Tuser";
 import { useMutation } from "@tanstack/react-query";
 import AlertDialogSlide from "../../components/Modal";
 import toast, { Toaster } from "react-hot-toast";
+import ReCAPTCHA from "react-google-recaptcha";
 import { validateEmail, validatePassword, validateUsername } from "../../utils/validationUtils";
-
+const PUBLIC_RECAPTCHA_SITE_KEY = import.meta.env.VITE_PUBLIC_RECAPTCHA_SITE_KEY
 
 export default function SignIn() {
 
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [loading, setLoading] = useState(false);
+  const [captcha, setCaptcha] = useState<string | null>()
   const [formData, setFormData] = useState<userFormData>({
     username: "",
     email: "",
@@ -56,7 +58,7 @@ export default function SignIn() {
         email: data.email || "",
         password: data.password || "",
         repeat_password: data.repeat_password || "",
-        // token: captcha || "",
+        token: captcha || "",
       };
       console.log('form data -->>> ', user);
       signupMutation(user);
@@ -147,6 +149,15 @@ export default function SignIn() {
           <span className="text-xs text-red-700">
             {errors?.repeat_password && errors?.repeat_password?.message}
           </span>
+
+          <ReCAPTCHA
+          sitekey={PUBLIC_RECAPTCHA_SITE_KEY || ""}
+          className="flex justify-center"
+          onChange={(value: string | null) => {
+            console.log(value);
+            setCaptcha(value);
+          }}
+        />
 
           <Button
             type="submit"

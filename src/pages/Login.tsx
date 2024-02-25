@@ -16,9 +16,14 @@ import toast, { Toaster } from 'react-hot-toast';
 import { validateEmail, validatePassword } from "../utils/validationUtils";
 import { setUser } from "../redux/slice/userSlice";
 import { useDispatch } from "react-redux";
+import ReCAPTCHA from "react-google-recaptcha";
+const PUBLIC_RECAPTCHA_SITE_KEY = import.meta.env.VITE_PUBLIC_RECAPTCHA_SITE_KEY
+
 
 export default function SignIn() {
   const [loading, setLoading] = useState(false);
+  const [captcha, setCaptcha] = useState<string | null>()
+
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const {
@@ -51,7 +56,8 @@ export default function SignIn() {
       console.log(data);
       const user = {
         email: data.email || "",
-        password: data.password || ""
+        password: data.password || "",
+        token: captcha || "",
       }
       console.log(user)
       loginMutation(user)
@@ -92,9 +98,9 @@ export default function SignIn() {
             })}
           />
           <span className="text-xs text-red-700">
+
             {errors?.email && errors?.email?.message}
           </span>
-
 
           <TextField
               margin="normal"
@@ -117,6 +123,15 @@ export default function SignIn() {
           <span className="text-xs text-red-700">
             {errors?.password && errors?.password?.message}
           </span>
+
+          <ReCAPTCHA
+          sitekey={PUBLIC_RECAPTCHA_SITE_KEY || ""}
+          className="flex justify-center"
+          onChange={(value: string | null) => {
+            console.log(value);
+            setCaptcha(value);
+          }}
+        />
 
           <Button
             type="submit"
