@@ -1,6 +1,9 @@
 import { Route, Routes } from "react-router-dom"
-import Dashboard from "../components/Dashboard"
+import Dashboard from "../components/admin/Dashboard"
 import AdminRoutes from "../components/AdminRoutes"
+import Users from "../components/admin/Users"
+import Blog from "../components/admin/Blog"
+import Reports from "../components/admin/Reports"
 
 
 const AdminOnly = () => {
@@ -9,8 +12,9 @@ const AdminOnly = () => {
         <Routes>
             <Route element={<AdminRoutes />}>
                 <Route path="/dashboard" element={<Dashboard />} />
-                {/* <Route /> */}
-                {/* <Route /> */}
+                <Route path="/users" element={<Users />} />
+                <Route path="/blogs" element={<Blog />} />
+                <Route path="/Reports" element={<Reports />} />
             </Route>
         </Routes>
     </>

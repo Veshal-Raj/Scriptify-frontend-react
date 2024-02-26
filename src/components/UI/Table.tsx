@@ -1,64 +1,31 @@
-import {
-    TableContainer,
-    Table,
-    TableHead,
-    TableBody,
-    TableRow,
-    TableCell,
-    Paper,
-    // TablePagination
-  } from '@mui/material'
-  
-  export const TableComponent = () => {
-    return (
-      <TableContainer sx={{ margin: '10px', padding: '20px', maxWidth: '1000px', marginX: 'auto', borderRadius: '20px'}} component={Paper}> {/** sx={{ maxHeight: '300px' }} */}
-        <Table stickyHeader aria-label='simple table'>
-          <TableHead>
-            <TableRow>
-              <TableCell>Id</TableCell>
-              <TableCell>Username</TableCell>
-              {/* <TableCell>Last Name</TableCell> */}
-              <TableCell align='center'>Email</TableCell>
-              <TableCell align='center'>Blogs</TableCell>
-              <TableCell align='center'>Subscription</TableCell>
-              <TableCell align='center'>Role</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {tableData.map(row => (
-              <TableRow
-                key={row.id}
-                sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell >{row.id}</TableCell>
-                <TableCell>{row.first_name}</TableCell>
-                <TableCell>{row.last_name}</TableCell>
-                <TableCell align='center'>{row.email}</TableCell>
-                <TableCell align='center'>{row.email}</TableCell>
-                <TableCell align='center'>{row.email}</TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-          {/* <TablePagination
-              rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-              colSpan={3}
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              SelectProps={{
-                inputProps: {
-                  'aria-label': 'rows per page',
-                },
-                native: true,
-              }}
-              onPageChange={handleChangePage}
-              onRowsPerPageChange={handleChangeRowsPerPage}
-              ActionsComponent={TablePaginationActions}
-            /> */}
-        </Table>
-      </TableContainer>
-    )
-  }
-  
+import * as React from 'react';
+import Box from '@mui/material/Box';
+import FormControl from '@mui/material/FormControl';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import Select from '@mui/material/Select';
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
+import Table from '@mui/material/Table';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
+import Pagination from '@mui/material/Pagination';
+
+export const TableComponent = () => {
+  const [page, setPage] = React.useState(1);
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+
+  const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<{ value: unknown }>) => {
+    setRowsPerPage(event.target.value as number);
+    setPage(1); // Reset page number to 1 when changing rows per page
+  };
+
   const tableData = [
     {
       id: 1,
@@ -140,4 +107,59 @@ import {
       gender: 'Non-binary',
       ip_address: '199.140.221.248'
     }
-  ]
+    // Rest of your data
+  ];
+
+  const startIndex = (page - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+
+  return (
+    <Box>
+      <TableContainer sx={{ margin: '10px', padding: '20px', maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop:'50px'}} component={Paper}>
+        <Table stickyHeader aria-label='simple table'>
+          <TableHead>
+            <TableRow>
+              <TableCell>Id</TableCell>
+              <TableCell>Username</TableCell>
+              <TableCell>Email</TableCell>
+              <TableCell align='center'>Number of Blogs</TableCell>
+              <TableCell align='center'>Status</TableCell>
+              <TableCell align='center'>Role</TableCell>
+              <TableCell align='center'>Subscribed</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {tableData.slice(startIndex, endIndex).map(row => (
+              <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell>{row.id}</TableCell>
+                <TableCell>{row.first_name}</TableCell>
+                <TableCell>{row.email}</TableCell>
+                <TableCell align='center'>{row.gender}</TableCell>
+                <TableCell align='center'>{row.ip_address}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '10px' }}>
+          <Pagination
+            count={Math.ceil(tableData.length / rowsPerPage)}
+            color="primary"
+            page={page}
+            onChange={handleChangePage}
+          />
+          <FormControl>
+            <Select
+              labelId="rows-per-page-label"
+              id="rows-per-page-select"
+              value={rowsPerPage}
+              onChange={handleChangeRowsPerPage}
+            >
+              <MenuItem value={5}>5 Rows</MenuItem>
+              <MenuItem value={10}>10 Rows</MenuItem>
+            </Select>
+          </FormControl>
+        </Box>
+      </TableContainer>
+    </Box>
+  );
+};

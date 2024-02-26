@@ -12,6 +12,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import PersonIcon from '@mui/icons-material/Person';
 import ArticleIcon from '@mui/icons-material/Article';
 import ReportIcon from '@mui/icons-material/Report';
+import { Link } from 'react-router-dom';
 
 export default function SideBar() {
   const [state, setState] = React.useState({
@@ -47,13 +48,13 @@ export default function SideBar() {
       >
         <List>
           {[
-            { text: 'Dashboard', icon: <DashboardIcon /> },
-            { text: 'Users', icon: <PersonIcon /> },
-            { text: 'Blog', icon: <ArticleIcon /> },
-            { text: 'Reports', icon: <ReportIcon /> },
-          ].map((item, index) => (
+             { text: 'Dashboard', icon: <DashboardIcon />, path: '/admin/dashboard' },
+             { text: 'Users', icon: <PersonIcon />, path: '/admin/users' },
+             { text: 'Blogs', icon: <ArticleIcon />, path: '/admin/blogs' },
+             { text: 'Reports', icon: <ReportIcon />, path: '/admin/reports' },
+          ].map((item) => (
             <ListItem key={item.text} disablePadding>
-              <ListItemButton>
+              <ListItemButton component={Link} to={item.path}>
                 <ListItemIcon>
                   {item.icon}
                 </ListItemIcon>

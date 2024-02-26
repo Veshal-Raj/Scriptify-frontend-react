@@ -4,7 +4,7 @@ import Login from "./pages/Login"
 import Signup from "./pages/signup/Signup";
 import LandingPage from "./pages/LandingPage";
 import { Feed } from "./components/Feed";
-import Dashboard from "./components/Dashboard";
+import Dashboard from "./components/admin/Dashboard";
 import AuthorizedOnly from "./routes/AuthorizedOnly";
 import UnAuthorizedOnly from "./routes/UnAuthorizedOnly";
 import AdminOnly from "./routes/AdminOnly";
