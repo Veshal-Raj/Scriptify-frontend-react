@@ -10,6 +10,8 @@ import { useMutation } from "@tanstack/react-query";
 import { verifyOTP } from "../api/user";
 import { useNavigate } from "react-router-dom";
 import BackdropLoading from "./UI/BackdropLoading";
+import { useDispatch } from "react-redux";
+import { setUser } from "../redux/slice/userSlice";
 
 type Props = {
   length?: number;
@@ -24,6 +26,7 @@ const OtpInput: React.FC<Props> = ({
   
   const [sendOTP, setSendOTP]= useState('');
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   const [otp, setOtp] = useState<string[]>(new Array(length).fill(""));
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false); // State for submission progress
   const inputRefs = useRef<HTMLInputElement[]>([]);
@@ -39,7 +42,10 @@ const OtpInput: React.FC<Props> = ({
     mutationFn: verifyOTP,
     onSuccess: (response) => {
         console.log('otp verification -->> ', response)
-        if (response.status === 200) navigate('/feed')
+        if (response.status === 200) {
+          dispatch(setUser(response.data))
+          setTimeout(()=> navigate('/feed'),800)
+        }
     }
   })
 
