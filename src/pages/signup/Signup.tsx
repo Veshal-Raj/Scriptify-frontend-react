@@ -39,13 +39,15 @@ export default function SignIn() {
     onError: (error) => {
       console.log(error)
       toast.error('signup failed ')
+      setLoading(false)
     },
     onSuccess: (response) => {
       console.log('success', response)
       if (response.success) {
         setIsModalOpen(true)
       }
-    }
+    },
+    
   })
 
   const handleFormSubmit: SubmitHandler<userFormData> = async (data) => {

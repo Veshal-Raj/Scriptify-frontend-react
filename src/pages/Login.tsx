@@ -38,6 +38,7 @@ export default function SignIn() {
     onError: (error) => {
       console.log(error)
       toast.error('login failed ')
+      setLoading(false)
     },
     onSuccess: (response) => {
       console.log('success', response)
@@ -45,7 +46,7 @@ export default function SignIn() {
       if (response.status === 200) {
         dispatch(setUser(response.data))
         toast.success('login successfull!')
-        setTimeout(()=> navigate('/'),800)
+        setTimeout(()=> navigate('/feed'),800)
       }
     }
   })

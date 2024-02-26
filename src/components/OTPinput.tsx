@@ -39,7 +39,7 @@ const OtpInput: React.FC<Props> = ({
     mutationFn: verifyOTP,
     onSuccess: (response) => {
         console.log('otp verification -->> ', response)
-        if (response.status === 200) navigate('/')
+        if (response.status === 200) navigate('/feed')
     }
   })
 
