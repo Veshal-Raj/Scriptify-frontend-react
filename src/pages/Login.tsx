@@ -46,7 +46,8 @@ export default function SignIn() {
       if (response.status === 200) {
         dispatch(setUser(response.data))
         toast.success('login successfull!')
-        setTimeout(()=> navigate('/feed'),800)
+        if(response.data?.role === 'admin') setTimeout(() => navigate('/admin/dashboard'), 800)
+        if (response.data?.role === 'user') setTimeout(()=> navigate('/user/feed'),800)        
       }
     }
   })

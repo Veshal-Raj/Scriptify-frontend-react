@@ -4,7 +4,10 @@ import Login from "./pages/Login"
 import Signup from "./pages/signup/Signup";
 import LandingPage from "./pages/LandingPage";
 import { Feed } from "./components/Feed";
-import PrivateRoutes from "./components/PrivateRoutes";
+import Dashboard from "./components/Dashboard";
+import AuthorizedOnly from "./routes/AuthorizedOnly";
+import UnAuthorizedOnly from "./routes/UnAuthorizedOnly";
+import AdminOnly from "./routes/AdminOnly";
 
 const queryClient = new QueryClient()
 
@@ -15,12 +18,16 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Routes>
-            <Route path="/sign-in" element={<Login />} />
-            <Route path="/sign-up" element={<Signup />} />
-            <Route path="/" element={<LandingPage />} />
-            <Route  element={<PrivateRoutes />}>
-              <Route path='feed' element={<Feed />} />
-            </Route>
+
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/sign-in" element={<Login />} />
+              <Route path="/sign-up" element={<Signup />} />
+
+              <Route path="/user/*" element={<AuthorizedOnly />} />
+              <Route path="/admin/*" element={<AdminOnly />} />
+            
+
+           
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>

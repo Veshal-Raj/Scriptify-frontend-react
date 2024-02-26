@@ -22,7 +22,7 @@ export default function Navbar() {
           borderBottom: "0.1px  #000",
         }}>
           <Toolbar>
-            {userRole === 'Admin' && <SideBar isOpen={true} onClose={false} />}
+            {userRole === 'admin' && <SideBar isOpen={true} onClose={false} />}
             <Typography variant="h4" component="h5" color="black" sx={{ flexGrow: 1, paddingLeft: 5, margin: 2 }}>
               Scriptify
             </Typography>
@@ -59,10 +59,10 @@ export default function Navbar() {
             <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5">
               <NotificationsNoneSharpIcon />
             </IconButton>
+           </>}
             <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5">
               <AccountCircleIcon />
             </IconButton>
-           </>}
           </Toolbar>
         </AppBar>
       </Box>
