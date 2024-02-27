@@ -1,34 +1,33 @@
-import * as React from 'react';
+import { SetStateAction, useState } from 'react';
 import Box from '@mui/material/Box';
-import FormControl from '@mui/material/FormControl';
-import MenuItem from '@mui/material/MenuItem';
-import Select from '@mui/material/Select';
-import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
 import Table from '@mui/material/Table';
-import TableHead from '@mui/material/TableHead';
-import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
-import Pagination from '@mui/material/Pagination';
-import TuserType from '../../@types/TuserType';
-import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import TableBody from '@mui/material/TableBody';
+import TableHead from '@mui/material/TableHead';
+import TableContainer from '@mui/material/TableContainer';
+import { Button, FormControl, IconButton, MenuItem, Select } from '@mui/material';
+import PaginationComponent from './Pagination';
+import BlockUserDialog from '../BlogUserDialogBox';
+import UserInfoDialog from '../UserInfoDialog';
 import InfoIcon from '@mui/icons-material/Info';
+import TuserType from '../../@types/TuserType';
 
-export const TableComponent = ({ data }: { data: TuserType }) => {
-  const [page, setPage] = React.useState(1);
-  const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [selectedUserId, setSelectedUserId] = React.useState<string | null>(null);
-  const [openBlockDialog, setOpenBlockDialog] = React.useState(false);
-  const [openUserInfoDialog, setOpenUserInfoDialog] = React.useState(false);
-  const [userInfo, setUserInfo] = React.useState<TuserType | null>(null);
+export const TableComponent = ({ data }) => {
+  const [page, setPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [openBlockDialog, setOpenBlockDialog] = useState(false);
+  const [openUserInfoDialog, setOpenUserInfoDialog] = useState(false);
+  const [userInfo, setUserInfo] = useState(null);
 
-  const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
+  const handleChangePage = (event: unknown, newPage: SetStateAction<number>) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setRowsPerPage(event.target.value as number);
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(event.target.value);
     setPage(1); // Reset page number to 1 when changing rows per page
   };
 
@@ -38,17 +37,17 @@ export const TableComponent = ({ data }: { data: TuserType }) => {
     setOpenBlockDialog(false);
   };
 
-  const tableData: TuserType[] = data as unknown as TuserType[];
+  const tableData = data as TuserType[];
 
   const startIndex = (page - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
-  const handleActiveButtonClick = (userId: string) => {
+  const handleActiveButtonClick = (userId: string | SetStateAction<null> | undefined) => {
     setSelectedUserId(userId);
     setOpenBlockDialog(true);
   };
 
-  const handleInfoIconClick = (user: TuserType) => {
+  const handleInfoIconClick = (user: SetStateAction<null> | TuserType) => {
     setUserInfo(user);
     setOpenUserInfoDialog(true);
   };
@@ -97,9 +96,8 @@ export const TableComponent = ({ data }: { data: TuserType }) => {
           </TableBody>
         </Table>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '10px' }}>
-          <Pagination
+          <PaginationComponent
             count={Math.ceil(tableData?.length / rowsPerPage)}
-            color="primary"
             page={page}
             onChange={handleChangePage}
           />
@@ -115,44 +113,8 @@ export const TableComponent = ({ data }: { data: TuserType }) => {
             </Select>
           </FormControl>
         </Box>
-        <Dialog open={openBlockDialog} onClose={() => setOpenBlockDialog(false)} >
-          <DialogTitle>User Block Confirmation</DialogTitle>
-          <DialogContent>
-            Are you sure you want to block this user?
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenBlockDialog(false)} color="primary">
-              Cancel
-            </Button>
-            <Button onClick={handleConfirmBlockUser} color="error" autoFocus variant='contained'>
-              Block
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Dialog open={openUserInfoDialog} onClose={() => setOpenUserInfoDialog(false)}>
-          <DialogTitle style={{ marginBottom: '8px', fontWeight: 'bold' }}>User Information</DialogTitle>
-          <DialogContent>
-            {userInfo && (
-              <div style={{ lineHeight: '2' }}>
-                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>ID:</span> {userInfo._id}</div>
-                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Username:</span> {userInfo?.personal_info?.username}</div>
-                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Email:</span> {userInfo?.personal_info?.email}</div>
-                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Number of Blogs:</span> {userInfo?.account_info?.total_posts}</div>
-                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Total Reads:</span> {userInfo?.account_info?.total_reads}</div>
-                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Status:</span> {userInfo.isVerified ? 'Active' : 'Blocked'}</div>
-                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Role:</span> {userInfo?.role}</div>
-                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Subscribed:</span> {userInfo?.isSubscribed ? 'Yes' : 'No'}</div>
-                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Joined Date:</span> {userInfo && new Date(userInfo?.joinedAt).toLocaleDateString()}</div>
-                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Joined Time:</span> {userInfo && new Date(userInfo?.joinedAt).toLocaleTimeString()}</div>
-              </div>
-            )}
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={() => setOpenUserInfoDialog(false)} color="primary" variant="outlined">
-              Close
-            </Button>
-          </DialogActions>
-        </Dialog>
+        <BlockUserDialog open={openBlockDialog} onClose={() => setOpenBlockDialog(false)} onConfirm={handleConfirmBlockUser} />
+        <UserInfoDialog open={openUserInfoDialog} onClose={() => setOpenUserInfoDialog(false)} userInfo={userInfo} />
       </TableContainer>
     </Box>
   );
