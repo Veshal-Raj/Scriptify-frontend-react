@@ -20,6 +20,7 @@ const DraggableBlog = ({ children }) => (
         initial="initial"
         animate="animate"
         whileTap={{ scale: 0.9 }}
+        style={{backgroundColor: '#F1F5F9'}}
     >
         {children}
     </motion.div>
@@ -30,13 +31,13 @@ const LandingSection1 = () => {
 
     return (
         <div className="bg-white py-10">
-            <div className="py-20 mx-10 flex">
+            <div className="py-20 mx-10 flex" >
                 <Typography variant="h2" component="h3" className="text-center">
                     Crafted for<span className="text-blue-700"> developers and technical </span>minds to shine through their writing.
                 </Typography>
             </div>
             {blogs.map((blog, index) => (
-                <DraggableBlog key={index}>
+                <DraggableBlog key={index} >
                     {blog}
                 </DraggableBlog>
             ))}

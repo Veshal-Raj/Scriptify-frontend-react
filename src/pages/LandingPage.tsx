@@ -1,7 +1,7 @@
 import { Suspense, lazy } from "react"
 import Navbar from "../components/Navbar"
 import LandingHero from "../components/LandingHero"
-import { Footer } from "../components/Footer"
+import Footer  from "../components/Footer"
 
 const LazyLandingSection1 =  lazy(() => import("../components/LandingSection1"))
 const LazyLandingSection2  = lazy(() => import("../components/LandingSection2" ))

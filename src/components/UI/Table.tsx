@@ -13,6 +13,8 @@ import BlockUserDialog from '../BlogUserDialogBox';
 import UserInfoDialog from '../UserInfoDialog';
 import InfoIcon from '@mui/icons-material/Info';
 import TuserType from '../../@types/TuserType';
+import { useMutation } from '@tanstack/react-query';
+import { changeUserStatus } from '../../api/admin';
 
 export const TableComponent = ({ data }) => {
   const [page, setPage] = useState(1);
@@ -21,6 +23,14 @@ export const TableComponent = ({ data }) => {
   const [openBlockDialog, setOpenBlockDialog] = useState(false);
   const [openUserInfoDialog, setOpenUserInfoDialog] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
+
+  
+  const {mutate: changeStatus } = useMutation({
+    mutationFn: changeUserStatus,
+    onSuccess: (response) => {
+      if (response) refetch()
+    }
+  })
 
   const handleChangePage = (event: unknown, newPage: SetStateAction<number>) => {
     setPage(newPage);
@@ -34,8 +44,12 @@ export const TableComponent = ({ data }) => {
   const handleConfirmBlockUser = () => {
     // Here you can implement the logic to block the user
     console.log('User with ID', selectedUserId, 'will be blocked.');
+    changeStatus(selectedUserId)
     setOpenBlockDialog(false);
+
   };
+
+  
 
   const tableData = data as TuserType[];
 

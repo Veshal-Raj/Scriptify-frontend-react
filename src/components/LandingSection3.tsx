@@ -1,5 +1,6 @@
 import { Button, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
+import SubscriptionPlans from "./Subscription"
 
 const LandingSection3 = () => {
     return (
@@ -11,6 +12,7 @@ const LandingSection3 = () => {
             <Link to="/sign-up" style={{ textDecoration: 'none' }}>
                 <Button variant="outlined" sx={{ marginTop: '50px', paddingY: '15px', paddingLeft: '30px', paddingRight: '30px' }}>Join Us</Button>
             </Link>
+            <SubscriptionPlans />
         </div>
     )
 }
