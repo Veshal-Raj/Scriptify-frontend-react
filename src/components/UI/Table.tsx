@@ -19,7 +19,9 @@ export const TableComponent = ({ data }: { data: TuserType }) => {
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [selectedUserId, setSelectedUserId] = React.useState<string | null>(null);
-  const [openDialog, setOpenDialog] = React.useState(false);
+  const [openBlockDialog, setOpenBlockDialog] = React.useState(false);
+  const [openUserInfoDialog, setOpenUserInfoDialog] = React.useState(false);
+  const [userInfo, setUserInfo] = React.useState<TuserType | null>(null);
 
   const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
@@ -33,7 +35,7 @@ export const TableComponent = ({ data }: { data: TuserType }) => {
   const handleConfirmBlockUser = () => {
     // Here you can implement the logic to block the user
     console.log('User with ID', selectedUserId, 'will be blocked.');
-    setOpenDialog(false);
+    setOpenBlockDialog(false);
   };
 
   const tableData: TuserType[] = data as unknown as TuserType[];
@@ -43,12 +45,17 @@ export const TableComponent = ({ data }: { data: TuserType }) => {
 
   const handleActiveButtonClick = (userId: string) => {
     setSelectedUserId(userId);
-    setOpenDialog(true);
+    setOpenBlockDialog(true);
+  };
+
+  const handleInfoIconClick = (user: TuserType) => {
+    setUserInfo(user);
+    setOpenUserInfoDialog(true);
   };
 
   return (
     <Box>
-      <TableContainer sx={{ margin: '10px', padding: '20px', maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '50px' }} component={Paper}>
+      <TableContainer sx={{ margin: '10px', padding: '20px', maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '50px' }} component={Paper} elevation={3}>
         <Table stickyHeader aria-label='simple table'>
           <TableHead>
             <TableRow sx={{ '& .MuiTableCell-root': { fontWeight: 'bold' } }}>
@@ -63,13 +70,12 @@ export const TableComponent = ({ data }: { data: TuserType }) => {
           </TableHead>
           <TableBody>
             {tableData?.slice(startIndex, endIndex).map(row => (
-              <TableRow key={row?._id?.toString()} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+              <TableRow key={row?._id?.toString()} sx={{ '&:last-child td, &:last-child th': { border: 0 }, '&:hover': { backgroundColor: '#f0f0f0' } }} >
                 <TableCell>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <span>{row?._id?.toString()}</span>
-                    <IconButton>
-
-                    <InfoIcon />
+                    <IconButton onClick={() => handleInfoIconClick(row)}>
+                      <InfoIcon />
                     </IconButton>
                   </div>
                 </TableCell>
@@ -109,15 +115,41 @@ export const TableComponent = ({ data }: { data: TuserType }) => {
             </Select>
           </FormControl>
         </Box>
-        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
-          <DialogTitle className='m-2 font-bold'>Confirmation</DialogTitle>
+        <Dialog open={openBlockDialog} onClose={() => setOpenBlockDialog(false)} >
+          <DialogTitle>User Block Confirmation</DialogTitle>
           <DialogContent>
             Are you sure you want to block this user?
           </DialogContent>
-          <DialogActions className='m-3'>
-            <Button onClick={() => setOpenDialog(false)} variant='outlined' sx={{ color: 'blue' }}>No</Button>
-            <Button onClick={handleConfirmBlockUser} variant="contained" autoFocus color="error">
-              Yes
+          <DialogActions>
+            <Button onClick={() => setOpenBlockDialog(false)} color="primary">
+              Cancel
+            </Button>
+            <Button onClick={handleConfirmBlockUser} color="error" autoFocus variant='contained'>
+              Block
+            </Button>
+          </DialogActions>
+        </Dialog>
+        <Dialog open={openUserInfoDialog} onClose={() => setOpenUserInfoDialog(false)}>
+          <DialogTitle style={{ marginBottom: '8px', fontWeight: 'bold' }}>User Information</DialogTitle>
+          <DialogContent>
+            {userInfo && (
+              <div style={{ lineHeight: '2' }}>
+                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>ID:</span> {userInfo._id}</div>
+                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Username:</span> {userInfo?.personal_info?.username}</div>
+                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Email:</span> {userInfo?.personal_info?.email}</div>
+                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Number of Blogs:</span> {userInfo?.account_info?.total_posts}</div>
+                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Total Reads:</span> {userInfo?.account_info?.total_reads}</div>
+                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Status:</span> {userInfo.isVerified ? 'Active' : 'Blocked'}</div>
+                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Role:</span> {userInfo?.role}</div>
+                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Subscribed:</span> {userInfo?.isSubscribed ? 'Yes' : 'No'}</div>
+                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Joined Date:</span> {userInfo && new Date(userInfo?.joinedAt).toLocaleDateString()}</div>
+                <div ><span style={{ marginBottom: '8px', fontWeight: 'bold' }}>Joined Time:</span> {userInfo && new Date(userInfo?.joinedAt).toLocaleTimeString()}</div>
+              </div>
+            )}
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setOpenUserInfoDialog(false)} color="primary" variant="outlined">
+              Close
             </Button>
           </DialogActions>
         </Dialog>
