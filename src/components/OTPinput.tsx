@@ -44,7 +44,7 @@ const OtpInput: React.FC<Props> = ({
         console.log('otp verification -->> ', response)
         if (response.status === 200) {
           dispatch(setUser(response.data))
-          setTimeout(()=> navigate('/feed'),800)
+          setTimeout(()=> navigate('/user/feed'),800)
         }
     }
   })

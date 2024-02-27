@@ -1,7 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
 import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import Select from '@mui/material/Select';
 import TableContainer from '@mui/material/TableContainer';
@@ -12,10 +11,15 @@ import TableBody from '@mui/material/TableBody';
 import TableRow from '@mui/material/TableRow';
 import TableCell from '@mui/material/TableCell';
 import Pagination from '@mui/material/Pagination';
+import TuserType from '../../@types/TuserType';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, IconButton } from '@mui/material';
+import InfoIcon from '@mui/icons-material/Info';
 
-export const TableComponent = () => {
+export const TableComponent = ({ data }: { data: TuserType }) => {
   const [page, setPage] = React.useState(1);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [selectedUserId, setSelectedUserId] = React.useState<string | null>(null);
+  const [openDialog, setOpenDialog] = React.useState(false);
 
   const handleChangePage = (event: React.ChangeEvent<unknown>, newPage: number) => {
     setPage(newPage);
@@ -26,99 +30,28 @@ export const TableComponent = () => {
     setPage(1); // Reset page number to 1 when changing rows per page
   };
 
-  const tableData = [
-    {
-      id: 1,
-      first_name: 'Beret',
-      last_name: 'Lennard',
-      email: 'blennard0@pcworld.com',
-      gender: 'Female',
-      ip_address: '213.196.192.52'
-    },
-    {
-      id: 2,
-      first_name: 'Tera',
-      last_name: 'Choke',
-      email: 'tchoke1@theatlantic.com',
-      gender: 'Male',
-      ip_address: '101.152.241.70'
-    },
-    {
-      id: 3,
-      first_name: 'Lyn',
-      last_name: 'Bowart',
-      email: 'lbowart2@odnoklassniki.ru',
-      gender: 'Male',
-      ip_address: '188.127.126.94'
-    },
-    {
-      id: 4,
-      first_name: 'Bert',
-      last_name: 'Huckett',
-      email: 'bhuckett3@tinypic.com',
-      gender: 'Female',
-      ip_address: '247.156.243.148'
-    },
-    {
-      id: 5,
-      first_name: 'Drew',
-      last_name: 'Jenicke',
-      email: 'djenicke4@businessinsider.com',
-      gender: 'Male',
-      ip_address: '0.185.35.172'
-    },
-    {
-      id: 6,
-      first_name: 'Deloria',
-      last_name: 'Pepperill',
-      email: 'dpepperill5@meetup.com',
-      gender: 'Non-binary',
-      ip_address: '101.44.39.120'
-    },
-    {
-      id: 7,
-      first_name: 'Spense',
-      last_name: 'Ivashnyov',
-      email: 'sivashnyov6@hexun.com',
-      gender: 'Female',
-      ip_address: '253.192.252.49'
-    },
-    {
-      id: 8,
-      first_name: 'Elden',
-      last_name: 'Chaucer',
-      email: 'echaucer7@mozilla.com',
-      gender: 'Agender',
-      ip_address: '60.70.120.186'
-    },
-    {
-      id: 9,
-      first_name: 'Sholom',
-      last_name: 'Deetch',
-      email: 'sdeetch8@so-net.ne.jp',
-      gender: 'Female',
-      ip_address: '218.36.95.147'
-    },
-    {
-      id: 10,
-      first_name: 'Genovera',
-      last_name: 'Colby',
-      email: 'gcolby9@dagondesign.com',
-      gender: 'Non-binary',
-      ip_address: '199.140.221.248'
-    }
-    // Rest of your data
-  ];
+  const handleConfirmBlockUser = () => {
+    // Here you can implement the logic to block the user
+    console.log('User with ID', selectedUserId, 'will be blocked.');
+    setOpenDialog(false);
+  };
+
+  const tableData: TuserType[] = data as unknown as TuserType[];
 
   const startIndex = (page - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
+  const handleActiveButtonClick = (userId: string) => {
+    setSelectedUserId(userId);
+    setOpenDialog(true);
+  };
+
   return (
     <Box>
-      <TableContainer sx={{ margin: '10px', padding: '20px', maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop:'50px'}} component={Paper}>
+      <TableContainer sx={{ margin: '10px', padding: '20px', maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '50px' }} component={Paper}>
         <Table stickyHeader aria-label='simple table'>
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ '& .MuiTableCell-root': { fontWeight: 'bold' } }}>
               <TableCell>Id</TableCell>
               <TableCell>Username</TableCell>
               <TableCell>Email</TableCell>
@@ -129,20 +62,37 @@ export const TableComponent = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {tableData.slice(startIndex, endIndex).map(row => (
-              <TableRow key={row.id} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-                <TableCell>{row.id}</TableCell>
-                <TableCell>{row.first_name}</TableCell>
-                <TableCell>{row.email}</TableCell>
-                <TableCell align='center'>{row.gender}</TableCell>
-                <TableCell align='center'>{row.ip_address}</TableCell>
+            {tableData?.slice(startIndex, endIndex).map(row => (
+              <TableRow key={row?._id?.toString()} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+                <TableCell>
+                  <div style={{ display: 'flex', alignItems: 'center' }}>
+                    <span>{row?._id?.toString()}</span>
+                    <IconButton>
+
+                    <InfoIcon />
+                    </IconButton>
+                  </div>
+                </TableCell>
+                <TableCell>{row?.personal_info?.username}</TableCell>
+                <TableCell>{row?.personal_info?.email}</TableCell>
+                <TableCell align='center'>{row?.account_info?.total_posts ?? 0}</TableCell>
+                <TableCell align='center'>
+                  <Button
+                    variant="contained"
+                    onClick={() => handleActiveButtonClick(row?._id?.toString())}
+                  >
+                    {row?.isVerified ? 'Active' : 'Blocked'}
+                  </Button>
+                </TableCell>
+                <TableCell align='center'>{row?.role}</TableCell>
+                <TableCell align='center'>{row?.isSubscribed ? 'Subscribed' : 'Not Subscribed'}</TableCell>
               </TableRow>
             ))}
           </TableBody>
         </Table>
         <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '10px' }}>
           <Pagination
-            count={Math.ceil(tableData.length / rowsPerPage)}
+            count={Math.ceil(tableData?.length / rowsPerPage)}
             color="primary"
             page={page}
             onChange={handleChangePage}
@@ -159,6 +109,18 @@ export const TableComponent = () => {
             </Select>
           </FormControl>
         </Box>
+        <Dialog open={openDialog} onClose={() => setOpenDialog(false)}>
+          <DialogTitle className='m-2 font-bold'>Confirmation</DialogTitle>
+          <DialogContent>
+            Are you sure you want to block this user?
+          </DialogContent>
+          <DialogActions className='m-3'>
+            <Button onClick={() => setOpenDialog(false)} variant='outlined' sx={{ color: 'blue' }}>No</Button>
+            <Button onClick={handleConfirmBlockUser} variant="contained" autoFocus color="error">
+              Yes
+            </Button>
+          </DialogActions>
+        </Dialog>
       </TableContainer>
     </Box>
   );

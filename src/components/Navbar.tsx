@@ -60,9 +60,9 @@ export default function Navbar() {
               <NotificationsNoneSharpIcon />
             </IconButton>
            </>}
-            <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5">
+            {userData && <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5">
               <AccountCircleIcon />
-            </IconButton>
+            </IconButton>}
           </Toolbar>
         </AppBar>
       </Box>
