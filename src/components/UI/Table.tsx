@@ -16,7 +16,7 @@ import TuserType from '../../@types/TuserType';
 import { useMutation } from '@tanstack/react-query';
 import { changeUserStatus } from '../../api/admin';
 
-export const TableComponent = ({ data }) => {
+export const TableComponent = ({ data, onDataChange }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -28,7 +28,8 @@ export const TableComponent = ({ data }) => {
   const {mutate: changeStatus } = useMutation({
     mutationFn: changeUserStatus,
     onSuccess: (response) => {
-      if (response) refetch()
+      if (response) console.log(response.data)
+      onDataChange()
     }
   })
 
