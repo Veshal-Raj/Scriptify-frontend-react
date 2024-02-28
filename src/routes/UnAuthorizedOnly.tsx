@@ -1,17 +1,20 @@
-import { useSelector } from "react-redux"
-import {  Outlet, Navigate, useLocation } from "react-router-dom";
-
+import { Route, Routes } from "react-router-dom"
+import Login from '../pages/Login'
+import Signup from "../pages/signup/Signup";
+import LandingPage from "../pages/LandingPage";
+import NotUserRoutes from "../components/routeComponents/NotUserRoutes";
 
 const UnAuthorizedOnly = () => {
-    const { userData } = useSelector(state => state.user);
-    const location = useLocation()
-
-  return userData?.role === null ? (
-    <Outlet />
-  ) : userData?.role === "admin" ? (
-    <Navigate to='/admin/dashboard' state={{ from: location }} replace={true} />
-  ) : (
-    <Navigate to ='/feed' />
+  return (
+    <>
+      <Routes>
+        <Route element={<NotUserRoutes />} >
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/sign-in" element={<Login />} />
+          <Route path="/sign-up" element={<Signup />} />
+        </Route>
+      </Routes>
+    </>
   )
 }
 

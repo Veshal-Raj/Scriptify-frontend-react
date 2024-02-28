@@ -8,11 +8,11 @@ import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import TableContainer from '@mui/material/TableContainer';
 import { Button, FormControl, IconButton, MenuItem, Select } from '@mui/material';
+import TuserType from '../../@types/TuserType';
 import PaginationComponent from './Pagination';
 import BlockUserDialog from '../BlogUserDialogBox';
 import UserInfoDialog from '../UserInfoDialog';
 import InfoIcon from '@mui/icons-material/Info';
-import TuserType from '../../@types/TuserType';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { changeUserStatus } from '../../api/admin';
 
