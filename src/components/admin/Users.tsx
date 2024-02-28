@@ -8,7 +8,7 @@ import TuserType from "../../@types/TuserType"
 
 const Users = () => {
 
-  const {data: AllUsers, isLoading, refetch} = useQuery({
+  const {data: AllUsers, isLoading} = useQuery({
     queryKey: ["getAllUsers"],
     queryFn: getAllUsers,
   
@@ -16,15 +16,12 @@ const Users = () => {
   console.log(AllUsers, isLoading)
   const userData:TuserType = AllUsers?.data
 
-  const handleDataChange = async () => {
-    // Manually refetch the data
-    await refetch();
-  }
+ 
 
   return (
     <>
         <Navbar />
-        <TableComponent data={userData} onDataChange={handleDataChange} />
+        <TableComponent data={userData}  />
     </>
   )
 }

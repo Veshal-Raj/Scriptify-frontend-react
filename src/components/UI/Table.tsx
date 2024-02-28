@@ -13,10 +13,10 @@ import BlockUserDialog from '../BlogUserDialogBox';
 import UserInfoDialog from '../UserInfoDialog';
 import InfoIcon from '@mui/icons-material/Info';
 import TuserType from '../../@types/TuserType';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { changeUserStatus } from '../../api/admin';
 
-export const TableComponent = ({ data, onDataChange }) => {
+export const TableComponent = ({ data }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedUserId, setSelectedUserId] = useState(null);
@@ -24,20 +24,21 @@ export const TableComponent = ({ data, onDataChange }) => {
   const [openUserInfoDialog, setOpenUserInfoDialog] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
 
-  
-  const {mutate: changeStatus } = useMutation({
+  const queryClient = useQueryClient()
+
+  const { mutate: changeStatus } = useMutation({
     mutationFn: changeUserStatus,
-    onSuccess: (response) => {
+    onSuccess: async (response) => {
       if (response) console.log(response.data)
-      onDataChange()
+      await queryClient.invalidateQueries({ queryKey: ["getAllUsers"] })
     }
   })
 
-  const handleChangePage = (event: unknown, newPage: SetStateAction<number>) => {
+  const handleChangePage = (_event: unknown, newPage: SetStateAction<number>) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (event: { target: { value: SetStateAction<number>; }; }) => {
     setRowsPerPage(event.target.value);
     setPage(1); // Reset page number to 1 when changing rows per page
   };
@@ -50,14 +51,12 @@ export const TableComponent = ({ data, onDataChange }) => {
 
   };
 
-  
-
   const tableData = data as TuserType[];
 
   const startIndex = (page - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
-  const handleActiveButtonClick = (userId: string | SetStateAction<null> | undefined) => {
+  const handleActiveButtonClick = (userId: string | undefined | SetStateAction<null>) => {
     setSelectedUserId(userId);
     setOpenBlockDialog(true);
   };
@@ -99,6 +98,14 @@ export const TableComponent = ({ data, onDataChange }) => {
                 <TableCell align='center'>
                   <Button
                     variant="contained"
+                    // Conditionally set the background color based on the status
+                    sx={{ 
+                      backgroundColor: row?.isVerified ? undefined : 'red', 
+                      color: row?.isVerified ? undefined : 'white',
+                      '&:hover': {
+                          backgroundColor: row?.isVerified ? undefined : 'red',
+                      }
+                  }}
                     onClick={() => handleActiveButtonClick(row?._id?.toString())}
                   >
                     {row?.isVerified ? 'Active' : 'Blocked'}
