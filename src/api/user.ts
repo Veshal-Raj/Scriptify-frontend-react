@@ -12,7 +12,7 @@ export const signup = async (userData: userFormData) => {
         return response?.data;
     } catch (error) {
         console.error(error);
-        throw error; // Throw the error to be handled by React Query
+        throw error; 
     }
 }
 

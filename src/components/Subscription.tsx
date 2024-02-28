@@ -1,80 +1,146 @@
-// SubscriptionPlans.tsx
 import React from 'react';
-import { motion } from 'framer-motion';
-import { Container, Grid, Paper, Typography, Button } from '@mui/material';
-import { CheckCircleOutline } from '@mui/icons-material';
+import { Typography, Button, List, ListItem, ListItemText } from '@mui/material';
+import {motion} from 'framer-motion'
 
-const SubscriptionPlans: React.FC = () => {
+function CheckIcon() {
   return (
-    <Container className="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
-      <Grid container spacing={4}>
-        <Grid item xs={12} sm={6}>
-          <motion.div whileHover={{ scale: 1.05 }} style={{ width: '80%', height: '100%' }}>
-            <Paper className="rounded-2xl border border-indigo-600 p-6 shadow-sm lg:p-12 h-full" style={{ width: '100%', height: '100%' }}>
-              <div className="text-center">
-                <Typography variant="h2" className="text-lg font-medium text-gray-900">
-                  Pro <span className="sr-only">Plan</span>
-                </Typography>
-                <Typography variant="body1" className="mt-2 sm:mt-4">
-                  <strong className="text-3xl font-bold text-gray-900 sm:text-4xl"> $30 </strong>
-                  <span className="text-sm font-medium text-gray-700">/month</span>
-                </Typography>
-              </div>
-              <ul className="mt-6 space-y-2">
-                <ListItem icon={<CheckCircleOutline />} text="20 users included" />
-                <ListItem icon={<CheckCircleOutline />} text="5GB of storage" />
-                <ListItem icon={<CheckCircleOutline />} text="Email support" />
-                <ListItem icon={<CheckCircleOutline />} text="Help center access" />
-                <ListItem icon={<CheckCircleOutline />} text="Phone support" />
-                <ListItem icon={<CheckCircleOutline />} text="Community access" />
-              </ul>
-              <Button
-                href="#"
-                className="mt-8 block rounded-full border border-indigo-600 bg-indigo-600 px-12 py-3 text-center text-sm font-medium text-white hover:bg-indigo-700 hover:ring-1 hover:ring-indigo-700 focus:outline-none focus:ring active:text-indigo-500"
-              >
-                Get Started
-              </Button>
-            </Paper>
-          </motion.div>
-        </Grid>
-        <Grid item xs={12} sm={6}>
-          <motion.div whileHover={{ scale: 1.05 }} style={{ width: '80%', height: '100%' }} className='rounded-full' >
-            <Paper className="rounded-full border border-gray-200 p-6 shadow-sm lg:p-12 h-full" style={{ width: '100%', height: '100%' }}>
-              <div className="text-center">
-                <Typography variant="h2" className="text-lg font-medium text-gray-900">
-                  Starter <span className="sr-only">Plan</span>
-                </Typography>
-                <Typography variant="body1" className="mt-2 sm:mt-4">
-                  <strong className="text-3xl font-bold text-gray-900 sm:text-4xl"> $20 </strong>
-                  <span className="text-sm font-medium text-gray-700">/month</span>
-                </Typography>
-              </div>
-              <ul className="mt-6 space-y-2">
-                <ListItem icon={<CheckCircleOutline />} text="10 users included" />
-                <ListItem icon={<CheckCircleOutline />} text="2GB of storage" />
-                <ListItem icon={<CheckCircleOutline />} text="Email support" />
-                <ListItem icon={<CheckCircleOutline />} text="Help center access" />
-              </ul>
-              <Button
-                href="#"
-                className="mt-8 block rounded-full border border-indigo-600 bg-white px-12 py-3 text-center text-sm font-medium text-indigo-600 hover:ring-1 hover:ring-indigo-600 focus:outline-none focus:ring active:text-indigo-500"
-              >
-                Get Started
-              </Button>
-            </Paper>
-          </motion.div>
-        </Grid>
-      </Grid>
-    </Container>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      strokeWidth={2}
+      stroke="currentColor"
+      className="h-3 w-3"
+    >
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+    </svg>
   );
-};
+}
 
-export default SubscriptionPlans;
+export function PricingCard() {
+  return (
+    <motion.div className="w-full max-w-[20rem] p-8 m-8 rounded-xl" style={{ background: 'linear-gradient(to right, #080a52, #0a0d6c)', transition: 'transform 0.3s' }}
+      whileHover={{scale: 1.05 }}
+    >
+      <div className="m-0 mb-8 rounded-none border-b border-white/10 pb-8 text-center">
+        <Typography variant="subtitle2" color="white" className="font-normal uppercase">
+          Monthly
+        </Typography>
+        <Typography variant="h1" color="white" className="mt-6 flex justify-center gap-1 text-7xl font-normal">
+          <span className="mt-2 text-4xl">$</span>10{' '}
+          <span className="self-end text-4xl">/mo</span>
+        </Typography>
+      </div>
+      <div className="p-0">
+        <List className="flex flex-col gap-4">
+          <ListItem className="flex items-center gap-4">
+            <span className="rounded-full border border-white/20 bg-white/20 p-1">
+              <CheckIcon style={{ color: 'white' }} />
+            </span>
+            <ListItemText primary={<Typography className="font-normal" style={{ color: 'white' }}>5 team members</Typography>} />
+          </ListItem>
+          <ListItem className="flex items-center gap-4">
+            <span className="rounded-full border border-white/20 bg-white/20 p-1">
+              <CheckIcon style={{ color: 'white' }} />
+            </span>
+            <ListItemText primary={<Typography className="font-normal" style={{ color: 'white' }}>200+ components</Typography>} />
+          </ListItem>
+          <ListItem className="flex items-center gap-4">
+            <span className="rounded-full border border-white/20 bg-white/20 p-1">
+              <CheckIcon style={{ color: 'white' }} />
+            </span>
+            <ListItemText primary={<Typography className="font-normal" style={{ color: 'white' }}>40+ built-in pages</Typography>} />
+          </ListItem>
+          <ListItem className="flex items-center gap-4">
+            <span className="rounded-full border border-white/20 bg-white/20 p-1">
+              <CheckIcon style={{ color: 'white' }} />
+            </span>
+            <ListItemText primary={<Typography className="font-normal" style={{ color: 'white' }}>1 year free updates</Typography>} />
+          </ListItem>
+          <ListItem className="flex items-center gap-4">
+            <span className="rounded-full border border-white/20 bg-white/20 p-1">
+              <CheckIcon style={{ color: 'white' }} />
+            </span>
+            <ListItemText primary={<Typography className="font-normal" style={{ color: 'white' }}>Life time technical support</Typography>} />
+          </ListItem>
+        </List>
+      </div>
+      <div className="mt-12 p-0">
+        <Button
+          variant="contained"
+          size="large"
+          style={{ backgroundColor: '#080a52', color: 'white' }}
+          className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
+          fullWidth={true}
+        >
+          Buy Now
+        </Button>
+      </div>
+    </motion.div>
+  );
+}
+export function SecondPricingCard() {
+  return (
+    <motion.div
+      className="w-full max-w-[20rem] p-8 m-8 rounded-xl"
+      style={{ background: 'linear-gradient(to right, #080a52, #0a0d6c)' }}
+      whileHover={{scale: 1.05 }}
+    >
+      <div className="m-0 mb-8 rounded-none border-b border-white/10 pb-8 text-center">
+        <Typography variant="subtitle2" color="white" className="font-normal uppercase">
+          Annually
+        </Typography>
+        <Typography variant="h1" color="white" className="mt-6 flex justify-center gap-1 text-7xl font-normal">
+          <span className="mt-2 text-4xl">$</span>110{' '}
+          <span className="self-end text-4xl">/yr</span>
+        </Typography>
+      </div>
+      <div className="p-0">
+        <List className="flex flex-col gap-4">
+          <ListItem className="flex items-center gap-4">
+            <span className="rounded-full border border-white/20 bg-white/20 p-1">
+              <CheckIcon />
+            </span>
+            <ListItemText primary={<Typography className="font-normal" color="white">10 team members</Typography>} />
+          </ListItem>
+          <ListItem className="flex items-center gap-4">
+            <span className="rounded-full border border-white/20 bg-white/20 p-1">
+              <CheckIcon />
+            </span>
+            <ListItemText primary={<Typography className="font-normal" color="white">300+ components</Typography>} />
+          </ListItem>
+          <ListItem className="flex items-center gap-4">
+            <span className="rounded-full border border-white/20 bg-white/20 p-1">
+              <CheckIcon />
+            </span>
+            <ListItemText primary={<Typography className="font-normal" color="white">60+ built-in pages</Typography>} />
+          </ListItem>
+          <ListItem className="flex items-center gap-4">
+            <span className="rounded-full border border-white/20 bg-white/20 p-1">
+              <CheckIcon />
+            </span>
+            <ListItemText primary={<Typography className="font-normal" color="white">2 years free updates</Typography>} />
+          </ListItem>
+          <ListItem className="flex items-center gap-4">
+            <span className="rounded-full border border-white/20 bg-white/20 p-1">
+              <CheckIcon />
+            </span>
+            <ListItemText primary={<Typography className="font-normal" color="white">Life time technical support</Typography>} />
+          </ListItem>
+        </List>
+      </div>
+      <div className="mt-12 p-0">
+      <Button
+          variant="contained"
+          size="large"
+          style={{ backgroundColor: '#080a52', color: 'white' }}
+          className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
+          fullWidth={true}
+        >
+          Buy Now
+        </Button>
+      </div>
+    </motion.div>
+  );
+}
 
-// Helper component to render list items with icons
-const ListItem: React.FC<{ icon: React.ReactNode; text: string }> = ({ icon, text }) => (
-  <li className="flex items-center gap-1">
-    {icon}
-    <span className="text-gray-700">{text}</span>
-  </li>
-);

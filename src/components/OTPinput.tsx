@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import BackdropLoading from "./UI/BackdropLoading";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slice/userSlice";
+import Timer from "./UI/Timer";
 
 type Props = {
   length?: number;
@@ -144,13 +145,14 @@ const OtpInput: React.FC<Props> = ({
             />
             ))}
       </div>
-      {seconds > 0 ? (
+      {/* {seconds > 0 ? (
         <h1 className="mt-10">Timer: {seconds}</h1>
       ) : (
         <button className="mt-10" onClick={handleResendOTP}>
           Resend OTP
         </button>
-      )}
+      )} */}
+      <Timer seconds={seconds} handleResendOTP={handleResendOTP} />
       <BackdropLoading isSubmitting={isSubmitting}/>
     </div>
     </>

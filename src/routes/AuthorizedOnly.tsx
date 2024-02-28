@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom"
 import { Feed } from "../components/Feed"
-import UserRoutes from "../components/routeComponents/UserRoutes"
+import UserRoutes from "./routeComponents/UserRoutes"
 
 
 const AuthorizedOnly = () => {

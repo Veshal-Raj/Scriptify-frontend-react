@@ -1,11 +1,7 @@
-import { Box, Button, Tooltip, Typography } from "@mui/material";
-import GroupsIcon from '@mui/icons-material/Groups';
+import { Box,  Typography } from "@mui/material";
 import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import { TableComponent } from "./UI/Table";
-import Sidebar from "./UI/SideBar";
-// import CustomPaginationActionsTable from "./UI/TableAgain";
+import CustomButton from "./Button/CustomButton";
 
 const imageVariants = {
   initial: { opacity: 0, scale: 0, x: "0%", y: "0%" },
@@ -39,30 +35,12 @@ const LandingHero = () => {
     }
   }, [animationShown]);
 
-  //===============================
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
-  };
-  //================================
   return (
     <>
-
-    {/* <TableComponent /> */}
-    {/* <CustomPaginationActionsTable /> */}
-      <Box
-        sx={{
-          height: "auto",
-          padding: "100px 100px",
-          color: "#000",
-          "@media (max-width: 600px)": {
-            padding: "40px", 
-          },
-          
+      <Box sx={{ height: "auto", padding: "100px 100px", color: "#000",
+          "@media (max-width: 600px)": { padding: "40px"},         
         }}
-      >
-        {/* <button onClick={toggleSidebar}>Toggle Sidebar</button> */}
+      > 
         <AnimatePresence>
           <Typography variant="h2" component="h2">
             {text}
@@ -77,30 +55,7 @@ const LandingHero = () => {
             </Typography>
           </motion.div>
         </AnimatePresence>
-        <Link to="/sign-in" style={{ textDecoration: 'none', display: 'inline-block', width: 'fit-content' }}>
-          <Button
-            variant="outlined"
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              paddingX: '20px',
-              paddingY: '15px',
-              marginTop: '50px',
-              marginLeft: '10px',
-              borderRadius: '45px',
-              background: "-webkit-linear-gradient(45deg, #FFFFF0, #a06bd1)",
-              color: 'black',
-              transition: 'background-color 0.3s, color 0.3s',
-              '&:hover': {
-                background: "-webkit-linear-gradient(45deg, #FFFFF0, #8540c7)",
-                color: 'black',
-              }
-            }}
-            >
-            <GroupsIcon sx={{ margin: '6px' }} /> {/* Icon */}
-            Join the Community
-          </Button>
-          </Link>
+          <CustomButton to="/sign-in">Join the Community</CustomButton>
       </Box>
       <div className="flex relative overflow-hidden  bg-gradient-to-t from-white py-10 bg-opacity-5">
         <motion.div className="absolute top-24 -left-20 right-0 bottom-0 w-1/2 z-10  overflow-hidden "
@@ -129,7 +84,6 @@ const LandingHero = () => {
           />
         </motion.div>
         <motion.div className="absolute top-24 -right-10 z-10 " variants={imageVariants} initial="initial" animate="animate"
-          //  whileTap={{ scale: 0.9 }}
           whileHover={{ scale: 0.9 }}
           onHoverStart={() => { }}
           onHoverEnd={() => { }}
@@ -141,8 +95,7 @@ const LandingHero = () => {
           />
         </motion.div>
       </div>
-      <div className=" bg-white bg-gradient-to-t from-white py-10">
-      </div>
+      <div className=" bg-white bg-gradient-to-t from-white py-10"></div>
     </>
   );
 };

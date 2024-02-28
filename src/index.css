@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 html {
-    background: -webkit-linear-gradient(45deg, #FDFDFE, #D6E4FB);
+    /* background: -webkit-linear-gradient(45deg, #FDFDFE, #D6E4FB); */
     /* background-color: -webkit-linear-gradient(45deg, #FDFDFE, #D6E4FB); */
     scroll-behavior: smooth;
 }

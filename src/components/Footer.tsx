@@ -1,4 +1,3 @@
-import React from 'react';
 import { Typography, Link, Grid, IconButton } from "@mui/material";
 import { Facebook, Instagram, Twitter, GitHub } from '@mui/icons-material';
 

@@ -17,7 +17,8 @@ export default function Navbar() {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" sx={{
-          backgroundImage: "-webkit-linear-gradient(85deg, #FDFDFE, #D6E4FB)",
+          // backgroundImage: "-webkit-linear-gradient(85deg, #FDFDFE, #D6E4FB)",
+          backgroundColor: "white",
           backgroundSize: "100% 100%",
           borderBottom: "0.1px  #000",
         }}>

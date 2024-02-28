@@ -8,20 +8,20 @@ import TuserType from "../../@types/TuserType"
 
 const Users = () => {
 
-  const {data: AllUsers, isLoading} = useQuery({
+  const { data: AllUsers, isLoading } = useQuery({
     queryKey: ["getAllUsers"],
     queryFn: getAllUsers,
-  
-  })
-  console.log(AllUsers, isLoading)
-  const userData:TuserType = AllUsers?.data
 
- 
+  })
+
+  const userData: TuserType = AllUsers?.data
+
+
 
   return (
     <>
-        <Navbar />
-        <TableComponent data={userData}  />
+      <Navbar />
+      <TableComponent data={userData} />
     </>
   )
 }

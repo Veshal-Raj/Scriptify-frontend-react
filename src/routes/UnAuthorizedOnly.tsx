@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom"
 import Login from '../pages/Login'
 import Signup from "../pages/signup/Signup";
 import LandingPage from "../pages/LandingPage";
-import NotUserRoutes from "../components/routeComponents/NotUserRoutes";
+import NotUserRoutes from "./routeComponents/NotUserRoutes";
 
 const UnAuthorizedOnly = () => {
   return (

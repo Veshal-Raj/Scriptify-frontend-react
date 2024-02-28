@@ -3,7 +3,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
 interface BackdropLoadingProps {
-  isSubmitting: boolean; 
+  isSubmitting: boolean;
 }
 
 export default function BackdropLoading({ isSubmitting }: BackdropLoadingProps) {
