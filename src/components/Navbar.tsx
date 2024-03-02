@@ -1,4 +1,4 @@
-import { Box, AppBar, Toolbar, Typography, Button, IconButton } from "@mui/material";
+import { Box, AppBar, Toolbar, Typography, IconButton } from "@mui/material";
 import { Link, useLocation } from "react-router-dom";
 import SideBar from "./UI/SideBar";
 import { useSelector } from "react-redux";
