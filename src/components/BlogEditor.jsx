@@ -1,6 +1,12 @@
+import EditorNavBar from "./EditorNavBar"
+import Navbar from "./Navbar"
 
 export const BlogEditor = () => {
   return (
-    <div>BlogEditor</div>
+    <>
+    {/* <EditorNavBar /> */}
+    <Navbar />
+    BlogEditor
+    </>
   )
 }
