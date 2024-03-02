@@ -17,7 +17,6 @@ export default function Navbar() {
     <>
       <Box sx={{ flexGrow: 1 }}>
         <AppBar position="static" sx={{
-          // backgroundImage: "-webkit-linear-gradient(85deg, #FDFDFE, #D6E4FB)",
           backgroundColor: "white",
           backgroundSize: "100% 100%",
           borderBottom: "0.1px  #000",
@@ -32,11 +31,6 @@ export default function Navbar() {
                 paddingX: '20px',
                 paddingY: '10px',
                 borderRadius: '45px',
-                color: 'black',
-                '&:hover': {
-                  background: "-webkit-linear-gradient(45deg, #C99DE9, #a06bd1)",
-                  color: 'black',
-                }
               }}>Sign Up</Button>
             </Link>}
             {!userData && <Link to='/sign-in' style={{ textDecoration: 'none' }}>
@@ -45,8 +39,12 @@ export default function Navbar() {
                 paddingY: '10px',
                 borderRadius: '45px',
                 marginX: '5px',
-                color: 'black',
-                background: "-webkit-linear-gradient(45deg, #C99DE9, #a06bd1)",
+                color: 'white', // White text color
+                backgroundColor: '#007bff', // Black background color
+                '&:hover': {
+                  backgroundColor: 'white', // White background color on hover
+                  color: 'black', // Black text color on hover
+                },
                 transition: 'background-color 0.3s, color 0.3s',
               }}>Login</Button>
             </Link>}
@@ -54,9 +52,12 @@ export default function Navbar() {
            <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5">
               <SearchSharpIcon />
             </IconButton>
+            <Link to='/user/write'>
+
             <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5">
               <EditNoteSharpIcon /> <span className="text-xl">Write</span>
             </IconButton>
+            </Link>
             <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5">
               <NotificationsNoneSharpIcon />
             </IconButton>
