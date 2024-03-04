@@ -3,7 +3,7 @@ import axios from "axios";
 export const uploadImage = async (img: string) => {
     let imageUrl = null;
 
-    await axios.get(import.meta.env.BASE_URL + '/get-upload-url')
+    await axios.get(import.meta.env.VITE_BASE_URL + 'user/get-upload-url')
     .then( async ({ data: {uploadURL}}) => {
 
         await axios({

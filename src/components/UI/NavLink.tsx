@@ -1,8 +1,9 @@
 import { Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 
-const NavButton = ({  text, variant = 'outlined', backgroundColor = '#007bff', color = 'white', hoverBackgroundColor = 'white', hoverColor = '#007bff' , onClick}) => {
+const NavLink = ({ to, text, variant = 'outlined', backgroundColor = '#007bff', color = 'white', hoverBackgroundColor = 'white', hoverColor = '#007bff' }) => {
     return (
+            <Link to={to} style={{ textDecoration: 'none' }}>
       <Button
           variant={variant}
           sx={{
@@ -19,13 +20,12 @@ const NavButton = ({  text, variant = 'outlined', backgroundColor = '#007bff', c
             },
             transition: 'background-color 0.3s, color 0.3s',
           }}
-          onClick={onClick}
+          
         >
           {text}
         </Button>
-      //     <Link to={to} style={{ textDecoration: 'none' }}>
-      // </Link>
+      </Link>
     );
   };
 
-export default NavButton;
+export default NavLink;

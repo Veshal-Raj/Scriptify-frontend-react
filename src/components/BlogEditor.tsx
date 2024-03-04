@@ -6,20 +6,25 @@ import toast, { Toaster } from 'react-hot-toast';
 import { EditorContext } from "../pages/Write";
 import EditorJS from '@editorjs/editorjs'
 import { tools } from "./ToolsComponent";
+import { useDispatch, useSelector } from "react-redux";
+import { setBlog, setTextEditor } from "../redux/slice/editorSlice";
 
 export const BlogEditor = () => {
   // let blogBannerRef = useRef()
+  const dispatch = useDispatch()
+  const blog = useSelector((state) => state.editor.blog);
+  const editorState = useSelector((state) => state.editor.editorState);
+  const textEditor = useSelector((state) => state.editor.textEditor);
 
-  const {blog, blog: { title, banner, content, tags, des}, setBlog } = useContext(EditorContext)
 
   // useEffect
   useEffect(() => {
-    const editor = new EditorJS({
+    setTextEditor( new EditorJS({
       holder: 'textEditor',
       data: '',
       tools: tools,
       placeholder: "Let's write an awesome story..."
-    })
+    }))
 
   }, [])
 
@@ -33,7 +38,8 @@ export const BlogEditor = () => {
               toast.dismiss(LoadingToast)
               toast.success('Uploaded 👍')
               // blogBannerRef.current.src = url
-              setBlog({...blog, banner: url})
+              // setBlog({...blog, banner: url})
+              dispatch(setBlog({ ...blog, banner: url }));
             }
           }).catch( err => {
             toast.dismiss(LoadingToast)
@@ -51,7 +57,8 @@ export const BlogEditor = () => {
 
       input.style.height = 'auto';
       input.style.height = input.scrollHeight + 'px'
-      setBlog({ ...blog, title: input.value })
+      // setBlog({ ...blog, title: input.value })
+      dispatch(setBlog({ ...blog, title: input.value }));
     }
 
     const handleError = (e: { target: any; }) => {
@@ -70,7 +77,7 @@ export const BlogEditor = () => {
                 <label htmlFor="uploadBanner">
                     <img 
                     // ref={blogBannerRef}
-                     src={banner} className="z-20" onError={handleError} />
+                     src={blog.banner} className="z-20" onError={handleError} />
                     <input type="text" id="uploadBanner"  type="file" accept=".png, .jpg, .jpeg ,.webp" hidden
                         onChange={handleBannerUpload}
                     />
@@ -82,6 +89,7 @@ export const BlogEditor = () => {
               className="text-4xl font-medium w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
               onKeyDown={handleTitleKeyDown}
               onChange={handleTitleChange}
+              value={blog.title}
             >
             </textarea>
             <hr className="w-full my-5" />
