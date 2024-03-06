@@ -16,7 +16,7 @@ export const EditorContext = createContext({})
 const Write = () => {
     const [blog, setBlog ] = useState(blogStructure)
     const [editorState, setEditorState] = useState('editor')
-    const [textEditor, setTextEditor] = useState({ isReady: false })
+  const [textEditor, setTextEditor] = useState({ isReady: false })
 
 
   return (

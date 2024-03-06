@@ -1,7 +1,7 @@
 import { Box, AppBar, Toolbar, Typography, IconButton } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SideBar from "./UI/SideBar";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import EditNoteSharpIcon from '@mui/icons-material/EditNoteSharp';
 import NotificationsNoneSharpIcon from '@mui/icons-material/NotificationsNoneSharp';
 import SearchSharpIcon from '@mui/icons-material/SearchSharp';
@@ -9,11 +9,17 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import NavButton from "./UI/NavButton";
 import toast, { Toaster } from "react-hot-toast";
 import NavLink from "./UI/NavLink";
+import { setBlog, setEditorState } from "../redux/slice/editorSlice";
+import { useContext } from "react";
+import { EditorContext } from "../pages/Write";
 
 
 export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate()
+  const dispatch = useDispatch()
+
+  const {textEditor, setTextEditor, setEditorState} = useContext(EditorContext)
 
   const isWriteRoute = location.pathname === '/user/write'
 
@@ -21,9 +27,9 @@ export default function Navbar() {
   const { blog } = useSelector(state => state.editor);
   const { userData } = useSelector(state => state.user)
 
+
   console.log(userData?.role)
   const userRole = userData?.role || 'guest'; // default value 'guest' if userData is null
-
 
   const handlePublish = () => {
 
@@ -34,9 +40,31 @@ export default function Navbar() {
       });
       return;
     }
+    console.log(textEditor)
+
+    if (textEditor.isReady) {
+    // console.log(textEditor)
+
+      textEditor.save().then((data: { blocks: string | unknown[]; }) => {
+        if (data.blocks.length) {
+          console.log('inside the if block of the textEditor')
+          console.log('data --->>> ',data)
+          // Dispatch action to update blog content in Redux state
+          dispatch(setBlog({ ...blog, content: data }));
+          // Change editor state to 'publish'
+          dispatch(setEditorState('publish'));
+          setEditorState('publish')
+          
+        } else {
+          toast.error('write something before publish.')
+        }
+      }).catch((error: unknown) => {
+        console.error('Error saving text editor content:', error);
+      });
+    }
 
     console.log('Publishing...');
-    navigate('/user/publish');
+    // navigate('/user/publish');
     console.log('--------------------------------')
 
   }
@@ -66,7 +94,7 @@ export default function Navbar() {
                 <NavButton  text="Publish" backgroundColor="#007bff" hoverBackgroundColor="white" color="white" hoverColor="#007bff" onClick={handlePublish} />
                 <NavButton  text="Save Draft" variant="contained" backgroundColor="white" hoverBackgroundColor="#007bff" color="#007bff" hoverColor="white" onClick={handleSaveDraft} />
               </div>) : (<></>)
-            }
+            }                                     
             {!isWriteRoute && userRole === 'user' && <>
               <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5">
                 <SearchSharpIcon />

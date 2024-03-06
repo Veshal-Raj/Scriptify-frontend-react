@@ -3,30 +3,32 @@ import blogBanner from '../assests/imgs/blog banner.png'
 import { uploadImage } from "../hooks/aws";
 import { useContext, useEffect, useRef } from "react";
 import toast, { Toaster } from 'react-hot-toast';
-import { EditorContext } from "../pages/Write";
 import EditorJS from '@editorjs/editorjs'
 import { tools } from "./ToolsComponent";
 import { useDispatch, useSelector } from "react-redux";
-import { setBlog, setTextEditor } from "../redux/slice/editorSlice";
+import { setBlog } from "../redux/slice/editorSlice";
+import { EditorContext } from "../pages/Write";
 
 export const BlogEditor = () => {
   // let blogBannerRef = useRef()
   const dispatch = useDispatch()
   const blog = useSelector((state) => state.editor.blog);
   const editorState = useSelector((state) => state.editor.editorState);
-  const textEditor = useSelector((state) => state.editor.textEditor);
 
+  const {textEditor, setTextEditor} = useContext(EditorContext)
 
   // useEffect
   useEffect(() => {
     setTextEditor( new EditorJS({
       holder: 'textEditor',
-      data: '',
+      data: blog.content,
       tools: tools,
-      placeholder: "Let's write an awesome story..."
-    }))
+      placeholder: "Let's write an awesome story...",
+     
+    }));
 
-  }, [])
+    
+  }, []);
 
     const handleBannerUpload = (e) => {
         const img = e.target.files[0]
