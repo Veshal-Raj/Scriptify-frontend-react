@@ -3,10 +3,11 @@ import CloseIcon from '@mui/icons-material/Close';
 import { Key, useContext } from "react";
 import { EditorContext } from "../pages/Write";
 import { useDispatch, useSelector } from "react-redux";
-import { setBlog } from "../redux/slice/editorSlice";
+import { setBlog, setTextEditor } from "../redux/slice/editorSlice";
 import { Tags } from "./Tags";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { initialState } from "../redux/slice/editorSlice";
 
 export const PublishForm = () => {
   const characterLimit = 200;
@@ -14,6 +15,8 @@ export const PublishForm = () => {
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const {setEditorState} = useContext(EditorContext)
+  const { userData } = useSelector(state => state.user)
+  const authorId = userData._id
   const blog = useSelector((state) => state.editor.blog);
   const tags = blog.tags
 
@@ -71,10 +74,10 @@ export const PublishForm = () => {
       e.target.classList.add('disable')
 
       const blogObj = {
-        title: blog.title, banner: blog.banner, des: blog.des, content: blog.content, tags: blog.tags, draft: false
+        title: blog.title, banner: blog.banner, des: blog.des, content: blog.content, tags: blog.tags, author: authorId, draft: false
       }
 
-      axios.post(import.meta.env.VITE_BASE_URL + '/create-blog', blogObj )
+      axios.post(import.meta.env.VITE_BASE_URL + 'user/create-blog', blogObj )
       .then(() => { 
         e.target.classList.remove('disable')
         toast.dismiss(loadingToast);
@@ -83,10 +86,15 @@ export const PublishForm = () => {
         setTimeout(() => {
           navigate('/user/feed')
         }, 500)
-      }).catch(( { response }) => {
+        dispatch(setBlog(initialState.blog));
+        dispatch(setEditorState(initialState.editorState));
+        dispatch(setTextEditor(initialState.textEditor));
+
+      }).catch(( error) => {
         e.target.classList.remove('disable')
         toast.dismiss(loadingToast)
-        return toast.error(response.data.error)
+        console.log(error.response.data.message)
+        return toast.error(error.message)
       })
   }
 
