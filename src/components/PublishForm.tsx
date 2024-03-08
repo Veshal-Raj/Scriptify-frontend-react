@@ -10,9 +10,10 @@ import { useNavigate } from "react-router-dom";
 import { initialState } from "../redux/slice/editorSlice";
 import { Button, TextField, Typography } from "@mui/material";
 import { motion } from 'framer-motion'
+import { characterLimit, tagLimit } from "../utils/constants/constants";
+
+
 export const PublishForm = () => {
-  const characterLimit = 200;
-  const tagLimit = 10;
   const dispatch = useDispatch()
   const navigate = useNavigate()
   const { setEditorState } = useContext(EditorContext)
@@ -27,7 +28,6 @@ export const PublishForm = () => {
 
   const handleBlogTitleChange = (e) => {
     const input = e.target
-    console.log(input.value)
     dispatch(setBlog({ ...blog, title: input.value }))
   }
 
@@ -45,7 +45,6 @@ export const PublishForm = () => {
       e.preventDefault()
       const tagfromInput = e.target.value;
       if (!tagfromInput.length) return toast.error('type something for the tag')
-      console.log(tagfromInput)
       if (tags.length <= tagLimit) {
         if (!tags.includes(tagfromInput) && tagfromInput.length) {
           dispatch(setBlog({ ...blog, tags: [...tags, tagfromInput] }))
@@ -94,7 +93,6 @@ export const PublishForm = () => {
       }).catch((error) => {
         e.target.classList.remove('disable')
         toast.dismiss(loadingToast)
-        console.log(error.response.data.message)
         return toast.error(error.message)
       })
   }
