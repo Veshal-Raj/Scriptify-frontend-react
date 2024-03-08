@@ -8,27 +8,22 @@ import { tools } from "./ToolsComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { setBlog } from "../redux/slice/editorSlice";
 import { EditorContext } from "../pages/Write";
-import { EnhanceAI } from 'enhanceai';
 
 export const BlogEditor = () => {
-  // let blogBannerRef = useRef()
   const dispatch = useDispatch()
   const blog = useSelector((state) => state.editor.blog);
   const editorState = useSelector((state) => state.editor.editorState);
 
   const { textEditor, setTextEditor } = useContext(EditorContext)
 
-  // useEffect
+
   useEffect(() => {
     setTextEditor(new EditorJS({
       holder: 'textEditor',
       data: blog.content,
       tools: tools,
       placeholder: "Let's write an awesome story...",
-
     }));
-
-
   }, []);
 
   const handleBannerUpload = (e) => {
@@ -40,8 +35,6 @@ export const BlogEditor = () => {
         if (url) {
           toast.dismiss(LoadingToast)
           toast.success('Uploaded 👍')
-          // blogBannerRef.current.src = url
-          // setBlog({...blog, banner: url})
           dispatch(setBlog({ ...blog, banner: url }));
         }
       }).catch(err => {
@@ -57,12 +50,8 @@ export const BlogEditor = () => {
 
   const handleTitleChange = (e: { target: any; }) => {
     const input = e.target;
-
     input.style.height = 'auto';
-    // input.style.height = input.scrollHeight
-    console.log(input.style.height)
     input.style.height = input.scrollHeight + 'px'
-    // setBlog({ ...blog, title: input.value })
     dispatch(setBlog({ ...blog, title: input.value }));
   }
 
@@ -78,11 +67,9 @@ export const BlogEditor = () => {
       <Toaster />
       <section>
         <div className="mx-auto my-5 max-w-[900px] w-full">
-
           <div className="relative mx-5 aspect-video hover:opacity-80 bg-white border-4 border-gray">
             <label htmlFor="uploadBanner">
               <img
-                // ref={blogBannerRef}
                 src={blog.banner} className="z-20" onError={handleError} />
               <input type="text" id="uploadBanner" type="file" accept=".png, .jpg, .jpeg ,.webp" hidden
                 onChange={handleBannerUpload}
@@ -99,13 +86,7 @@ export const BlogEditor = () => {
           >
           </textarea>
           <hr className="w-full my-5" />
-          {/* <EnhanceAI context={
-	"BuySomeCakes is a business dedicated to selling cakes. " + 
-	"Please describe what you are reaching out to us for."
-}>
-
-          </EnhanceAI> */}
-            <div id="textEditor" className="font-serif"></div>
+          <div id="textEditor" className="font-serif"></div>
 
         </div>
       </section>

@@ -1,4 +1,6 @@
 import { useRef, useState } from "react";
+import { motion } from "framer-motion"; // Import Framer Motion
+import { Button, Divider, Typography } from "@mui/material"; // Import MUI components
 
 const InPageNavigation = ({ routes, defaultHidden = [], children }) => {
     const activateTablineRef = useRef();
@@ -19,25 +21,27 @@ const InPageNavigation = ({ routes, defaultHidden = [], children }) => {
     };
 
     return (
-        <><section className="mx-10 my-5">
-
-            <div className="relative mb-8 text-lg border-b border-gray-200 flex flex-nowrap overflow-x-auto">
-                {
-                    routes.map((route, i) => {
-                        return (
-                            <button key={i} className={"p-4 px-5 capitalize " + (inPageNavIndex === i ? "text-black border-b-2 border-black " : "text-gray-500 ") + ( defaultHidden.includes(route) ? " md:hidden ": ' ' )}
-
+        <>
+            <section className="mx-10 my-5">
+                <div className="relative mb-8 text-lg  flex flex-nowrap overflow-x-auto">
+                    {routes.map((route, i) => (
+                        <Button
+                            key={i}
+                            className={"p-4 px-5 capitalize " + (inPageNavIndex === i ? "text-black border-b-3 border-black " : " text-gray-500 ") + (defaultHidden.includes(route) ? " md:hidden " : " ")}
                             onClick={(e) => { changePageState(e.target, i) }}
-                            >
-                                {route}
-                            </button>
-                        );
-                    })
-                }
-                <hr ref={activateTablineRef} className="absolute bottom-0 duration-300" />
-            </div>
-            {Array.isArray(children)?children[inPageNavIndex] : children}
-                </section>
+                        >
+                            {route}
+                        </Button>
+                    ))}
+                    <motion.hr
+                        ref={activateTablineRef}
+                        className="absolute bottom-0 duration-300"
+                        initial={false}
+                        animate={{ width: activateTablineRef.current?.offsetWidth, left: activateTablineRef.current?.offsetLeft }}
+                    />
+                </div>
+                <Typography variant="body1">{Array.isArray(children) ? children[inPageNavIndex] : children}</Typography>
+            </section>
         </>
     );
 };
