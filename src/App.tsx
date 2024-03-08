@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import AuthorizedOnly from "./routes/AuthorizedOnly";
 import AdminOnly from "./routes/AdminOnly";
 import UnAuthorizedOnly from "./routes/UnAuthorizedOnly";
+import { EnhanceAIProvider } from "enhanceai";
 
 const queryClient = new QueryClient()
 
@@ -10,6 +11,7 @@ function App() {
 
   return (
     <>
+
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Routes>
@@ -19,6 +21,7 @@ function App() {
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>
+     {/* </EnhanceAIProvider> */}
     </>
   )
 }
