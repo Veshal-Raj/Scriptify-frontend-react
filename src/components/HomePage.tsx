@@ -1,29 +1,25 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
 import InPageNavigation from "./InPageNavigation";
 import { motion, AnimatePresence } from "framer-motion";
 import BlogPostCard from "./BlogPostCard";
 import { CircularProgress } from "@mui/material";
 import Typography from "@mui/material/Typography";
+import { useQuery } from "@tanstack/react-query";
+import { getLatestBlog } from "../api/user";
 
 const HomePage = () => {
-    const [blogs, setBlogs] = useState(null);
+    const { data: latestBlog, isLoading } = useQuery({
+        queryKey: ["latestBlogs"],
+        queryFn: getLatestBlog
+    });
+
+    const [blogs, setBlogs] = useState([]);
 
     useEffect(() => {
-        fetchLatestBlogs();
-    }, []);
-
-    const fetchLatestBlogs = () => {
-        axios
-            .get(import.meta.env.VITE_BASE_URL + "user/latest-blog")
-            .then(({ data }) => {
-                console.log("blogs -->> ", data.response);
-                setBlogs(data.response);
-            })
-            .catch((error) => {
-                console.log(error);
-            });
-    };
+        if (latestBlog) {
+            setBlogs(latestBlog.response || []); 
+        }
+    }, [latestBlog]);
 
     return (
         <>
@@ -31,7 +27,7 @@ const HomePage = () => {
                 <motion.div className="w-full">
                     <InPageNavigation routes={["home", "trending blogs"]} defaultHidden={["trending blogs"]}>
                         <>
-                            {blogs === null ? (
+                            {isLoading ? (
                                 <div style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "200px" }}>
                                     <CircularProgress />
                                 </div>
@@ -45,7 +41,7 @@ const HomePage = () => {
                                             exit={{ opacity: 0, y: -20 }}
                                             transition={{ duration: 0.5, delay: i * 0.2 }}
                                         >
-                                            <BlogPostCard content={blog} author={blog.author.personal_info} />
+                                            <BlogPostCard content={blog} author={blog?.author?.personal_info} />
                                         </motion.div>
                                     ))}
                                 </AnimatePresence>

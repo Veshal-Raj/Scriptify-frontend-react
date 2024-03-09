@@ -38,3 +38,22 @@ export const login = async (userData: userFormData) => {
     }
 }
 
+export const getLatestBlog = async () => {
+    try {
+        const response = await Api.get(userRoutes.latestBlog)
+        return response?.data
+    } catch (error) {
+        console.error(error);
+        throw error    
+    }
+}
+
+export const createBlog = async () => {
+    try {
+        const response = await Api.post(userRoutes.createBlog)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
