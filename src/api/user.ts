@@ -67,3 +67,25 @@ export const createBlog = async () => {
         throw error
     }
 }
+
+export const fetchTags = async () => {
+    try {
+        const response = await Api.get(userRoutes.exploreTags)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error        
+    }
+}
+
+export const filterbyTags = async (tag: string) => {
+    try {
+        console.log(tag)
+        // return
+        const response = await Api.post(userRoutes.filterbyTags, tag)
+        return response
+    } catch (error) {
+        console.error(error)
+        throw error
+    }
+}

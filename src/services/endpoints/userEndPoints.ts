@@ -4,7 +4,9 @@ const userRoutes = {
     login: '/user/login',
     latestBlog: '/user/latest-blog',
     trendingBlog: '/user/trending-blog',
-    createBlog: '/user/create-blog'
+    createBlog: '/user/create-blog',
+    exploreTags:'/user/explore-tags',
+    filterbyTags:'/user/filterbyTags'
 }   
 
 export default userRoutes;

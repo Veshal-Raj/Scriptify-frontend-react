@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 const BlogPostCard = ({ content, author, index }) => {
     const { publishedAt, title, banner, des, tags, activity: { total_likes }, blog_id } = content;
     const { username } = author;
-    const truncateString = (str, num) => {
+    const truncateString = (str: string, num: number) => {
         if (str?.length > num) {
             return str.slice(0, num) + ' ... Read more';
         } else {
@@ -40,7 +40,7 @@ const BlogPostCard = ({ content, author, index }) => {
                                 <Typography variant="h5" className="text-2xl font-medium leading-7 line-clamp-3 sm:line-clamp-2 font-serif">{title}</Typography>
                                 <Typography variant="body1" className="my-3 text-xl font-sans leading-7 max-sm:hidden md:max-[1100px]:hidden line-clamp-2"
                                 >
-                                    {truncateString(des, 80)}</Typography>
+                                    {truncateString(des, 80)} </Typography>
                             </motion.div>
                             <motion.div className="flex   mt-7">
 
@@ -50,7 +50,7 @@ const BlogPostCard = ({ content, author, index }) => {
                             </motion.div>
                         </Link>
                     </CardContent>
-                    <Box className="h-28 aspect-square bg-gray-50 mx-auto my-auto"  sx={{ maxWidth: 1000 }}>
+                    <Box className="h-28 aspect-square bg-gray-50  my-auto mx-2"  sx={{ maxWidth: 1000 }}>
                         <img src={banner} alt={blog_id} className="w-full h-full aspect-square object-cover" />
                     </Box>
                 </Card>
