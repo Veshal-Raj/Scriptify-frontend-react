@@ -10,14 +10,16 @@ import NavButton from "./UI/NavButton";
 import toast, { Toaster } from "react-hot-toast";
 import NavLink from "./UI/NavLink";
 import { setBlog, setEditorState } from "../redux/slice/editorSlice";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { EditorContext } from "../pages/Write";
+import SearchBoxDiv from "./SearchBoxDiv";
 
 
 export default function Navbar() {
   const location = useLocation();
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const [searchDiv, setSearchDiv] = useState(false)
 
   const {textEditor, setTextEditor, setEditorState} = useContext(EditorContext)
 
@@ -74,13 +76,24 @@ export default function Navbar() {
     navigate('/user/save-draft')
   }
 
+  const handleSearchDiv = () => {
+    console.log('clicked')
+    setSearchDiv(!searchDiv)
+  
+  }
+
+
+
   return (
     <>
       <Box sx={{ flexGrow: 1 }}>
+      {searchDiv && <div className="backdrop" onClick={handleSearchDiv} />}
+
         <AppBar position="static" sx={{
           backgroundColor: "white",
           backgroundSize: "100% 100%",
           borderBottom: "0.1px #000",
+         
         }}>
           <Toolbar>
             {userRole === 'admin' && <SideBar isOpen={true} onClose={false} />}
@@ -96,7 +109,7 @@ export default function Navbar() {
               </div>) : (<></>)
             }                                     
             {!isWriteRoute && userRole === 'user' && <>
-              <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5">
+              <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5" onClick={handleSearchDiv}>
                 <SearchSharpIcon />
               </IconButton>
               <Link to='/user/write'>
@@ -114,8 +127,16 @@ export default function Navbar() {
             </IconButton>}
           </Toolbar>
         </AppBar>
+       
+        {searchDiv && (
+        
+          <SearchBoxDiv setSearchDiv={setSearchDiv}/>
+          
+        
+      )}
       </Box>
       <Toaster />
+      
     </>
   );
 }
