@@ -28,7 +28,7 @@ const InPageNavigation = ({ routes, defaultHidden = [], children }) => {
                         <Button
                             key={i}
                             className={"p-4 px-5 capitalize " + (inPageNavIndex === i ? "text-black border-b-3 border-black " : " text-gray-500 ") + (defaultHidden.includes(route) ? " md:hidden " : " ")}
-                            onClick={(e) => { changePageState(e.target, i) }}
+                            onClick={(e) => { changePageState(e.target, i) }} style={{ color: 'black' }}
                         >
                             {route}
                         </Button>
