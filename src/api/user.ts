@@ -48,6 +48,16 @@ export const getLatestBlog = async () => {
     }
 }
 
+export const getTrendingBlogs = async () => {
+    try {
+        const response = await Api.get(userRoutes.trendingBlog)
+        return response?.data
+    } catch (error) {
+        console.error(error);
+        throw error  
+    }
+}
+
 export const createBlog = async () => {
     try {
         const response = await Api.post(userRoutes.createBlog)

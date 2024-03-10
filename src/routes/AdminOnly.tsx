@@ -1,9 +1,9 @@
 import { Route, Routes } from "react-router-dom"
-import Dashboard from "../components/admin/Dashboard"
+import Dashboard from "../components/Admin/Dashboard"
 import AdminRoutes from "./routeComponents/AdminRoutes"
-import Users from "../components/admin/Users"
-import Blog from "../components/admin/Blog"
-import Reports from "../components/admin/Reports"
+import Users from "../components/Admin/Users"
+import Blog from "../components/Admin/Blog"
+import Reports from "../components/Admin/Reports"
 
 
 const AdminOnly = () => {
