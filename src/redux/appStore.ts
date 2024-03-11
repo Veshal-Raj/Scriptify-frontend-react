@@ -4,10 +4,12 @@ import editorReducer from "./slice/editorSlice";
 import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { Persistor, persistStore } from "redux-persist";
+import searchSlice from "./slice/searchSlice";
 
 const rootReducer = combineReducers({
   user: userReducer,
-  editor: editorReducer
+  editor: editorReducer,
+  search: searchSlice
 });
 
 const persistConfig = {

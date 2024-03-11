@@ -7,12 +7,15 @@ import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied
 import { searchQuery } from "../api/user";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { cachedResults } from "../redux/slice/searchSlice";
 
 const SearchBoxDiv = ({ setSearchDiv }) => {
     const [isOpen, setIsOpen] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
-    const debouncedSearchTerm = useDebounce(searchTerm, 300);
     const [suggestions, setSuggestions] = useState<{ title: string; blog_id: string }[]>([])
+    const debouncedSearchTerm = useDebounce(searchTerm, 200, searchTerm, setSuggestions);
+    const dispatch = useDispatch()
 
     // Using React Query to fetch data
     const { data: searchResults, isLoading, isError } = useQuery({
@@ -35,6 +38,10 @@ const SearchBoxDiv = ({ setSearchDiv }) => {
     useEffect(() => {
         if (searchResults && searchResults.data && searchResults.data.response) {
             setSuggestions(searchResults.data.response);
+            dispatch(cachedResults({
+                [searchTerm]: searchResults.data.response
+            }))
+
         }
     }, [searchResults]);
 
