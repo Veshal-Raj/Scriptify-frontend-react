@@ -89,3 +89,14 @@ export const filterbyTags = async (tag: string) => {
         throw error
     }
 }
+
+export const searchQuery = async (query: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.search}?query=${query}`)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+        
+    }
+}

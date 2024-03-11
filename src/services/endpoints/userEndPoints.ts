@@ -6,7 +6,8 @@ const userRoutes = {
     trendingBlog: '/user/trending-blog',
     createBlog: '/user/create-blog',
     exploreTags:'/user/explore-tags',
-    filterbyTags:'/user/filterbyTags'
+    filterbyTags:'/user/filterbyTags',
+    search: '/user/search'
 }   
 
 export default userRoutes;
