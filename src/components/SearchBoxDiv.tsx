@@ -1,15 +1,18 @@
 import { motion } from "framer-motion";
 import { Backdrop, Skeleton, TextField } from "@mui/material";
-import { useEffect, useState } from "react";
+import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
 import useDebounce from "../hooks/debounceSearch";
 import SearchIcon from '@mui/icons-material/Search';
+import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import { searchQuery } from "../api/user";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "react-router-dom";
 
 const SearchBoxDiv = ({ setSearchDiv }) => {
     const [isOpen, setIsOpen] = useState(true);
     const [searchTerm, setSearchTerm] = useState('');
     const debouncedSearchTerm = useDebounce(searchTerm, 300);
+    const [suggestions, setSuggestions] = useState<{ title: string; blog_id: string }[]>([])
 
     // Using React Query to fetch data
     const { data: searchResults, isLoading, isError } = useQuery({
@@ -27,6 +30,13 @@ const SearchBoxDiv = ({ setSearchDiv }) => {
         setIsOpen(false);
         setSearchDiv(false);
     }
+    console.log(searchResults?.data.response)
+
+    useEffect(() => {
+        if (searchResults && searchResults.data && searchResults.data.response) {
+            setSuggestions(searchResults.data.response);
+        }
+    }, [searchResults]);
 
     return (
         <>
@@ -50,25 +60,37 @@ const SearchBoxDiv = ({ setSearchDiv }) => {
             >
                 <TextField id="outlined-basic" label="Search" variant="outlined" fullWidth value={searchTerm} onChange={handleSearchChange} autoFocus />
                 {/* Display loading state if data is still loading */}
-                {isLoading &&<>
+                {isLoading && <>
                     <Skeleton variant="text" width={'auto'} />
                     <Skeleton variant="text" width={'auto'} />
                     <Skeleton variant="text" width={'auto'} />
                     <Skeleton variant="text" width={'auto'} />
-                </> }
+                </>}
                 {/* Display error message if there's an error */}
                 {isError && <p>Error fetching data</p>}
+                {/* Display if there is no search results */}
+                {searchResults && suggestions?.length === 0 ? (
+                    <div className="flex items-center justify-center h-full p-5">
+                        <div className="flex items-center">
+                            <span className="ml-2">No result found </span>
+                            <SentimentDissatisfiedIcon />
+                        </div>
+                    </div>
+                ) : (
+                    <></>
+                )}
                 {/* Display search results */}
-                {searchResults && searchResults?.length === 0 ? <p> No results</p>:<></>}
                 {searchResults && (
                     <div className="rounded-lg">
                         <ul className="hover:cursor-pointer">
-                            {searchResults.map((result, index) => (
+                            {suggestions.map((result, index) => (
                                 <li key={index} className="py-2 px-5 hover:bg-slate-100 shadow-sm">
-                                    <div className="flex items-center">
-                                        <SearchIcon />
-                                        <span className="ml-2">{result}</span>
-                                    </div>
+                                    <Link to={`/user/blog/${result?.blog_id}`}>
+                                        <div className="flex items-center">
+                                            <SearchIcon />
+                                            <span className="ml-2">{result?.title}</span>
+                                        </div>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
