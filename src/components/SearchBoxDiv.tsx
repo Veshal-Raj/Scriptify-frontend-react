@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Backdrop, Skeleton, TextField } from "@mui/material";
-import { JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useEffect, useState } from "react";
+import {   useEffect, useState } from "react";
 import useDebounce from "../hooks/debounceSearch";
 import SearchIcon from '@mui/icons-material/Search';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
@@ -16,6 +16,7 @@ const SearchBoxDiv = ({ setSearchDiv }) => {
     const [suggestions, setSuggestions] = useState<{ title: string; blog_id: string }[]>([])
     const debouncedSearchTerm = useDebounce(searchTerm, 200, searchTerm, setSuggestions);
     const dispatch = useDispatch()
+
 
     // Using React Query to fetch data
     const { data: searchResults, isLoading, isError } = useQuery({
@@ -87,7 +88,7 @@ const SearchBoxDiv = ({ setSearchDiv }) => {
                     <></>
                 )}
                 {/* Display search results */}
-                {searchResults && (
+                {suggestions && (
                     <div className="rounded-lg">
                         <ul className="hover:cursor-pointer">
                             {suggestions.map((result, index) => (

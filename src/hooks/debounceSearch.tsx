@@ -10,6 +10,7 @@ const useDebounce = (value: string, delay: number, searchTerm, setSuggestions) =
     useEffect(() => {
         const handler = setTimeout(() => {
             if (searchCache[searchTerm]) {
+                console.log(searchCache[searchTerm])
                 setSuggestions(searchCache[searchTerm])
             } else {
 
