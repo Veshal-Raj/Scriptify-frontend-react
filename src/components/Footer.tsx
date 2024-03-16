@@ -3,28 +3,28 @@ import { Facebook, Instagram, Twitter, GitHub } from '@mui/icons-material';
 
 const Footer = () => {
   return (
-    <footer style={{ backgroundColor: '#fff', padding: '4rem 1rem' }}>
+    <footer style={{ backgroundColor: '#fff', padding: '2rem 1rem' }}>
       <div style={{ margin: 'auto', maxWidth: 'screen-xl', textAlign: 'center' }}>
         <Typography variant="h4" component="strong" gutterBottom>
           Want us to email you with the latest blockbuster blogs?
         </Typography>
 
         <form style={{ marginTop: '1.5rem', display: 'flex', justifyContent: 'center' }}>
-          <div style={{ position: 'relative', maxWidth: '400px', width: '100%' }}>
+          <div style={{ maxWidth: '300px', width: '100%', display: 'flex', alignItems: 'center' }}>
             <label htmlFor="email" style={{ display: 'none' }}>Email</label>
             <input
-              style={{ width: '100%', maxWidth: '300px', borderRadius: '9999px', border: '1px solid #e5e7eb', backgroundColor: '#f3f4f6', padding: '0.75rem 1rem', fontSize: '0.875rem', fontWeight: '500', boxSizing: 'border-box' }}
+              style={{ flex: 1, borderRadius: '9999px', border: '1px solid #e5e7eb', backgroundColor: '#f3f4f6', padding: '0.75rem 1rem', fontSize: '0.875rem', fontWeight: '500', boxSizing: 'border-box' }}
               id="email"
               type="email"
               placeholder="john@doe.com"
             />
-            <button style={{ position: 'absolute', right: '1rem', top: '50%', transform: 'translateY(-50%)', borderRadius: '9999px', backgroundColor: '#2563EB', color: '#fff', padding: '0.75rem 1.25rem', fontSize: '0.875rem', fontWeight: '500', transition: 'background-color 0.3s', cursor: 'pointer' }}>
+            <button style={{ borderRadius: '9999px', backgroundColor: '#2563EB', color: '#fff', padding: '0.75rem 1.25rem', fontSize: '0.875rem', fontWeight: '500', transition: 'background-color 0.3s', cursor: 'pointer' }}>
               Subscribe
             </button>
           </div>
         </form>
 
-        <Grid container spacing={2} justifyContent="center" style={{ marginTop: '2.5rem' }}>
+        <Grid container spacing={2} justifyContent="center" style={{ marginTop: '2rem' }}>
           <Grid item xs={12} md={6}>
             <Typography variant="body1" style={{ color: '#6b7280' }}>
               Stay ahead of the curve with the latest in tech trends and coding insights. <br />
@@ -58,7 +58,7 @@ const Footer = () => {
           </Grid>
         </Grid>
 
-        <div style={{ marginTop: '2.5rem', borderTop: '1px solid #e5e7eb', paddingTop: '2rem' }}>
+        <div style={{ marginTop: '2rem', borderTop: '1px solid #e5e7eb', paddingTop: '2rem' }}>
           <Typography variant="body2" style={{ color: '#6b7280' }}>
             © Scriptify 2024. All rights reserved.
             <br />
