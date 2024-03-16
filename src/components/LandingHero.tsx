@@ -26,10 +26,10 @@ const LandingHero = () => {
         } else {
           currentWordIndex = (currentWordIndex + 1) % words.length;
           currentCharacterIndex = 0;
-          clearInterval(interval); // Stop the interval after one iteration
-          setAnimationShown(true); // Set animationShown to true
+          clearInterval(interval); 
+          setAnimationShown(true);
         }
-      }, 300); // Adjust the interval as needed
+      }, 300); 
 
       return () => clearInterval(interval);
     }
@@ -42,23 +42,40 @@ const LandingHero = () => {
         }}
       > 
         <AnimatePresence>
-          <Typography variant="h2" component="h2">
+          <Typography variant="h2" component="h2"
+            sx={{
+              padding: '10px',
+              '@media (max-width: 600px)': {
+                fontSize: '2.5rem', // Adjust the font size for small screens
+              },
+            }}
+          >
             {text}
           </Typography>
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 1 }}
+            
           >
-            <Typography variant="h4" component="h2" sx={{ padding: '10px' }}>
-              Bringing Together Developers and Community: Where Ideas Flourish and Innovation Thrives!
-            </Typography>
+            <Typography
+  variant="h4"
+  component="h2"
+  sx={{
+    padding: '10px',
+    '@media (max-width: 600px)': {
+      fontSize: '1.5rem', // Adjust the font size for small screens
+    },
+  }}
+>
+  Bringing Together Developers and Community: Where Ideas Flourish and Innovation Thrives!
+</Typography>
           </motion.div>
         </AnimatePresence>
           <CustomButton to="/sign-in">Join the Community</CustomButton>
       </Box>
-      <div className="flex relative overflow-hidden  bg-gradient-to-t from-white py-10 bg-opacity-5">
-        <motion.div className="absolute top-24 -left-20 right-0 bottom-0 w-1/2 z-10  overflow-hidden "
+      <div className="flex relative  overflow-hidden  bg-gradient-to-t from-white bg-opacity-5 ">
+        <motion.div className="absolute top-24 -left-20 right-0 bottom-0 w-1/2 z-10  overflow-hidden hidden md:block lg:block "
           variants={imageVariants} initial="initial" animate="animate"
           whileHover={{ scale: 0.9 }}
           onHoverStart={() => { }}
@@ -71,7 +88,7 @@ const LandingHero = () => {
           />
         </motion.div>
         <motion.div
-          className="abosulte z-1 left-10 right-0 top-0 bottom-0 mx-auto"
+          className="abosulte z-1 left-10 right-0 top-0 bottom-0 mx-auto hidden md:block lg:block"
           variants={imageVariants}
           initial="initial"
           animate="animate"
@@ -83,7 +100,7 @@ const LandingHero = () => {
             className='h-[700px] w-full object-cover '
           />
         </motion.div>
-        <motion.div className="absolute top-24 -right-10 z-10 " variants={imageVariants} initial="initial" animate="animate"
+        <motion.div className="absolute top-24 -right-10 z-10 hidden md:block lg:block" variants={imageVariants} initial="initial" animate="animate"
           whileHover={{ scale: 0.9 }}
           onHoverStart={() => { }}
           onHoverEnd={() => { }}
