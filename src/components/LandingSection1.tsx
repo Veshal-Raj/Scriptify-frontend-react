@@ -32,7 +32,17 @@ const LandingSection1 = () => {
     return (
         <div className="bg-white py-10">
             <div className="py-20 mx-10 flex" >
-                <Typography variant="h2" component="h3" className="text-center">
+                <Typography variant="h2" component="h3" className="text-center"
+                    sx={{
+                        padding: '0px',
+                        '@media (max-width: 600px)': {
+                            fontSize: '1.5rem', // Adjust the font size for small screens
+                            textAlign: 'initial',
+                            mx: '5px', // Reduce horizontal margin for small screens
+                            py: '10px', // Reduce vertical padding for small screens
+                        },
+                    }}
+                >
                     Crafted for<span className="text-blue-700"> developers and technical </span>minds to shine through their writing.
                 </Typography>
             </div>
