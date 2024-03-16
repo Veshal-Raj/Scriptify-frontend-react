@@ -38,9 +38,9 @@ export const login = async (userData: userFormData) => {
     }
 }
 
-export const getLatestBlog = async () => {
+export const getLatestBlog = async (page = 1) => {
     try {
-        const response = await Api.get(userRoutes.latestBlog)
+        const response = await Api.get(userRoutes.latestBlog, { params: { page } })
         return response?.data
     } catch (error) {
         console.error(error);
