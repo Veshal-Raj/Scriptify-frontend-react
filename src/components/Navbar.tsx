@@ -103,18 +103,17 @@ export default function Navbar() {
 
             <div className="lg:hidden">
 
-            <UserSideBar  />
+            {userRole === 'user' && <UserSideBar  />}
             </div>
 
             
-            {/* <Link to="/user/feed" style={{ textDecoration: 'none' }}> */}
-            {/* <div className="pl-5 m-2 cursor-pointer flex gap-2"> */}
+            
 
             <img src={logo} alt="logo" height='30px' width='30' className="gap-2 ml-3" />
               <Typography variant="h4" component="h5" color="black" display={{ xs: 'none', md: 'block', lg: 'block' }} sx={{ flexGrow: 1, paddingLeft: '5px'}} onClick={()=> navigate('/user/feed') }>
                 Scriptify
               </Typography>
-            {/* </div> */}
+            
             
 
             <div className="flex ms-auto">
