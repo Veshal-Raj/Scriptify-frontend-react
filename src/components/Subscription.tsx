@@ -1,8 +1,10 @@
 import React from 'react';
 import { Typography, Button, List, ListItem, ListItemText } from '@mui/material';
 import {motion} from 'framer-motion'
+import { useNavigate } from 'react-router-dom';
 
 function CheckIcon() {
+  
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -11,17 +13,22 @@ function CheckIcon() {
       strokeWidth={2}
       stroke="currentColor"
       className="h-3 w-3"
-    >
+      >
       <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
     </svg>
   );
 }
 
 export function PricingCard() {
+  const handleClick = () => {
+    navigate('/sign-in')
+  }
+
+  const  navigate =  useNavigate()
   return (
-    <motion.div className="w-full max-w-[20rem] p-8 m-8 rounded-xl" style={{ background: 'linear-gradient(to right, #080a52, #0a0d6c)', transition: 'transform 0.3s' }}
+    <motion.div className="w-full max-w-[20rem] p-8 md:m-8 sm:mt-5 rounded-xl" style={{ background: 'linear-gradient(to right, #080a52, #0a0d6c)', transition: 'transform 0.3s' }}
       whileHover={{scale: 1.05 }}
-    >
+      >
       <div className="m-0 mb-8 rounded-none border-b border-white/10 pb-8 text-center">
         <Typography variant="subtitle2" color="white" className="font-normal uppercase">
           Monthly
@@ -72,6 +79,8 @@ export function PricingCard() {
           style={{ backgroundColor: '#080a52', color: 'white' }}
           className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
           fullWidth={true}
+          onClick={handleClick}
+
         >
           Buy Now
         </Button>
@@ -80,9 +89,13 @@ export function PricingCard() {
   );
 }
 export function SecondPricingCard() {
+  const  navigate =  useNavigate()
+  const handleClick = () => {
+    navigate('/sign-in')
+  }
   return (
     <motion.div
-      className="w-full max-w-[20rem] p-8 m-8 rounded-xl"
+      className="w-full max-w-[20rem] p-8 md:m-8 md:mt-[1.5rem] rounded-xl  "
       style={{ background: 'linear-gradient(to right, #080a52, #0a0d6c)' }}
       whileHover={{scale: 1.05 }}
     >
@@ -136,6 +149,7 @@ export function SecondPricingCard() {
           style={{ backgroundColor: '#080a52', color: 'white' }}
           className="hover:scale-[1.02] focus:scale-[1.02] active:scale-100"
           fullWidth={true}
+          onClick={handleClick}
         >
           Buy Now
         </Button>
