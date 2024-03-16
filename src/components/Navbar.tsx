@@ -1,5 +1,5 @@
 import { Box, AppBar, Toolbar, Typography, IconButton } from "@mui/material";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import SideBar from "./UI/SideBar";
 import { useDispatch, useSelector } from "react-redux";
 import EditNoteSharpIcon from '@mui/icons-material/EditNoteSharp';
@@ -13,6 +13,8 @@ import { setBlog, setEditorState } from "../redux/slice/editorSlice";
 import { useContext, useState } from "react";
 import { EditorContext } from "../pages/Write";
 import SearchBoxDiv from "./SearchBoxDiv";
+import UserSideBar from "./UI/UserSideBar";
+import logo from '../assests/imgs/logo.png'
 
 
 export default function Navbar() {
@@ -20,6 +22,7 @@ export default function Navbar() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [searchDiv, setSearchDiv] = useState(false)
+  // const navigate = useNavigate()
 
   const {textEditor, setTextEditor, setEditorState} = useContext(EditorContext)
 
@@ -86,7 +89,7 @@ export default function Navbar() {
 
   return (
     <>
-      <Box sx={{ flexGrow: 1 }}>
+      <Box sx={{ flexGrow: 1, width: '100%' }}>
       {searchDiv && <div className="backdrop" onClick={handleSearchDiv} />}
 
         <AppBar position="static" sx={{
@@ -97,11 +100,27 @@ export default function Navbar() {
         }}>
           <Toolbar>
             {userRole === 'admin' && <SideBar isOpen={true} onClose={false} />}
-            <Typography variant="h4" component="h5" color="black" sx={{ flexGrow: 1, paddingLeft: 5, margin: 2 }}>
-              Scriptify
-            </Typography>
+
+            <div className="lg:hidden">
+
+            <UserSideBar  />
+            </div>
+
+            
+            {/* <Link to="/user/feed" style={{ textDecoration: 'none' }}> */}
+            {/* <div className="pl-5 m-2 cursor-pointer flex gap-2"> */}
+
+            <img src={logo} alt="logo" height='30px' width='30' className="gap-2 ml-3" />
+              <Typography variant="h4" component="h5" color="black" display={{ xs: 'none', md: 'block', lg: 'block' }} sx={{ flexGrow: 1, paddingLeft: '5px'}} onClick={()=> navigate('/user/feed') }>
+                Scriptify
+              </Typography>
+            {/* </div> */}
+            
+
+            <div className="flex ms-auto">
             {!userData && <NavLink to="/sign-up" text="Sign Up" backgroundColor="#007bff" hoverBackgroundColor="white" color="white" hoverColor="#007bff" />}
             {!userData && <NavLink to="/sign-in" text="Login" variant="contained" backgroundColor="white" hoverBackgroundColor="#007bff" color="#007bff" hoverColor="white" />}
+            </div>
             {
               isWriteRoute ? (<div>
                 <NavButton  text="Publish" backgroundColor="#007bff" hoverBackgroundColor="white" color="white" hoverColor="#007bff" onClick={handlePublish} />
@@ -114,15 +133,15 @@ export default function Navbar() {
               </IconButton>
               <Link to='/user/write'>
 
-                <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5">
+                <IconButton  sx={{ '& svg': { fontSize: '32px' }, display: { xs: 'none', lg: 'block', xl: 'block' } }} className="text-black hover:border-black hover:rounded-full mx-5 ">
                   <EditNoteSharpIcon /> <span className="text-xl">Write</span>
                 </IconButton>
               </Link>
-              <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5">
+              <IconButton sx={{ '& svg': { fontSize: '32px' }, display: { xs: 'none', lg: 'block', xl: 'block' } }} className="text-black hover:border-black hover:rounded-full mx-5">
                 <NotificationsNoneSharpIcon />
               </IconButton>
             </>}
-            {!isWriteRoute && userData && <IconButton sx={{ '& svg': { fontSize: '32px' } }} className="text-black hover:border-black hover:rounded-full mx-5">
+            {!isWriteRoute && userData && <IconButton sx={{ '& svg': { fontSize: '32px' }, display: { xs: 'none', lg: 'block', xl: 'block' } }} className="text-black hover:border-black hover:rounded-full mx-5">
               <AccountCircleIcon />
             </IconButton>}
           </Toolbar>
@@ -135,6 +154,7 @@ export default function Navbar() {
         
       )}
       </Box>
+      
       <Toaster />
       
     </>
