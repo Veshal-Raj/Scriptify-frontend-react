@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 
 const NavLink = ({ to, text, variant = 'outlined', backgroundColor = '#007bff', color = 'white', hoverBackgroundColor = 'white', hoverColor = '#007bff' }) => {
     return (
-            <Link to={to} style={{ textDecoration: 'none' }}>
-      <Button
+      <Link to={to} style={{ textDecoration: 'none' }} className={text === 'Sign Up' ? 'block' : 'hidden md:block lg:block'}>
+        <Button
           variant={variant}
           sx={{
             paddingX: '20px',
@@ -20,12 +20,11 @@ const NavLink = ({ to, text, variant = 'outlined', backgroundColor = '#007bff', 
             },
             transition: 'background-color 0.3s, color 0.3s',
           }}
-          
         >
           {text}
         </Button>
       </Link>
     );
-  };
+};
 
 export default NavLink;
