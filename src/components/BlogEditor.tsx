@@ -8,6 +8,7 @@ import { tools } from "./ToolsComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { setBlog } from "../redux/slice/editorSlice";
 import { EditorContext } from "../pages/Write";
+import MobileFooter from "./MobileFooter";
 
 export const BlogEditor = () => {
   const dispatch = useDispatch()
@@ -66,7 +67,7 @@ export const BlogEditor = () => {
       <Navbar />
       <Toaster />
       <section>
-        <div className="mx-auto my-5 max-w-[900px] w-full">
+        <div className="mx-auto my-5 max-w-[900px] ">
           <div className="relative mx-5 aspect-video hover:opacity-80 bg-white border-4 border-gray">
             <label htmlFor="uploadBanner">
               <img
@@ -79,14 +80,14 @@ export const BlogEditor = () => {
 
           <textarea
             placeholder="Blog Title"
-            className="text-4xl font-medium w-full h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
+            className="text-4xl font-medium w-full mx-5 h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
             onKeyDown={handleTitleKeyDown}
             onChange={handleTitleChange}
             value={blog.title}
           >
           </textarea>
           <hr className="w-full my-5" />
-          <div id="textEditor" className="font-serif"></div>
+          <div id="textEditor" className="font-serif mx-5"></div>
 
         </div>
       </section>
