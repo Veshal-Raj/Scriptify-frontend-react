@@ -90,11 +90,28 @@ const HomePage = () => {
         }
     }, [tagsLoading, tags]);
 
+     // Handler for tag filtering
+     const handleTagFilter = async (tag: string) => {
+        setShowSkeleton(true);
+        const response = await filterbyTags({ tag });
+        if (response.data.response) {
+            setBlogs(response.data.response);
+            setShowSkeleton(false);
+            setPageState(tag)
+        }
+    };
+
+    const resetBlogs = () => {
+        
+        setBlogs(latestBlog.response);
+        setPageState('home')
+    }
+
     return (
         <>
             <section className="h-cover flex justify-center gap-10 ">
                 <motion.div className="">
-                    <InPageNavigation routes={[pageState, "trending blogs"]} defaultHidden={["trending blogs"]}>
+                    <InPageNavigation routes={[pageState, "trending blogs"]} defaultHidden={["trending blogs"]} tags={tagsFetched} onTagFilter={handleTagFilter} onResetBlogs={resetBlogs}>
                         <>
                             {showSkeleton || latestBlogDataLoading ? (
                                 <>
@@ -138,6 +155,7 @@ const HomePage = () => {
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -20 }}
                                         transition={{ duration: 0.5, delay: i * 0.3 }}
+                                        
                                     >
                                         <MinimalBlogPost blog={blog} index={i} />
                                     </motion.div>
@@ -149,7 +167,7 @@ const HomePage = () => {
                         </Typography>
                     </InPageNavigation>
                 </motion.div>
-                <div className="text-black max-w-[20%] border-l pl-8 pt-3 my-2">
+                <div className=" text-black max-w-[20%] border-l pl-8 pt-3 my-2  hidden lg:block">
                     <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                         <Typography variant="h5" sx={{ marginTop: '2rem' }}>Explore Your Interests</Typography>
                     </motion.div>
