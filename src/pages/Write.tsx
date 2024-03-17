@@ -1,6 +1,7 @@
 import { createContext, useState } from "react"
 import { BlogEditor } from "../components/BlogEditor"
 import { PublishForm } from "../components/PublishForm"
+import MobileFooter from "../components/MobileFooter"
 
 const blogStructure = {
     title: '',
@@ -21,10 +22,16 @@ const Write = () => {
 
   return (
     <>
+    <div className='flex flex-col min-h-screen'>
+      
       <EditorContext.Provider value={{ blog, setBlog, editorState, setEditorState, textEditor, setTextEditor}}>
 
         {editorState === 'editor'? <BlogEditor /> : <PublishForm />}
       </EditorContext.Provider>
+      {/* <MobileFooter icon='edit' /> */}
+
+    </div>
+      
     </>
   )
 }

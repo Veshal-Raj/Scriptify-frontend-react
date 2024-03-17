@@ -22,6 +22,7 @@ const BlogPostCard = ({ content, author, index }) => {
             initial={{ opacity: 0, y: 25 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -25 }}
+            className="mx-5 "
         >
             <motion.div
                 transition={{ duration: 1, delay: 0.1 }}

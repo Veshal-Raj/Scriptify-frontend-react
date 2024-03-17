@@ -7,7 +7,7 @@ const MinimalBlogPost = ({ blog, index }) => {
     const { publishedAt, title, author: { personal_info: { username } }, blog_id } = blog;
 
     return (
-        <Link to={`/user/blog/${blog_id}`} className="flex gap-5 mb-4 mx-5 border p-5 max-w-[1000px] rounded-lg">
+        <Link to={`/user/blog/${blog_id}`} className="flex gap-5 mb-4 mx-5 border p-5 max-w-[1000px] rounded-lg ">
             <motion.div
                 initial={{ opacity: 0, y: 25 }}
                 animate={{ opacity: 1, y: 0 }}
