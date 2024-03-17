@@ -47,11 +47,14 @@ const UserSideBar = () => {
             onClick={toggleDrawer(false)}
             onKeyDown={toggleDrawer(false)}
         >
-            <Box sx={{ display: 'flex', alignItems: 'center', padding: '10px' }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', padding: '10px' }} >
+                <Link to='/user/feed' className="flex">
+
                 <img src={logo} alt="logo" height='30px' width='30px' />
                 <Typography variant="h6" sx={{ paddingLeft: '10px' }} onClick={() => navigate('/user/feed')}>
                     Scriptify
                 </Typography>
+                </Link>
             </Box>
             <hr />
             <List sx={{ flexGrow: 1 }}>
