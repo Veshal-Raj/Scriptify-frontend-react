@@ -5,7 +5,7 @@ import MobileFooter from '../components/MobileFooter'
 export const Feed = () => {
   return (
     <>
-    <div className='flex flex-col min-h-screen mb-16'>
+    <div className='flex flex-col  mb-16'>
 
         <Navbar />
         <HomePage />
