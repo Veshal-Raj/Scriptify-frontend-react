@@ -1,5 +1,5 @@
 import { Route, Routes } from "react-router-dom"
-import { Feed } from "../components/Feed"
+import { Feed } from "../pages/Feed"
 import UserRoutes from "./routeComponents/UserRoutes"
 import Write from "../pages/Write"
 
