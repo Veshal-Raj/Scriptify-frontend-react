@@ -48,7 +48,7 @@ const SearchBoxDiv = ({ setSearchDiv }) => {
 
     return (
         <>
-            <motion.div
+             <motion.div
                 initial={{ opacity: 0, scale: 0.8 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.8 }}
@@ -57,13 +57,14 @@ const SearchBoxDiv = ({ setSearchDiv }) => {
                     position: 'absolute',
                     top: '10%',
                     left: '20%',
+                    right: '20%',
                     transform: 'translate(-50%, -50%)',
                     backgroundColor: 'white',
                     padding: '20px',
-                    width: '50%',
+                    width: '65%',
                     boxShadow: '0 0 10px rgba(0, 0, 0, 0.1)',
                     borderRadius: '10px',
-                    zIndex: 999
+                    zIndex: 999,
                 }}
             >
                 <TextField id="outlined-basic" label="Search" variant="outlined" fullWidth value={searchTerm} onChange={handleSearchChange} autoFocus />
@@ -89,20 +90,20 @@ const SearchBoxDiv = ({ setSearchDiv }) => {
                 )}
                 {/* Display search results */}
                 {suggestions && (
-                    <div className="rounded-lg">
-                        <ul className="hover:cursor-pointer">
-                            {suggestions.map((result, index) => (
-                                <li key={index} className="py-2 px-5 hover:bg-slate-100 shadow-sm">
-                                    <Link to={`/user/blog/${result?.blog_id}`}>
-                                        <div className="flex items-center">
-                                            <SearchIcon />
-                                            <span className="ml-2">{result?.title}</span>
-                                        </div>
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </div>
+                   <div className="rounded-lg">
+                   <ul className="hover:cursor-pointer">
+                       {suggestions.map((result, index) => (
+                        <li key={index} className="py-2 px-5 hover:bg-slate-100 shadow-sm text-xs lg:text-base">
+                               <Link to={`/user/blog/${result?.blog_id}`}>
+                                   <div className="flex items-center">
+                                       <SearchIcon />
+                                       <span className="ml-2">{result?.title}</span>
+                                   </div>
+                               </Link>
+                           </li>
+                       ))}
+                   </ul>
+               </div>
                 )}
             </motion.div>
             <Backdrop open={isOpen} onClick={handleClick} />
