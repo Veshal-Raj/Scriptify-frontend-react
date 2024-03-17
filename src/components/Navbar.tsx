@@ -1,4 +1,4 @@
-import { Box, AppBar, Toolbar, Typography, IconButton } from "@mui/material";
+import { Box, AppBar, Toolbar, Typography, IconButton, Drawer } from "@mui/material";
 import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
 import SideBar from "./UI/SideBar";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,9 +15,11 @@ import { EditorContext } from "../pages/Write";
 import SearchBoxDiv from "./SearchBoxDiv";
 import UserSideBar from "./UI/UserSideBar";
 import logo from '../assests/imgs/logo.png'
+import DrawerContent from "./UI/ProfileDrawer";
 
 
 export default function Navbar() {
+  const [isProfileDrawerOpen, setIsProfileDrawerOpen] = useState(false)
   const location = useLocation();
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -85,6 +87,10 @@ export default function Navbar() {
   
   }
 
+  const handleProfileClick = () => {
+    setIsProfileDrawerOpen(!isProfileDrawerOpen);
+  };
+
  
 
   return (
@@ -140,7 +146,7 @@ export default function Navbar() {
                 <NotificationsNoneSharpIcon />
               </IconButton>
             </>}
-            {!isWriteRoute && userData && <IconButton sx={{ '& svg': { fontSize: '32px' }, display: { xs: 'none', lg: 'block', xl: 'block' } }} className="text-black hover:border-black hover:rounded-full mx-5">
+            {!isWriteRoute && userData && <IconButton sx={{ '& svg': { fontSize: '32px' }, display: { xs: 'none', lg: 'block', xl: 'block' } }} className="text-black hover:border-black hover:rounded-full mx-5" onClick={handleProfileClick}>
               <AccountCircleIcon />
             </IconButton>}
           </Toolbar>
@@ -152,6 +158,10 @@ export default function Navbar() {
           
         
       )}
+
+<Drawer anchor="right" open={isProfileDrawerOpen} onClose={handleProfileClick}>
+          <DrawerContent />
+        </Drawer>
       </Box>
       
       <Toaster />
