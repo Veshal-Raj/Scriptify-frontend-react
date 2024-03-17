@@ -6,7 +6,7 @@ const BlogPostCardSkeleton = () => {
     return (
         <motion.div>
             <motion.div>
-                <Card className="w-full mb-4 flex" variant="outlined" sx={{ borderRadius: '15px', minWidth: '1000px', }}>
+                <Card className="w-full mb-4 flex flex-col md:flex-row md:min-w-[1000px]" variant="outlined" sx={{ borderRadius: '15px', }}>
                     <CardContent>
                         <Link to="#">
                             <motion.div className="flex gap-2 items-center mb-7">
@@ -25,7 +25,7 @@ const BlogPostCardSkeleton = () => {
                             </motion.div>
                         </Link>
                     </CardContent>
-                    <Box className="h-28 aspect-square bg-gray-50 mx-auto my-auto"  sx={{ maxWidth: '1000px' }}>
+                    <Box className="h-28 md:aspect-square bg-gray-50 mx-auto my-auto"  sx={{ maxWidth: '1000px' }}>
                         <Skeleton variant="rectangular" width="100%" height="100%" />
                     </Box>
                 </Card>
