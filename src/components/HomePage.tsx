@@ -8,6 +8,7 @@ import { fetchTags, filterbyTags, getLatestBlog, getTrendingBlogs } from "../api
 import MinimalBlogPost from "./MinimalBlogPost";
 import BlogPostCardSkeleton from "./Skeleton/BlogSkeleton";
 import { Chip } from "@mui/material";
+import TagSkeleton from "./Skeleton/ChipSkeleton";
 
 const HomePage = () => {
     const { data: latestBlog, isLoading: latestBlogDataLoading } = useQuery({
@@ -171,20 +172,23 @@ const HomePage = () => {
                     <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
                         <Typography variant="h5" sx={{ marginTop: '2rem' }}>Explore Your Interests</Typography>
                     </motion.div>
-                    <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.2 }} className="mt-5">
-                        <div className="flex flex-wrap gap-3" style={{ flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-                            {tagsFetched.map((data, i) => (
-                                <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.1 * i }}>
-                                    <Chip
-                                        label={data}
-                                        variant="outlined"
-                                        color={selectedChip === i ? "default" : "primary"}
-                                        onClick={(e) => handleClick(e,i)}
-                                    />
-                                </motion.div>
-                            ))}
-                        </div>
-                    </motion.div>
+                    {tagsLoading ? (
+                            <TagSkeleton count={tagsFetched.length > 0 ? tagsFetched.length : 15} />
+                        ) : (
+                            <div className="flex flex-wrap gap-3 my-5" style={{ flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+                                {/* Mapping over tags to render chips */}
+                                {tagsFetched.map((data, i) => (
+                                    <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.1 * i }}>
+                                        <Chip
+                                            label={data}
+                                            variant="outlined"
+                                            color={selectedChip === i ? "default" : "primary"}
+                                            onClick={(e) => handleClick(e,i)}
+                                        />
+                                    </motion.div>
+                                ))}
+                            </div>
+                        )}
                     <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: 0.4 }}>
                         <Typography variant="h5" sx={{ marginY: '2rem' }}> Upgrade to Scriptify Plus </Typography>
                     </motion.div>
