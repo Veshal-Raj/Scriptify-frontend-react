@@ -115,8 +115,8 @@ export default function Navbar() {
             
             
 
-            <img src={logo} alt="logo" height='30px' width='30' className="gap-2 ml-3" />
-              <Typography variant="h4" component="h5" color="black" display={{ xs: 'none', md: 'block', lg: 'block' }} sx={{ flexGrow: 1, paddingLeft: '5px'}} onClick={()=> navigate('/user/feed') }>
+            <img src={logo} alt="logo" height='30px' width='30' className="gap-2 ml-3 cursor-pointer" onClick={()=> navigate('/user/feed')}/>
+              <Typography variant="h4" component="h5" color="black" display={{ xs: 'none', md: 'block', lg: 'block' }} sx={{ flexGrow: 1, paddingLeft: '5px', cursor: 'pointer' }} onClick={()=> navigate('/user/feed') }>
                 Scriptify
               </Typography>
             
