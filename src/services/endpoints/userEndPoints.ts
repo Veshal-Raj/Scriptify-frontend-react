@@ -7,7 +7,9 @@ const userRoutes = {
     createBlog: '/user/create-blog',
     exploreTags:'/user/explore-tags',
     filterbyTags:'/user/filterbyTags',
-    search: '/user/search'
+    search: '/user/search',
+    profileDetails: '/user/get-profile',
+    fetchUserBlogs:'/user/fetchUserBlog'
 }   
 
 export default userRoutes;
