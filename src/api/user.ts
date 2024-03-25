@@ -92,11 +92,33 @@ export const filterbyTags = async (tag: string) => {
 
 export const searchQuery = async (query: string) => {
     try {
+        console.log(query)
         const response = await Api.get(`${userRoutes.search}?query=${query}`)
         return response
     } catch (error) {
         console.error(error);
         throw error
         
+    }
+}
+
+export const profileDetails = async (userId: string) => {
+    try {
+        const response = await Api.post(userRoutes.profileDetails, userId)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error        
+    }
+}
+
+export const fetchUserBlogs = async (userId: string) =>{
+    try {
+        const response = await Api.get(`${userRoutes.fetchUserBlogs}?query=${userId}`)
+        console.log('fetch blogs response -- >>',response)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error        
     }
 }
