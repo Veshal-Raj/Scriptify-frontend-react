@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Backdrop, Skeleton, TextField } from "@mui/material";
-import {   useEffect, useState } from "react";
+import {   SetStateAction, useEffect, useState } from "react";
 import useDebounce from "../hooks/debounceSearch";
 import SearchIcon from '@mui/icons-material/Search';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
@@ -26,7 +26,7 @@ const SearchBoxDiv = ({ setSearchDiv }) => {
     });
 
     // Function to handle search term change
-    const handleSearchChange = (event) => {
+    const handleSearchChange = (event: { target: { value: SetStateAction<string>; }; }) => {
         setSearchTerm(event.target.value);
     }
 
