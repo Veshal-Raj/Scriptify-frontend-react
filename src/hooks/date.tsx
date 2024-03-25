@@ -8,3 +8,9 @@ export const getDay = (timestamp: string | number | Date) => {
     const dayOfMonth = date.getDate();
     return `${dayOfWeek}, ${dayOfMonth} ${month}`;
 };
+
+export const getFullDay = (joinedAt: string | number | Date) => {
+    const date = new Date(joinedAt);
+
+    return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
+}
