@@ -22,13 +22,13 @@ const Write = () => {
 
   return (
     <>
-    <div className='flex flex-col min-h-screen'>
+    <div className='flex flex-col overflow-hidden'>
       
       <EditorContext.Provider value={{ blog, setBlog, editorState, setEditorState, textEditor, setTextEditor}}>
 
         {editorState === 'editor'? <BlogEditor /> : <PublishForm />}
       </EditorContext.Provider>
-      {/* <MobileFooter icon='edit' /> */}
+      <MobileFooter icon='edit' />
 
     </div>
       
