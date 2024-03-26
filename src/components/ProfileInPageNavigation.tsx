@@ -1,7 +1,7 @@
 import { Button, ButtonGroup, useMediaQuery } from "@mui/material";
 import { useState } from "react";
 
-const ProfileInPageNavigation = ({ setActiveTab }) => {
+const ProfileInPageNavigation = ({ setActiveTab, isSameUser }) => {
     const [selectedTab, setSelectedTab] = useState("blogPublished");
     const isMediumScreen = useMediaQuery('(min-width:960px)');
   
@@ -18,12 +18,14 @@ const ProfileInPageNavigation = ({ setActiveTab }) => {
         >
           Blog Published
         </Button>
-        <Button
-          onClick={() => handleTabChange("savedBlogs")}
-          sx={{ bgcolor: selectedTab === "savedBlogs" ? '#F3F4F6' : 'transparent' }}
-        >
-          Saved Blogs
-        </Button>
+        {isSameUser && (
+          <Button
+            onClick={() => handleTabChange("savedBlogs")}
+            sx={{ bgcolor: selectedTab === "savedBlogs" ? '#F3F4F6' : 'transparent' }}
+          >
+            Saved Blogs
+          </Button>
+        )}
         {!isMediumScreen && (
           <Button
             onClick={() => handleTabChange("about")}
