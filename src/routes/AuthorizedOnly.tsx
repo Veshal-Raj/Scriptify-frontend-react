@@ -3,6 +3,7 @@ import { Feed } from "../pages/Feed"
 import UserRoutes from "./routeComponents/UserRoutes"
 import Write from "../pages/Write"
 import Profile from "../pages/Profile"
+import SingleBlogPage from "../pages/SingleBlogPage"
 
 
 const AuthorizedOnly = () => {
@@ -12,6 +13,7 @@ const AuthorizedOnly = () => {
             <Route element={<UserRoutes />} >
                 <Route path="/feed" element={<Feed />} />
                 <Route path="/write" element={<Write />}/>
+                <Route path="/blog/:blogId" element={<SingleBlogPage />} />
                 <Route path="/:id" element={<Profile />}/>
             </Route>
         </Routes>
