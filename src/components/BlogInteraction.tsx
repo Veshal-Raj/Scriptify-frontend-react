@@ -5,11 +5,22 @@ import CommentIcon from '@mui/icons-material/Comment';
 import { IconButton, Tooltip } from "@mui/material";
 import { Link } from "react-router-dom";
 import XIcon from '@mui/icons-material/X';
+import { useSelector } from "react-redux";
 
 
 const BlogInteraction = () => {
-    const { singleBlogData: {title, blog_id, activity, activity: { total_likes, total_comments }, author: { personal_info: { username: author_username } } },
-        setSingleBlogData } = useContext(BlogContext)
+    const { singleBlogData: {title, blog_id, activity, activity: { total_likes, total_comments }, author: { personal_info: { username: author_username }, _id: authorId } },
+    setSingleBlogData } = useContext(BlogContext)
+    const { userData } = useSelector(state => state.user)
+
+    const userId = userData._id
+    // console.log(_id,'--------------')
+    
+
+    const isSameUser = userId === authorId
+    // console.log(userId, '---', authorId)
+    // console.log(isSameUser)
+    
     return (
         <>
             <hr className="border-gray-200 my-2" />
@@ -34,7 +45,7 @@ const BlogInteraction = () => {
                 </div>
 
                 <div className="flex gap-6 items-center">
-                    <Link to={`/editor/${blog_id}`} className="hover:text-blue-600">Edit</Link>
+                {isSameUser && <Link to={`/editor/${blog_id}`} className="hover:text-blue-600">Edit</Link>}
                     <Tooltip title="Twitter" placement="top">
                         <div>
                             <Link to={`https://twitter.com/intent/tweet?text=Read${title}&url=${location.href}`}>
