@@ -9,7 +9,9 @@ const userRoutes = {
     filterbyTags:'/user/filterbyTags',
     search: '/user/search',
     profileDetails: '/user/get-profile',
-    fetchUserBlogs:'/user/fetchUserBlog'
+    fetchUserBlogs:'/user/fetchUserBlog',
+    fetchSingleBlog: '/user/fetchSingleBlog',
+    fetchSimilarBlogs: 'user/fetchSimilarBlogs'
 }   
 
 export default userRoutes;
