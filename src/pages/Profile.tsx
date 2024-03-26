@@ -135,6 +135,7 @@ const Profile = () => {
     ))
   ) : activeTab === "blogPublished" ? (
     fetchBlogs.map((blog, i) => (
+      
       <ProfileBlogCard key={blog.id} blog={blog} index={i} username={profile.personal_info.username} />
     ))
   ) : activeTab === "savedBlogs" ? (
