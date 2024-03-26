@@ -122,3 +122,25 @@ export const fetchUserBlogs = async (userId: string) =>{
         throw error        
     }
 }
+
+export const fetchSingleBlog = async (blogId: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.fetchSingleBlog}?query=${blogId}`)
+        console.log('response -->',response)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error        
+    }
+}
+
+export const fetchSimilarBlogs = async (tags: string[]) => {
+    try {
+        const response = await Api.post(userRoutes.fetchSimilarBlogs, tags)
+        return response;
+    } catch (error) {
+        console.error(error);
+        throw error        
+    }
+
+}
