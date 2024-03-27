@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { fetchSimilarBlogs, fetchSingleBlog } from "../api/user"
+import { fetchSimilarBlogs, fetchSingleBlog, followUserApi, increaseReadCount } from "../api/user"
 import { createContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { getDay } from "../hooks/date"
@@ -9,6 +9,11 @@ import BlogInteraction from "./BlogInteraction";
 import NoSimilarBlogMessage from "./NoSimilarBlogMessage"
 import BlogContent from "./BlogContent"
 import SingleBlogSkeleton from "./Skeleton/SingleBlogSkeleton"
+import AddIcon from '@mui/icons-material/Add';
+import RemoveIcon from '@mui/icons-material/Remove';
+import { useDispatch, useSelector } from "react-redux"
+import toast from "react-hot-toast"
+import { addFollower, addFollowing } from "../redux/slice/userSlice"
 
 export const BlogContext = createContext({})
 
@@ -17,7 +22,27 @@ const ShowBlogContent = ({ blogId }) => {
     const [tags, setTags] = useState([])
     const [similarBlogs, setSimilarBlogs] = useState([]);
     const isSmallScreen = useMediaQuery('(max-width:600px)');
+    const [timerStarted, setTimerStarted] = useState(false);
+    const [isFollowing, setIsFollowing] = useState(false)
+    const { userData } = useSelector(state => state.user)
+    const dispatch = useDispatch()
 
+    const userId = userData._id
+    // const followings = userData.following
+    const authorId = singleBlogData?.author._id
+    const followings = userData.followings // this is an array
+
+    useEffect(() => {
+        if (followings?.includes(authorId)) {
+            setIsFollowing(true)
+        } else {
+            setIsFollowing(false)
+        }
+    }, [followings, authorId])
+    
+    
+
+    console.log('??????????', singleBlogData)
     const { data: SingleBlog, isLoading } = useQuery({
         queryKey: ["singleBlog", blogId],
         queryFn: () => fetchSingleBlog(blogId),
@@ -33,6 +58,28 @@ const ShowBlogContent = ({ blogId }) => {
                 setSimilarBlogs(filteredSimilarBlogs);
             }
 
+        }
+    })
+
+    const { mutate: addReadCount } = useMutation({
+        mutationFn: increaseReadCount,
+        onSuccess: () => {
+            // alert('success')
+            console.log('increased read count')
+        }
+    })
+
+    const { mutate: followUser } = useMutation({
+        mutationFn: followUserApi,
+        onSuccess: () => {
+            toast.success('Following Author Successfully')
+            setIsFollowing(true)
+            dispatch(addFollowing(singleBlogData?.author._id))
+            
+            // dispatch(addFollowing())
+        },
+        onError: () => {
+            toast.error('Something went wrong, Please try again later.')
         }
     })
 
@@ -56,14 +103,60 @@ const ShowBlogContent = ({ blogId }) => {
         }
     }, [tags])
 
+    useEffect(() => {
+        if (!timerStarted) {
+            const timer = setTimeout(() => {
+                // call the function to increase the read count
+                console.log('Api calling')
+                console.log(typeof userId, '/??///', typeof blogId)
 
+                const data = {
+                    userId: userId,
+                    blogId: blogId
+                }
+                addReadCount(data)
+                setTimerStarted(true)
+            }, 60000)
+            return () => clearTimeout(timer)
+        }
+    }, [timerStarted, userId, blogId])
+
+    useEffect(() => {
+        console.log('????????????????????????????????????????/')
+        console.log(authorId, '.....', userData.following)
+        if (authorId && userData.following?.includes(authorId)) {
+            console.log('reached here')
+            setIsFollowing(true);
+        } else {
+            setIsFollowing(false);
+        }
+        console.log('......................................')
+    }, [followings, authorId]);
 
     const content = singleBlogData?.content[0].blocks
-    
+
+    const handleUnfollow  = () => {
+        console.log('clicked unfollow user')
+        setIsFollowing(false)
+    }
+
+    const handleFollow = () => {
+        console.log('clicked follow user')
+        if (singleBlogData!== null && singleBlogData?._id) {
+            const authorId = singleBlogData?.author._id
+            const data = {
+                authorId: authorId,
+                userId: userId
+            }
+            followUser(data)
+            
+        }
+    }
+
     return (
         <div>
             {isLoading ? (
-                <SingleBlogSkeleton />                
+                <SingleBlogSkeleton />
             ) : singleBlogData ? (
                 <BlogContext.Provider value={{ singleBlogData, setSingleBlogData }}>
                     <motion.div
@@ -84,6 +177,26 @@ const ShowBlogContent = ({ blogId }) => {
                                         <br />
                                         @ <Link to={`/user/${singleBlogData?.author._id}`} className="underline">{singleBlogData?.author.personal_info.username}</Link>
                                     </Typography>
+                                    <div className="py-1">
+
+                                        {isFollowing ? (
+                                            <Typography
+                                                variant="body1"
+                                                className="capitalize font-normal text-lg text-red-700 cursor-pointer"
+                                                onClick={handleUnfollow}
+                                            >
+                                                Unfollow <RemoveIcon />
+                                            </Typography>
+                                        ) : (
+                                            <Typography
+                                                variant="body1"
+                                                className="capitalize font-normal text-lg text-blue-700 cursor-pointer"
+                                                onClick={handleFollow}
+                                            >
+                                                Follow <AddIcon />
+                                            </Typography>
+                                        )}
+                                    </div>
                                 </div>
                                 <Typography variant="body1" className="text-lg font-normal text-gray-600 opacity-75 max-sm:mt-6 max-sm:ml-20 max-sm:pl-5">
                                     Published on {getDay(singleBlogData?.publishedAt)}
@@ -91,7 +204,7 @@ const ShowBlogContent = ({ blogId }) => {
                             </div>
                         </div>
                         <BlogInteraction />
-                        
+
                         <div className="my-12 font-serif   ">
                             {
                                 content?.map((block, i) => {
@@ -114,7 +227,7 @@ const ShowBlogContent = ({ blogId }) => {
                                                 className="blog-card"
                                             >
                                                 <Card>
-                                                    <CardActionArea  component={Link} to={`/user/blog/${blog.blog_id}`}>
+                                                    <CardActionArea component={Link} to={`/user/blog/${blog.blog_id}`}>
                                                         <CardMedia
                                                             component="img"
                                                             height="140"
@@ -143,9 +256,9 @@ const ShowBlogContent = ({ blogId }) => {
                 </BlogContext.Provider>
             ) : (
                 <Typography variant="body1" className="text-lg font-normal text-gray-600 opacity-75 max-sm:mt-6 max-sm:ml-20 max-sm:pl-5">
-                                    Blog not found
+                    Blog not found
                 </Typography>
-               
+
             )}
         </div>
     )
