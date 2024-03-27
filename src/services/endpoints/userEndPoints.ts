@@ -11,7 +11,9 @@ const userRoutes = {
     profileDetails: '/user/get-profile',
     fetchUserBlogs:'/user/fetchUserBlog',
     fetchSingleBlog: '/user/fetchSingleBlog',
-    fetchSimilarBlogs: 'user/fetchSimilarBlogs'
+    fetchSimilarBlogs: '/user/fetchSimilarBlogs',
+    increaseReadCount: '/user/increaseReadCount',
+    followUser: '/user/followUser'
 }   
 
 export default userRoutes;
