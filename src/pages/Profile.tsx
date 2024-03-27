@@ -14,6 +14,7 @@ import ForumIcon from '@mui/icons-material/Forum';
 import ProfileBlogCard from "../components/ProfileBlogCard"
 import { IconButton, Tooltip } from "@mui/material"
 import { useSelector } from "react-redux"
+import NoBlogPublished from "../components/NoBlogPublished"
 
 export const profileDataStructure = {
   "personal_info": {
@@ -119,11 +120,11 @@ const Profile = () => {
           <div className="flex gap-4 mt-2">
             {isSameUser && (<Link to='/settings/edit-profile' className="btn-dark bg-gray-50 text-black px-5 py-3 rounded-md">Edit Profile </Link>)}
             
-            <Tooltip title="Chat" placement="right">
+            {!isSameUser && <Tooltip title="Chat" placement="right">
               <IconButton className="p-5">
                 <ForumIcon />
               </IconButton>
-            </Tooltip>
+            </Tooltip>}
           </div>
           <div className="hidden md:block">
 
@@ -142,11 +143,14 @@ const Profile = () => {
                   Array.from({ length: 5 }, (_, i) => (
                     <BlogPostCardSkeleton key={`skeleton-${i}`} />
                   ))
-                ) : activeTab === "blogPublished" ? (
-                  fetchBlogs.map((blog, i) => (
-
-                    <ProfileBlogCard key={blog.id} blog={blog} index={i} username={profile.personal_info.username} />
-                  ))
+                )  : activeTab === "blogPublished" ? (
+                  fetchBlogs.length === 0 ? (
+                    <NoBlogPublished />
+                  ) : (
+                    fetchBlogs.map((blog, i) => (
+                      <ProfileBlogCard key={blog.id} blog={blog} index={i} username={profile.personal_info.username} />
+                    ))
+                  )
                 ) : activeTab === "savedBlogs" ? (
                   <div key="savedBlogs">
                     <SavedBlogs />
