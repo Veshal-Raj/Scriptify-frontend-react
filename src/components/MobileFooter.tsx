@@ -33,6 +33,7 @@ const MobileFooter = ({ icon }) => {
                         <IconButton onClick={() => handleIconClick('/user/notifications')}>
                             <NotificationsNoneSharpIcon color={icon === 'notifications' ? 'primary' : 'inherit'} />
                         </IconButton>
+                        
                         <IconButton onClick={toggleDrawer}>
                             <AccountCircleIcon color={icon === 'account' ? 'primary' : 'inherit'} />
                         </IconButton>
