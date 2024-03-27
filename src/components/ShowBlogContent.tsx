@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { fetchSimilarBlogs, fetchSingleBlog, followUserApi, increaseReadCount } from "../api/user"
+import { fetchSimilarBlogs, fetchSingleBlog, followUserApi, increaseReadCount, unfollowUserApi } from "../api/user"
 import { createContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
 import { getDay } from "../hooks/date"
@@ -13,7 +13,7 @@ import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useDispatch, useSelector } from "react-redux"
 import toast from "react-hot-toast"
-import { addFollower, addFollowing } from "../redux/slice/userSlice"
+import { addFollower, addFollowing, removeFollowing } from "../redux/slice/userSlice"
 
 export const BlogContext = createContext({})
 
@@ -75,8 +75,18 @@ const ShowBlogContent = ({ blogId }) => {
             toast.success('Following Author Successfully')
             setIsFollowing(true)
             dispatch(addFollowing(singleBlogData?.author._id))
-            
-            // dispatch(addFollowing())
+        },
+        onError: () => {
+            toast.error('Something went wrong, Please try again later.')
+        }
+    })
+
+    const { mutate: unfollowUser } = useMutation({
+        mutationFn: unfollowUserApi,
+        onSuccess: () => {
+            toast.success('Unfollowed Author Successfully')
+            setIsFollowing(false)
+            dispatch(removeFollowing(singleBlogData?.author._id))
         },
         onError: () => {
             toast.error('Something went wrong, Please try again later.')
@@ -133,11 +143,21 @@ const ShowBlogContent = ({ blogId }) => {
         console.log('......................................')
     }, [followings, authorId]);
 
+    
+
     const content = singleBlogData?.content[0].blocks
 
     const handleUnfollow  = () => {
         console.log('clicked unfollow user')
-        setIsFollowing(false)
+        // setIsFollowing(false)
+        if (singleBlogData!== null && singleBlogData?._id) {
+            const authorId = singleBlogData?.author._id
+            const data = {
+                authorId: authorId,
+                userId: userId
+            }
+            unfollowUser(data)
+        }
     }
 
     const handleFollow = () => {
