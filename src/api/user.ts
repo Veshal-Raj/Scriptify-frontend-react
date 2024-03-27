@@ -175,3 +175,14 @@ export const followUserApi = async (data: FollowUserData ) => {
         throw error        
     }
 }
+
+export const unfollowUserApi = async (data: FollowUserData) => {
+    try {
+        console.log(data)
+        const response = await Api.post(userRoutes.unfollowUser, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
