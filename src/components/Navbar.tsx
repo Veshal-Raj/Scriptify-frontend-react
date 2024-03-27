@@ -16,6 +16,8 @@ import SearchBoxDiv from "./SearchBoxDiv";
 import UserSideBar from "./UI/UserSideBar";
 import logo from '../assests/imgs/logo.png'
 import DrawerContent from "./UI/ProfileDrawer";
+import ForumIcon from '@mui/icons-material/Forum';
+
 
 
 export default function Navbar() {
@@ -145,6 +147,9 @@ export default function Navbar() {
               <IconButton sx={{ '& svg': { fontSize: '32px' }, display: { xs: 'none', lg: 'block', xl: 'block' } }} className="text-black hover:border-black hover:rounded-full mx-5">
                 <NotificationsNoneSharpIcon />
               </IconButton>
+              <IconButton sx={{ '& svg': { fontSize: '30px', paddingTop: '5px' } }}>
+                        <ForumIcon />
+                        </IconButton>
             </>}
             {!isWriteRoute && userData && <IconButton sx={{ '& svg': { fontSize: '32px' }, display: { xs: 'none', lg: 'block', xl: 'block' } }} className="text-black hover:border-black hover:rounded-full mx-5" onClick={handleProfileClick}>
               <AccountCircleIcon />
