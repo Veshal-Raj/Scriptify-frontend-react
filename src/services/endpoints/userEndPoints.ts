@@ -13,7 +13,8 @@ const userRoutes = {
     fetchSingleBlog: '/user/fetchSingleBlog',
     fetchSimilarBlogs: '/user/fetchSimilarBlogs',
     increaseReadCount: '/user/increaseReadCount',
-    followUser: '/user/followUser'
+    followUser: '/user/followUser',
+    unfollowUser: '/user/unfollowUser'
 }   
 
 export default userRoutes;
