@@ -48,6 +48,8 @@ const Profile = () => {
   const [profile, setProfile] = useState(profileDataStructure)
   const [fetchBlogs, setFetchBlogs] = useState([])
   const [activeTab, setActiveTab] = useState("blogPublished");
+  const [followers, setFollowers] = useState(0)
+  const [followings, setFollowings] = useState(0)
   const { userData } = useSelector(state => state.user)
 
   const userId = userData._id
@@ -72,8 +74,12 @@ const Profile = () => {
     mutationFn: profileDetails,
     onSuccess: (response) => {
       if (response.data.response) {
-        console.log(response.data.response)
+        console.log('user details >>>> ',response.data.response)
+        console.log('user followers >>>> ',response.data.response.followers)
+        console.log('user following >>>> ',response.data.response.following)
         setProfile(response.data.response)
+        setFollowers(response.data.response.followers.length)
+        setFollowings(response.data.response.following.length)
       }
     },
     onError: (response) => {
@@ -108,6 +114,8 @@ const Profile = () => {
 
     getProfileDetails(ProfileId)
   }, [])
+
+  // console.log('followers and follwing', profile.)
   return (
     <>
       <Navbar />
@@ -117,6 +125,7 @@ const Profile = () => {
           <img src={profile_img} alt="profile_img" className="w-48 h-48 bg-gray-50 rounded-full md:h-32 md:w-32" />
           <h1 className="text-2xl font-medium"> @{username}</h1>
           <p>{total_posts.toLocaleString()} Blogs - {total_reads.toLocaleString()} Reads</p>
+          <p className="cursor-pointer">{followers} Followers - {followings} Following</p>
           <div className="flex gap-4 mt-2">
             {isSameUser && (<Link to='/settings/edit-profile' className="btn-dark bg-gray-50 text-black px-5 py-3 rounded-md">Edit Profile </Link>)}
             
