@@ -6,6 +6,16 @@ type UserOTP = {
     otp: string;
   };
 
+  interface IncreaseReadCountData {
+    userId: string;
+    blogId: string;
+}
+
+interface FollowUserData {
+    authorId: string,
+    userId: string
+}
+
 export const signup = async (userData: userFormData) => {
     try {
         const response = await Api.post(userRoutes.signup, userData);
@@ -142,5 +152,26 @@ export const fetchSimilarBlogs = async (tags: string[]) => {
         console.error(error);
         throw error        
     }
+}
 
+export const increaseReadCount = async (data: IncreaseReadCountData) => {
+    try {
+        console.log('data obj >>>>>>>>>>. ',data)
+        const response = await Api.post(userRoutes.increaseReadCount, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error        
+    }
+}
+
+export const followUserApi = async (data: FollowUserData ) => {
+    try {
+        console.log(data)
+        const response = await Api.post(userRoutes.followUser, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error        
+    }
 }
