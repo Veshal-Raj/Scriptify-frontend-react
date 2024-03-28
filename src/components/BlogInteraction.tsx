@@ -46,10 +46,16 @@ const BlogInteraction = () => {
 
     useEffect(() => {
 
-        if (initialBlogQuery?.data.response) {
+        if (initialBlogQuery?.data.response.isLiked) {
             setIsLiked(true);
         } else {
             setIsLiked(false);
+        }
+
+        if (initialBlogQuery?.data.response.isSaved) {
+            setIsSaved(true);
+        } else {
+            setIsSaved(false);
         }
     }, [initialBlogQuery?.data]);
 
