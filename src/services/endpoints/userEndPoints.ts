@@ -14,7 +14,10 @@ const userRoutes = {
     fetchSimilarBlogs: '/user/fetchSimilarBlogs',
     increaseReadCount: '/user/increaseReadCount',
     followUser: '/user/followUser',
-    unfollowUser: '/user/unfollowUser'
+    unfollowUser: '/user/unfollowUser',
+    likeBlog: '/user/likeBlog',
+    unlikeBlog: '/user/unlikeBlog',
+    initialLike: '/user/initialLike'
 }   
 
 export default userRoutes;
