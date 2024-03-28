@@ -16,6 +16,11 @@ interface FollowUserData {
     userId: string
 }
 
+interface BlogLikeData {
+    blogId: string,
+    userId: string
+}
+
 export const signup = async (userData: userFormData) => {
     try {
         const response = await Api.post(userRoutes.signup, userData);
@@ -180,6 +185,38 @@ export const unfollowUserApi = async (data: FollowUserData) => {
     try {
         console.log(data)
         const response = await Api.post(userRoutes.unfollowUser, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const likeBlogApi = async (data: BlogLikeData) => {
+    try {
+        console.log(data)
+        const response = await Api.post(userRoutes.likeBlog, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error        
+    }
+}
+
+export const unLikeBlogApi = async (data: BlogLikeData) => {
+    try {
+        console.log(data)
+        const response = await Api.post(userRoutes.unlikeBlog, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const initialLikeApi = async (userId: string, blogId: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.initialLike}?userId=${userId}&blogId=${blogId}`)
         return response
     } catch (error) {
         console.error(error);
