@@ -8,11 +8,12 @@ import XIcon from '@mui/icons-material/X';
 import { useSelector } from "react-redux";
 import ForumIcon from '@mui/icons-material/Forum';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 import ReportGmailerrorredIcon from '@mui/icons-material/ReportGmailerrorred';
 import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { initialLikeApi, likeBlogApi, unLikeBlogApi } from "../api/user";
+import { initialLikeApi, likeBlogApi, saveBlogApi, unLikeBlogApi, unSaveBlogApi } from "../api/user";
 import toast from "react-hot-toast";
 
 
@@ -22,12 +23,13 @@ const BlogInteraction = () => {
     const { userData } = useSelector(state => state.user)
 
     const [isLiked, setIsLiked] = useState(false);
+    const [isSaved, setIsSaved] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
 
     const userId = userData._id
-    
+
     const blogId = _id
-   
+
 
 
     const { data: initialBlogQuery } = useQuery({
@@ -36,18 +38,18 @@ const BlogInteraction = () => {
     })
 
     useEffect(() => {
-        
+
         initialBlogQuery
     }, [])
 
     console.log('first,,,,,,,,,,,', initialBlogQuery)
-    
+
     useEffect(() => {
-        
+
         if (initialBlogQuery?.data.response) {
-            setIsLiked(true); 
+            setIsLiked(true);
         } else {
-            setIsLiked(false); 
+            setIsLiked(false);
         }
     }, [initialBlogQuery?.data]);
 
@@ -63,7 +65,7 @@ const BlogInteraction = () => {
                 }
             }));
         },
-        onError:  () => {
+        onError: () => {
             toast.error('Something went wrong, Please try again later.')
         }
     })
@@ -80,11 +82,38 @@ const BlogInteraction = () => {
                 }
             }));
         },
-        onError:  () => {
+        onError: () => {
             toast.error('Something went wrong, Please try again later.')
         }
     })
 
+    const { mutate: saveBlog } = useMutation({
+        mutationFn: saveBlogApi,
+        onSuccess: (response) => {
+            console.log('response form save blog -->>> ', response.data.response.success)
+            const result = response.data.response.success
+            if (result) {
+                setIsSaved(true)
+            }
+        },
+        onError: () => {
+            toast.error('Something went wrong, Please try again later.')
+        }
+    })
+
+    const { mutate: unSaveBlog } = useMutation({
+        mutationFn: unSaveBlogApi,
+        onSuccess: (response) => {
+            console.log('response from unsave blog -->> ', response.data.response.success)
+            const result = response.data.response.success
+            if (result) {
+                setIsSaved(false)
+            }
+        },
+        onError: () => {
+            toast.error('Something went wrong, Please try agian later.')
+        }
+    })
 
     const handlePopoverOpen = (event) => {
         setAnchorEl(event.currentTarget);
@@ -98,10 +127,10 @@ const BlogInteraction = () => {
 
 
     const isSameUser = userId === authorId
-    
+
 
     const handleLike = () => {
-       
+
         const data = {
             blogId: blogId,
             userId: userId
@@ -110,12 +139,28 @@ const BlogInteraction = () => {
     }
 
     const handleUnLike = () => {
-    
+
         const data = {
             blogId: blogId,
             userId: userId
         }
         unLikeBlog(data)
+    }
+
+    const handleSave = () => {
+        const data = {
+            blogId: blogId,
+            userId: userId
+        }
+        saveBlog(data)
+    }
+
+    const handleUnSave = () => {
+        const data = {
+            blogId: blogId,
+            userId: userId
+        }
+        unSaveBlog(data)
     }
 
     return (
@@ -188,9 +233,17 @@ const BlogInteraction = () => {
                                 <Paper>
                                     <List>
                                         <ListItem button>
-                                            <ListItemIcon>
-                                                <BookmarkBorderIcon />
-                                            </ListItemIcon>
+                                           
+                                                {isSaved ? (
+                                                    <ListItemIcon onClick={handleUnSave}>
+                                                        <BookmarkIcon color="primary" />
+                                                    </ListItemIcon>
+                                                ) : (
+                                                    <ListItemIcon onClick={handleSave}>
+                                                        <BookmarkBorderIcon />
+                                                    </ListItemIcon>
+                                                )}
+                                            
                                             <ListItemText primary="Save" />
                                         </ListItem>
                                         <ListItem button>
