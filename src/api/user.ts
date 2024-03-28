@@ -16,7 +16,7 @@ interface FollowUserData {
     userId: string
 }
 
-interface BlogLikeData {
+interface BlogData {
     blogId: string,
     userId: string
 }
@@ -192,7 +192,7 @@ export const unfollowUserApi = async (data: FollowUserData) => {
     }
 }
 
-export const likeBlogApi = async (data: BlogLikeData) => {
+export const likeBlogApi = async (data: BlogData) => {
     try {
         console.log(data)
         const response = await Api.post(userRoutes.likeBlog, data)
@@ -203,7 +203,7 @@ export const likeBlogApi = async (data: BlogLikeData) => {
     }
 }
 
-export const unLikeBlogApi = async (data: BlogLikeData) => {
+export const unLikeBlogApi = async (data: BlogData) => {
     try {
         console.log(data)
         const response = await Api.post(userRoutes.unlikeBlog, data)
@@ -217,6 +217,26 @@ export const unLikeBlogApi = async (data: BlogLikeData) => {
 export const initialLikeApi = async (userId: string, blogId: string) => {
     try {
         const response = await Api.get(`${userRoutes.initialLike}?userId=${userId}&blogId=${blogId}`)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const saveBlogApi = async ( data: BlogData) => {
+    try {
+        const response = await Api.post(userRoutes.saveBlog, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const unSaveBlogApi = async (data: BlogData) => {
+    try {
+        const response = await Api.post(userRoutes.unSaveBlog, data)
         return response
     } catch (error) {
         console.error(error);
