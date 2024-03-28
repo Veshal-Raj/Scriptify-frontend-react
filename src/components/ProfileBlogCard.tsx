@@ -1,12 +1,19 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { Card, CardContent, Typography, Chip, Box } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { getDay } from "../hooks/date";
+import { useEffect, useState } from "react";
 
-const ProfileBlogCard = ({ blog, index, username }) => {
+const ProfileBlogCard = ({ blog, index, username, ProfileId }) => {
   const { activity, blog_id, title, banner, tags,publishedAt } = blog;
   const { total_likes } = activity;
+
+  
+  useEffect(() => {
+    console.log("ProfileId changed:", ProfileId);
+  }, [ProfileId]);
+
 
   return   (
     <motion.div

@@ -19,7 +19,10 @@ const userRoutes = {
     unlikeBlog: '/user/unlikeBlog',
     initialLike: '/user/initialLike',
     saveBlog: '/user/saveBlog',
-    unSaveBlog: '/user/unSaveBlog'
+    unSaveBlog: '/user/unSaveBlog',
+    savedBlogs: '/user/savedBlogs',
+    listFollowers: '/user/listFollowers',
+    listFollowings:'/user/listFollowings'
 }   
 
 export default userRoutes;

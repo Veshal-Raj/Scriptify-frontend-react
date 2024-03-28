@@ -243,3 +243,33 @@ export const unSaveBlogApi = async (data: BlogData) => {
         throw error
     }
 }
+
+export const savedBlogsApi = async (userId: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.savedBlogs}?userId=${userId}`)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const listFollowersApi = async (userId: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.listFollowers}?userId=${userId}`)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const listFollowingsApi = async (userId: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.listFollowings}?userId=${userId}`)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}

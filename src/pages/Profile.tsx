@@ -12,9 +12,10 @@ import MobileFooter from "../components/MobileFooter"
 import SavedBlogs from "../components/SavedBlogs"
 import ForumIcon from '@mui/icons-material/Forum';
 import ProfileBlogCard from "../components/ProfileBlogCard"
-import { IconButton, Tooltip } from "@mui/material"
+import { Drawer, IconButton, List, ListItem, ListItemText, Tooltip } from "@mui/material"
 import { useSelector } from "react-redux"
 import NoBlogPublished from "../components/NoBlogPublished"
+import ProfileFollowersDrawer from "../components/ProfileFollowersDrawer"
 
 export const profileDataStructure = {
   "personal_info": {
@@ -50,6 +51,8 @@ const Profile = () => {
   const [activeTab, setActiveTab] = useState("blogPublished");
   const [followers, setFollowers] = useState(0)
   const [followings, setFollowings] = useState(0)
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const userParams = useParams()
   const { userData } = useSelector(state => state.user)
 
   const userId = userData._id
@@ -74,9 +77,9 @@ const Profile = () => {
     mutationFn: profileDetails,
     onSuccess: (response) => {
       if (response.data.response) {
-        console.log('user details >>>> ',response.data.response)
-        console.log('user followers >>>> ',response.data.response.followers)
-        console.log('user following >>>> ',response.data.response.following)
+        console.log('user details >>>> ', response.data.response)
+        console.log('user followers >>>> ', response.data.response.followers)
+        console.log('user following >>>> ', response.data.response.following)
         setProfile(response.data.response)
         setFollowers(response.data.response.followers.length)
         setFollowings(response.data.response.following.length)
@@ -94,7 +97,7 @@ const Profile = () => {
 
 
 
-  const { data: userBlogs, isLoading: blogsLoading, isError } = useQuery({
+  const { data: userBlogs, isLoading: blogsLoading, isError, refetch } = useQuery({
     queryKey: ["fetchUserBlogs"], // Include debounced search term in the query key
     queryFn: () => fetchUserBlogs(ProfileId),
   });
@@ -107,15 +110,26 @@ const Profile = () => {
       const blogs = userBlogs?.data.response.blogs
       total_posts = blogs.length
     }
-  }, [userBlogs]);
+  }, [userBlogs, userParams, ProfileId]);
   console.log(fetchBlogs)
 
   useEffect(() => {
 
     getProfileDetails(ProfileId)
-  }, [])
+    refetch()
+  }, [userParams, ProfileId])
 
-  // console.log('followers and follwing', profile.)
+  
+
+  const handleDrawerOpen = () => {
+    setDrawerOpen(true);
+  };
+
+  const handleDrawerClose = () => {
+    setDrawerOpen(false);
+  };
+
+
   return (
     <>
       <Navbar />
@@ -125,10 +139,15 @@ const Profile = () => {
           <img src={profile_img} alt="profile_img" className="w-48 h-48 bg-gray-50 rounded-full md:h-32 md:w-32" />
           <h1 className="text-2xl font-medium"> @{username}</h1>
           <p>{total_posts.toLocaleString()} Blogs - {total_reads.toLocaleString()} Reads</p>
-          <p className="cursor-pointer">{followers} Followers - {followings} Following</p>
+          <p className="cursor-pointer" onClick={handleDrawerOpen}>{followers} Followers - {followings} Following</p>
+
+          <ProfileFollowersDrawer
+            open={drawerOpen}
+            onClose={handleDrawerClose}
+          />
           <div className="flex gap-4 mt-2">
             {isSameUser && (<Link to='/settings/edit-profile' className="btn-dark bg-gray-50 text-black px-5 py-3 rounded-md">Edit Profile </Link>)}
-            
+
             {!isSameUser && <Tooltip title="Chat" placement="right">
               <IconButton className="p-5">
                 <ForumIcon />
@@ -152,12 +171,12 @@ const Profile = () => {
                   Array.from({ length: 5 }, (_, i) => (
                     <BlogPostCardSkeleton key={`skeleton-${i}`} />
                   ))
-                )  : activeTab === "blogPublished" ? (
+                ) : activeTab === "blogPublished" ? (
                   fetchBlogs.length === 0 ? (
                     <NoBlogPublished />
                   ) : (
                     fetchBlogs.map((blog, i) => (
-                      <ProfileBlogCard key={blog.id} blog={blog} index={i} username={profile.personal_info.username} />
+                      <ProfileBlogCard key={blog.id} blog={blog} index={i} username={profile.personal_info.username} ProfileId={ProfileId} />
                     ))
                   )
                 ) : activeTab === "savedBlogs" ? (

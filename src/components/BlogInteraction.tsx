@@ -45,19 +45,11 @@ const BlogInteraction = () => {
     console.log('first,,,,,,,,,,,', initialBlogQuery)
 
     useEffect(() => {
-
-        if (initialBlogQuery?.data.response.isLiked) {
-            setIsLiked(true);
-        } else {
-            setIsLiked(false);
+        if (initialBlogQuery && initialBlogQuery.data && initialBlogQuery.data.response) {
+            setIsLiked(initialBlogQuery.data.response.isLiked);
+            setIsSaved(initialBlogQuery.data.response.isSaved);
         }
-
-        if (initialBlogQuery?.data.response.isSaved) {
-            setIsSaved(true);
-        } else {
-            setIsSaved(false);
-        }
-    }, [initialBlogQuery?.data]);
+    }, [initialBlogQuery]);
 
     const { mutate: likeBlog } = useMutation({
         mutationFn: likeBlogApi,

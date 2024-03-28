@@ -1,7 +1,9 @@
 import { Button, ButtonGroup, useMediaQuery } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 const ProfileInPageNavigation = ({ setActiveTab, isSameUser }) => {
+  const { id } = useParams(); 
     const [selectedTab, setSelectedTab] = useState("blogPublished");
     const isMediumScreen = useMediaQuery('(min-width:960px)');
   
@@ -9,7 +11,12 @@ const ProfileInPageNavigation = ({ setActiveTab, isSameUser }) => {
       setActiveTab(tab);
       setSelectedTab(tab);
     };
-  
+    
+    useEffect(() => {
+      // Reset selectedTab when id changes
+      setSelectedTab("blogPublished");
+    }, [id]);
+
     return (
       <ButtonGroup variant="text" aria-label="navigation" className="mt-4 " sx={{ borderColor: "transparent" }}>
         <Button
