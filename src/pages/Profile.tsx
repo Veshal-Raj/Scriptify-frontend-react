@@ -3,7 +3,7 @@ import Navbar from "../components/Navbar"
 import { useEffect, useState } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { fetchUserBlogs, profileDetails } from "../api/user"
-import toast, { Toaster } from "react-hot-toast"
+import { Toaster, toast } from 'sonner'
 import About from "../components/About"
 import { AnimatePresence } from "framer-motion"
 import BlogPostCardSkeleton from "../components/Skeleton/BlogSkeleton"
@@ -12,7 +12,7 @@ import MobileFooter from "../components/MobileFooter"
 import SavedBlogs from "../components/SavedBlogs"
 import ForumIcon from '@mui/icons-material/Forum';
 import ProfileBlogCard from "../components/ProfileBlogCard"
-import { Drawer, IconButton, List, ListItem, ListItemText, Tooltip } from "@mui/material"
+import { IconButton, Tooltip } from "@mui/material"
 import { useSelector } from "react-redux"
 import NoBlogPublished from "../components/NoBlogPublished"
 import ProfileFollowersDrawer from "../components/ProfileFollowersDrawer"
@@ -94,15 +94,10 @@ const Profile = () => {
     }
   })
 
-
-
-
   const { data: userBlogs, isLoading: blogsLoading, isError, refetch } = useQuery({
     queryKey: ["fetchUserBlogs"], // Include debounced search term in the query key
     queryFn: () => fetchUserBlogs(ProfileId),
   });
-
-
 
   useEffect(() => {
     if (userBlogs?.data.response.blogs) {
@@ -111,15 +106,15 @@ const Profile = () => {
       total_posts = blogs.length
     }
   }, [userBlogs, userParams, ProfileId]);
+
   console.log(fetchBlogs)
 
   useEffect(() => {
-
     getProfileDetails(ProfileId)
     refetch()
   }, [userParams, ProfileId])
 
-  
+
 
   const handleDrawerOpen = () => {
     setDrawerOpen(true);
@@ -133,21 +128,19 @@ const Profile = () => {
   return (
     <>
       <Navbar />
-      <Toaster />
+      <Toaster richColors position="top-right" expand={false} />
       <section className="min-h-[calc(100vh-80px)] mb-24 m-5 md:flex flex-row-reverse items-start gap-5 min-[1100px]:gap-12">
         <div className="flex flex-col max-md:items-center gap-5 min-w-[250px] ">
           <img src={profile_img} alt="profile_img" className="w-48 h-48 bg-gray-50 rounded-full md:h-32 md:w-32" />
           <h1 className="text-2xl font-medium"> @{username}</h1>
           <p>{total_posts.toLocaleString()} Blogs - {total_reads.toLocaleString()} Reads</p>
           <p className="cursor-pointer" onClick={handleDrawerOpen}>{followers} Followers - {followings} Following</p>
-
           <ProfileFollowersDrawer
             open={drawerOpen}
             onClose={handleDrawerClose}
           />
           <div className="flex gap-4 mt-2">
             {isSameUser && (<Link to='/settings/edit-profile' className="btn-dark bg-gray-50 text-black px-5 py-3 rounded-md">Edit Profile </Link>)}
-
             {!isSameUser && <Tooltip title="Chat" placement="right">
               <IconButton className="p-5">
                 <ForumIcon />
@@ -155,12 +148,10 @@ const Profile = () => {
             </Tooltip>}
           </div>
           <div className="hidden md:block">
-
             <About bio={bio} social_links={social_links} joinedAt={joinedAt} />
           </div>
         </div>
         <div>
-
           <div className=" mt-5 md:ml-10 ">
             <ProfileInPageNavigation setActiveTab={setActiveTab} isSameUser={isSameUser} />
           </div>
@@ -186,7 +177,6 @@ const Profile = () => {
                 ) : activeTab === "about" ? (
                   <div key="about" className="md:hidden">
                     <About bio={bio} social_links={social_links} joinedAt={joinedAt} />
-                    {/* <AboutProfile /> */}
                   </div>
                 ) : null}
               </div>
@@ -194,7 +184,6 @@ const Profile = () => {
           </AnimatePresence>
         </div>
       </section>
-
       <MobileFooter icon='account' />
     </>
   )

@@ -1,5 +1,5 @@
 // TextAnimation.js
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Typography } from '@mui/material';
 

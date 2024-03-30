@@ -9,7 +9,7 @@ const LazyLandingSection3 = lazy(() => import("../components/LandingSection3"));
 
 const LandingPage = () => {
   return (
-    <div>
+    <>
         <Navbar />
         <LandingHero />
         <Suspense fallback={<div>Loading...</div>}>
@@ -19,7 +19,7 @@ const LandingPage = () => {
         </Suspense>
         <Footer />
       
-    </div>
+    </>
   )
 }
 

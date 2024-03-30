@@ -14,7 +14,7 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { initialLikeApi, likeBlogApi, saveBlogApi, unLikeBlogApi, unSaveBlogApi } from "../api/user";
-import toast from "react-hot-toast";
+import {  toast } from 'sonner'
 
 
 const BlogInteraction = () => {
@@ -92,6 +92,7 @@ const BlogInteraction = () => {
             const result = response.data.response.success
             if (result) {
                 setIsSaved(true)
+                toast.success('Blog Saved Successfully')
             }
         },
         onError: () => {
@@ -106,6 +107,7 @@ const BlogInteraction = () => {
             const result = response.data.response.success
             if (result) {
                 setIsSaved(false)
+                toast.success('Blog Unsaved Successfully')
             }
         },
         onError: () => {

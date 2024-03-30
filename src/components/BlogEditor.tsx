@@ -2,13 +2,12 @@ import Navbar from "./Navbar";
 import blogBanner from '../assests/imgs/blog banner.png'
 import { uploadImage } from "../hooks/aws";
 import { useContext, useEffect } from "react";
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'sonner'
 import EditorJS from '@editorjs/editorjs'
 import { tools } from "./ToolsComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { setBlog } from "../redux/slice/editorSlice";
 import { EditorContext } from "../pages/Write";
-import MobileFooter from "./MobileFooter";
 
 export const BlogEditor = () => {
   const dispatch = useDispatch()
@@ -65,7 +64,7 @@ export const BlogEditor = () => {
   return (
     <>
       <Navbar />
-      <Toaster />
+      <Toaster richColors position="top-right" expand={false} />
       <section>
         <div className="mx-auto my-5 max-w-[900px] ">
           <div className="relative mx-5 aspect-video hover:opacity-80 bg-white border-4 border-gray">

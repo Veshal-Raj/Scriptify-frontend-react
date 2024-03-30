@@ -1,5 +1,5 @@
 import { Box, AppBar, Toolbar, Typography, IconButton, Drawer } from "@mui/material";
-import { Link, Navigate, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import SideBar from "./UI/SideBar";
 import { useDispatch, useSelector } from "react-redux";
 import EditNoteSharpIcon from '@mui/icons-material/EditNoteSharp';
@@ -7,13 +7,12 @@ import NotificationsNoneSharpIcon from '@mui/icons-material/NotificationsNoneSha
 import SearchSharpIcon from '@mui/icons-material/SearchSharp';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import NavButton from "./UI/NavButton";
-import toast, { Toaster } from "react-hot-toast";
+import { Toaster, toast } from 'sonner'
 import NavLink from "./UI/NavLink";
-import { setBlog, setEditorState } from "../redux/slice/editorSlice";
+import { setBlog } from "../redux/slice/editorSlice";
 import { useContext, useState } from "react";
 import { EditorContext } from "../pages/Write";
 import SearchBoxDiv from "./SearchBoxDiv";
-import UserSideBar from "./UI/UserSideBar";
 import logo from '../assests/imgs/logo.png'
 import DrawerContent from "./UI/ProfileDrawer";
 import ForumIcon from '@mui/icons-material/Forum';
@@ -169,7 +168,7 @@ export default function Navbar() {
         </Drawer>
       </Box>
       
-      <Toaster />
+      <Toaster richColors position="top-right" expand={false} />
       
     </>
   );

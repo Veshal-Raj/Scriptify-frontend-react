@@ -7,11 +7,11 @@ const SingleBlogPage = () => {
   const { blogId } = useParams()
   console.log(blogId)
   return (
-    <div>
+    <>
       <Navbar />
       <ShowBlogContent blogId={blogId}/>
       <MobileFooter icon='write' />
-    </div>
+    </>
   )
 }
 

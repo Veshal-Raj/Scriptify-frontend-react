@@ -14,7 +14,8 @@ import { signup } from "../../api/user";
 import { userFormData } from "../../@types/Tuser";
 import { useMutation } from "@tanstack/react-query";
 import AlertDialogSlide from "../../components/Modal";
-import toast, { Toaster } from "react-hot-toast";
+
+import { Toaster, toast } from 'sonner'
 import ReCAPTCHA from "react-google-recaptcha";
 import { validateEmail, validatePassword, validateUsername } from "../../utils/validationUtils";
 const PUBLIC_RECAPTCHA_SITE_KEY = import.meta.env.VITE_PUBLIC_RECAPTCHA_SITE_KEY
@@ -72,7 +73,7 @@ export default function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "70vh", paddingTop: "50px" }}>
-     <Toaster />
+     <Toaster richColors position="top-right" expand={false} />
       <Box
         sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }}
       >

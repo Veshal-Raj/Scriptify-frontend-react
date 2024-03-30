@@ -12,7 +12,7 @@ import { Link as RouterLink, useNavigate } from "react-router-dom";
 import GoogleAuthButton from "../components/UI/googleAuthButton";
 import { useMutation } from "@tanstack/react-query";
 import { login } from "../api/user";
-import toast, { Toaster } from 'react-hot-toast';
+import { Toaster, toast } from 'sonner'
 import { validateEmail, validatePassword } from "../utils/validationUtils";
 import { setUser } from "../redux/slice/userSlice";
 import { useDispatch } from "react-redux";
@@ -72,7 +72,7 @@ export default function SignIn() {
 
   return (
     <Container component="main" maxWidth="xs" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "70vh", paddingTop: "50px" }}>
-      <Toaster />
+      <Toaster richColors position="top-right" expand={false} />
       <Box
         sx={{
           marginTop: 8,

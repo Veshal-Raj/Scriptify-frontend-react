@@ -12,8 +12,8 @@ import SingleBlogSkeleton from "./Skeleton/SingleBlogSkeleton"
 import AddIcon from '@mui/icons-material/Add';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { useDispatch, useSelector } from "react-redux"
-import toast from "react-hot-toast"
-import { addFollower, addFollowing, removeFollowing } from "../redux/slice/userSlice"
+import { toast } from 'sonner'
+import { addFollowing, removeFollowing } from "../redux/slice/userSlice"
 
 export const BlogContext = createContext({})
 

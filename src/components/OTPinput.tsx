@@ -1,11 +1,4 @@
-import React, {
-  useEffect,
-  useRef,
-  useState,
-  ChangeEvent,
-  KeyboardEvent,
-  useCallback
-} from "react";
+import React, { useEffect, useRef, useState, ChangeEvent, KeyboardEvent, useCallback } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { verifyOTP } from "../api/user";
 import { useNavigate } from "react-router-dom";
@@ -22,10 +15,10 @@ type Props = {
 
 const OtpInput: React.FC<Props> = ({
   length = 4,
-  onOtpSubmit = () => {},
+  onOtpSubmit = () => { },
 }: Props) => {
-  
-  const [sendOTP, setSendOTP]= useState('');
+
+  const [sendOTP, setSendOTP] = useState('');
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [otp, setOtp] = useState<string[]>(new Array(length).fill(""));
@@ -39,20 +32,20 @@ const OtpInput: React.FC<Props> = ({
     }
   }, []);
 
-  const {mutate: verifyOTPMutation} = useMutation({
+  const { mutate: verifyOTPMutation } = useMutation({
     mutationFn: verifyOTP,
     onSuccess: (response) => {
-        console.log('otp verification -->> ', response)
-        if (response.status === 200) {
-          dispatch(setUser(response.data))
-          setTimeout(()=> navigate('/user/feed'),800)
-        }
+      console.log('otp verification -->> ', response)
+      if (response.status === 200) {
+        dispatch(setUser(response.data))
+        setTimeout(() => navigate('/user/feed'), 800)
+      }
     }
   })
 
   const verifyOTPCallback = useCallback((combinedOtp: string) => {
     setIsSubmitting(true);
-    const userOTP = {'otp': combinedOtp};
+    const userOTP = { 'otp': combinedOtp };
     onOtpSubmit(combinedOtp);
     verifyOTPMutation(userOTP);
   }, [onOtpSubmit, verifyOTPMutation])
@@ -63,9 +56,9 @@ const OtpInput: React.FC<Props> = ({
         setSeconds(seconds - 1);
       }
     }, 1000);
-  
+
     return () => clearInterval(interval); // Cleanup function to clear interval
-  
+
   }, [seconds]); // Dependency array remains the same
 
   const handleChange = (index: number, e: ChangeEvent<HTMLInputElement>) => {
@@ -77,7 +70,7 @@ const OtpInput: React.FC<Props> = ({
     newOtp[index] = value.substring(value.length - 1);
     setOtp(newOtp);
 
-   
+
     // submit trigger
     const combinedOtp = newOtp.join("");
     if (combinedOtp.length === length) {
@@ -120,41 +113,34 @@ const OtpInput: React.FC<Props> = ({
     }
   };
 
-  const handleResendOTP = ()=>{
+  const handleResendOTP = () => {
     // send a resend otp req to the backend
     setSeconds(60)
   }
 
   return (
     <>
-    <div className="text-center m-10">
-      <div className="flex justify-center">
-        {otp.map((value, index) => (
-          <input
-          key={index}
-          type="text"
-          ref={(input) =>
-            (inputRefs.current[index] = input as HTMLInputElement)
-          }
-          value={value}
-            onChange={(e) => handleChange(index, e)}
-            onClick={() => handleClick(index)}
-            onKeyDown={(e) => handleKeyDown(index, e)}
-            readOnly={isSubmitting} // Make input readonly when submitting
-            className="w-12 h-12 mx-1 text-2xl text-center border border-gray-300 rounded focus:outline-none focus:border-blue-500"
+      <div className="text-center m-10">
+        <div className="flex justify-center">
+          {otp.map((value, index) => (
+            <input
+              key={index}
+              type="text"
+              ref={(input) =>
+                (inputRefs.current[index] = input as HTMLInputElement)
+              }
+              value={value}
+              onChange={(e) => handleChange(index, e)}
+              onClick={() => handleClick(index)}
+              onKeyDown={(e) => handleKeyDown(index, e)}
+              readOnly={isSubmitting} // Make input readonly when submitting
+              className="w-12 h-12 mx-1 text-2xl text-center border border-gray-300 rounded focus:outline-none focus:border-blue-500"
             />
-            ))}
+          ))}
+        </div>
+        <Timer seconds={seconds} handleResendOTP={handleResendOTP} />
+        <BackdropLoading isSubmitting={isSubmitting} />
       </div>
-      {/* {seconds > 0 ? (
-        <h1 className="mt-10">Timer: {seconds}</h1>
-      ) : (
-        <button className="mt-10" onClick={handleResendOTP}>
-          Resend OTP
-        </button>
-      )} */}
-      <Timer seconds={seconds} handleResendOTP={handleResendOTP} />
-      <BackdropLoading isSubmitting={isSubmitting}/>
-    </div>
     </>
   );
 };

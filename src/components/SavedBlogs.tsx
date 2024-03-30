@@ -1,4 +1,4 @@
-import { Typography, Box, Card, Grid, Paper, CardMedia, CardContent, Chip } from '@mui/material';
+import { Typography, Box, Card, CardContent, Chip } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
 import { savedBlogsApi } from '../api/user';
 import { useSelector } from 'react-redux';
