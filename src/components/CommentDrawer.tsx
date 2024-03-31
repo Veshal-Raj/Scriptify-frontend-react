@@ -1,34 +1,98 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Drawer, List, ListItem, ListItemText, TextField, Button, Typography, IconButton } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useMediaQuery } from '@mui/material';
 import EmojiPicker from 'emoji-picker-react';
 import SentimentSatisfiedAltIcon from '@mui/icons-material/SentimentSatisfiedAlt';
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { addCommentApi, initialCommentsApi } from "../api/user";
+import { useSelector } from "react-redux";
 
 
 interface CommentDrawerProps {
     open: boolean;
     onClose: () => void;
     title: string;
+    commentData: {
+        userId: string;
+        authorId: string;
+        blogId: string;
+        _id: string;
+    };
+    
 }
 
-const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title }) => {
-    const isSmallScreen = useMediaQuery('(max-width:600px)');
+interface CommentResponse {
+    commentedUser: {
+        id: string;
+        username: string;
+    };
+    comment: string;
+    commentTime: string;
+}
 
-    const [commentText, setCommentText] = useState("");
-    const [comments, setComments] = useState<string[]>([]);
-    const [showEmojiPicker, setShowEmojiPicker] = useState(false);
+const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title, commentData }) => {
+
+    const [commentText, setCommentText] = useState(''); // onchange text
+    const [comments, setComments] = useState<CommentResponse[]>([]); // comment from the backend
+    const [showEmojiPicker, setShowEmojiPicker] = useState(false); 
+    const [commentUser, setCommentUser] = useState('') // user typed comment
+    const [blogComments, setBlogComments] = useState<CommentResponse | null>(null); 
+
+    // const { data: initialBlogQuery } = useQuery({
+    //     queryKey: ["initialQuery"],
+    //     queryFn: () => initialLikeApi(userId, blogId)
+    // })
+
+    const { data: initialComments } = useQuery({
+        queryKey: ['initialLoadingComments'],
+        queryFn:() => initialCommentsApi
+    })
+
+    useEffect(() => {
+        if (commentData) {
+
+            initialCommentsApi(commentData._id)
+        }
+    }, [open])
+
+    console.log('initial comments -- ', initialComments)
 
     const handleCommentChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         setCommentText(event.target.value);
     };
 
     const handlePostComment = () => {
+    
         if (commentText.trim() !== "") {
-            setComments([...comments, commentText]);
-            setCommentText("");
+            setCommentUser(commentText);
+            setCommentText("");           
         }
     };
+    
+        
+
+    const { mutate: commentBlog } = useMutation({
+        mutationFn: addCommentApi,
+        onSuccess: (response) => {
+            const responseData: CommentResponse = response.data.response;
+            setComments([responseData ,...comments])
+        }
+    })
+    
+
+    useEffect(()=>{
+
+        if (commentUser.length) {
+           
+            // create a data object and pass it to the addCommentApi
+            const data = {
+                commentData: commentData,
+                comment: commentUser
+            }
+            commentBlog(data)
+        }
+    },[ commentUser ])
 
     const handleEmojiClick = (event: any) => {
         const selectedEmoji = event.emoji;
@@ -72,7 +136,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title }) =
                 >
                     Post Comment
                 </Button>
-                <List>
+                {/* <List>
                     {comments.map((comment, index) => (
                         <ListItem key={index}>
                             <ListItemText
@@ -86,7 +150,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title }) =
                             />
                         </ListItem>
                     ))}
-                </List>
+                </List> */}
                 {showEmojiPicker && (
                     <EmojiPicker onEmojiClick={handleEmojiClick} />
                 )}
