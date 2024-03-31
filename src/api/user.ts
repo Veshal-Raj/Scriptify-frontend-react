@@ -21,6 +21,16 @@ interface BlogData {
     userId: string
 }
 
+interface CommentData {
+    commentData: {
+        userId: string;
+        authorId: string;
+        blogId: string;
+        _id: string;
+    };
+    comment: string[];
+}
+
 export const signup = async (userData: userFormData) => {
     try {
         const response = await Api.post(userRoutes.signup, userData);
@@ -267,6 +277,28 @@ export const listFollowersApi = async (userId: string) => {
 export const listFollowingsApi = async (userId: string) => {
     try {
         const response = await Api.get(`${userRoutes.listFollowings}?userId=${userId}`)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const addCommentApi = async ( data: CommentData) => {
+    try {
+        console.log('commentData --- ', data)
+        const response = await Api.post(userRoutes.addComment, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const initialCommentsApi = async ( blogId: string ) => {
+    try {
+        console.log('blogId --- ', blogId)
+        const response = await Api.get(`${userRoutes.initialComments}?blogId=${blogId}`)
         return response
     } catch (error) {
         console.error(error);
