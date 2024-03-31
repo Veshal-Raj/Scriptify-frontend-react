@@ -32,7 +32,12 @@ const BlogInteraction = () => {
 
     const blogId = _id
 
-
+    const commentData = {
+        userId : userId,
+        authorId: authorId,
+        blogId: blog_id,
+        _id: _id 
+    }
 
     const { data: initialBlogQuery } = useQuery({
         queryKey: ["initialQuery"],
@@ -207,6 +212,8 @@ const BlogInteraction = () => {
                             open={isCommentsDrawerOpen}
                             onClose={handleCommentsDrawerClose}
                             title={ title }
+                            commentData  = {commentData}
+                            
                         />
 
                         {!isSameUser && <Tooltip title="Chat" placement="right">
