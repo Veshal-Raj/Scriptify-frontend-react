@@ -22,7 +22,9 @@ const userRoutes = {
     unSaveBlog: '/user/unSaveBlog',
     savedBlogs: '/user/savedBlogs',
     listFollowers: '/user/listFollowers',
-    listFollowings:'/user/listFollowings'
+    listFollowings:'/user/listFollowings',
+    addComment: '/user/addComment',
+    initialComments: '/user/initialComments'
 }   
 
 export default userRoutes;
