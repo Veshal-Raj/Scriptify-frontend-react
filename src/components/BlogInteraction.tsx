@@ -14,7 +14,8 @@ import MoreVertRoundedIcon from '@mui/icons-material/MoreVertRounded';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { initialLikeApi, likeBlogApi, saveBlogApi, unLikeBlogApi, unSaveBlogApi } from "../api/user";
-import {  toast } from 'sonner'
+import { toast } from 'sonner'
+import CommentDrawer from "./CommentDrawer";
 
 
 const BlogInteraction = () => {
@@ -25,6 +26,7 @@ const BlogInteraction = () => {
     const [isLiked, setIsLiked] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
     const [anchorEl, setAnchorEl] = useState(null);
+    const [isCommentsDrawerOpen, setIsCommentsDrawerOpen] = useState(false);
 
     const userId = userData._id
 
@@ -163,6 +165,14 @@ const BlogInteraction = () => {
         unSaveBlog(data)
     }
 
+    const handleCommentsDrawerOpen = () => {
+        setIsCommentsDrawerOpen(true);
+      };
+    
+      const handleCommentsDrawerClose = () => {
+        setIsCommentsDrawerOpen(false);
+      };
+
     return (
         <>
             <hr className="border-gray-200 my-2" />
@@ -187,11 +197,17 @@ const BlogInteraction = () => {
                         <p className="text-xl text-gray-600">{total_likes}</p>
 
                         <Tooltip title="Comment" placement="bottom">
-                            <IconButton>
+                            <IconButton onClick={handleCommentsDrawerOpen}>
                                 <CommentIcon />
                             </IconButton>
                         </Tooltip>
                         <p className="text-xl text-gray-600">{total_comments}</p>
+
+                        <CommentDrawer
+                            open={isCommentsDrawerOpen}
+                            onClose={handleCommentsDrawerClose}
+                            title={ title }
+                        />
 
                         {!isSameUser && <Tooltip title="Chat" placement="right">
                             <IconButton>
@@ -233,17 +249,17 @@ const BlogInteraction = () => {
                                 <Paper>
                                     <List>
                                         <ListItem button>
-                                           
-                                                {isSaved ? (
-                                                    <ListItemIcon onClick={handleUnSave}>
-                                                        <BookmarkIcon color="primary" />
-                                                    </ListItemIcon>
-                                                ) : (
-                                                    <ListItemIcon onClick={handleSave}>
-                                                        <BookmarkBorderIcon />
-                                                    </ListItemIcon>
-                                                )}
-                                            
+
+                                            {isSaved ? (
+                                                <ListItemIcon onClick={handleUnSave}>
+                                                    <BookmarkIcon color="primary" />
+                                                </ListItemIcon>
+                                            ) : (
+                                                <ListItemIcon onClick={handleSave}>
+                                                    <BookmarkBorderIcon />
+                                                </ListItemIcon>
+                                            )}
+
                                             <ListItemText primary="Save" />
                                         </ListItem>
                                         <ListItem button>
