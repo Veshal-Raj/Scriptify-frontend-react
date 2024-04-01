@@ -5,7 +5,7 @@ import FacebookIcon from '@mui/icons-material/Facebook';
 import XIcon from '@mui/icons-material/X';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import LanguageIcon from '@mui/icons-material/Language';
-import { getFullDay } from "../hooks/date";
+import { getFullDay } from "../hooks/useDate";
 import { useEffect } from "react";
 
 interface SocialIcons {
