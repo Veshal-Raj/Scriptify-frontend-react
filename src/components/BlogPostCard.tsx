@@ -1,4 +1,4 @@
-import { getDay } from "../hooks/date";
+import { getDay } from "../hooks/useDate";
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { motion } from 'framer-motion';
 import { Card, CardContent, Typography, Chip, Box } from '@mui/material';
