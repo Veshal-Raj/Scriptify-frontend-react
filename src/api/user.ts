@@ -299,6 +299,18 @@ export const initialCommentsApi = async ( blogId: string ) => {
     try {
         console.log('blogId --- ', blogId)
         const response = await Api.get(`${userRoutes.initialComments}?blogId=${blogId}`)
+        console.log('response of initial comments --->>> ', response)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const replyCommentApi = async (data: any) => {
+    try {
+        console.log('reply data >>> ', data)
+        const response = await Api.post(userRoutes.replyComment, data)
         return response
     } catch (error) {
         console.error(error);
