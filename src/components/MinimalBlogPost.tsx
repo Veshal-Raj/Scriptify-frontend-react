@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CardContent, Typography } from '@mui/material';
-import { getDay } from '../hooks/date';
+import { getDay } from '../hooks/useDate';
 
 const MinimalBlogPost = ({ blog, index }) => {
     const { publishedAt, title, author: { personal_info: { username } }, blog_id } = blog;
