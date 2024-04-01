@@ -1,6 +1,6 @@
 import Navbar from "./Navbar";
 import blogBanner from '../assests/imgs/blog banner.png'
-import { uploadImage } from "../hooks/aws";
+import { uploadImage } from "../hooks/useAws";
 import { useContext, useEffect } from "react";
 import { Toaster, toast } from 'sonner'
 import EditorJS from '@editorjs/editorjs'
