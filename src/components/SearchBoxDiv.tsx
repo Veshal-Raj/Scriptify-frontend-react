@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Backdrop, Skeleton, TextField } from "@mui/material";
 import {   SetStateAction, useEffect, useState } from "react";
-import useDebounce from "../hooks/debounceSearch";
+import useDebounce from "../hooks/useDebounceSearch";
 import SearchIcon from '@mui/icons-material/Search';
 import SentimentDissatisfiedIcon from '@mui/icons-material/SentimentDissatisfied';
 import { searchQuery } from "../api/user";
