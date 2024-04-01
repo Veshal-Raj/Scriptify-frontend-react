@@ -12,7 +12,7 @@ import Checklist from '@editorjs/checklist';
 import Delimiter from '@editorjs/delimiter';
 import Warning from '@editorjs/warning';
 
-import { uploadImage } from '../hooks/aws';
+import { uploadImage } from '../hooks/useAws';
 
 const uploadImageByFile =  (e) => {
     return uploadImage(e).then(url => {
