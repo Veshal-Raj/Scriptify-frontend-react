@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Card, CardContent, Typography, Chip, Box } from "@mui/material";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-import { getDay } from "../hooks/date";
+import { getDay } from "../hooks/useDate";
 import { useEffect } from "react";
 
 const ProfileBlogCard = ({ blog, index, username, ProfileId }) => {
