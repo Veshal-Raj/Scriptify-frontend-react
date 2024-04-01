@@ -2,7 +2,7 @@ import { useMutation, useQuery } from "@tanstack/react-query"
 import { fetchSimilarBlogs, fetchSingleBlog, followUserApi, increaseReadCount, unfollowUserApi } from "../api/user"
 import { createContext, useEffect, useState } from "react"
 import { Link } from "react-router-dom"
-import { getDay } from "../hooks/date"
+import { getDay } from "../hooks/useDate"
 import { Typography, Avatar, useMediaQuery, Grid, Card, CardActionArea, CardMedia, CardContent } from '@mui/material';
 import { motion } from 'framer-motion';
 import BlogInteraction from "./BlogInteraction";
