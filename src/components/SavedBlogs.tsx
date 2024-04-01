@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
-import { getDay } from '../hooks/date';
+import { getDay } from '../hooks/useDate';
 
 
 const SavedBlogs = () => {
