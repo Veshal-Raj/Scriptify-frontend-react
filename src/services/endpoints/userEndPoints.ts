@@ -24,7 +24,8 @@ const userRoutes = {
     listFollowers: '/user/listFollowers',
     listFollowings:'/user/listFollowings',
     addComment: '/user/addComment',
-    initialComments: '/user/initialComments'
+    initialComments: '/user/initialComments',
+    replyComment: '/user/replyComment'
 }   
 
 export default userRoutes;
