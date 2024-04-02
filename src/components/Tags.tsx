@@ -2,7 +2,6 @@ import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBlog } from '../redux/slice/editorSlice';
 
-
 export const Tags = ({ tag, tagIndex }) => {
     const dispatch = useDispatch()
     const blog = useSelector((state) => state.editor.blog);
@@ -20,7 +19,6 @@ export const Tags = ({ tag, tagIndex }) => {
             dispatch(setBlog({...blog, tags }))
             console.log(tags)
             e.target.setAttribute("contentEditable", false)
-
         }
     }
     const addEditable = (e) => {

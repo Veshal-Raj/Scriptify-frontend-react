@@ -28,9 +28,8 @@ const ShowBlogContent = ({ blogId }) => {
     const dispatch = useDispatch()
 
     const userId = userData._id
-    // const followings = userData.following
     const authorId = singleBlogData?.author._id
-    const followings = userData.followings // this is an array
+    const followings = userData.followings 
 
     useEffect(() => {
         if (followings?.includes(authorId)) {
@@ -39,10 +38,7 @@ const ShowBlogContent = ({ blogId }) => {
             setIsFollowing(false)
         }
     }, [followings, authorId])
-    
-    
 
-    console.log('??????????', singleBlogData)
     const { data: SingleBlog, isLoading } = useQuery({
         queryKey: ["singleBlog", blogId],
         queryFn: () => fetchSingleBlog(blogId),
@@ -53,18 +49,15 @@ const ShowBlogContent = ({ blogId }) => {
         mutationFn: fetchSimilarBlogs,
         onSuccess: (response) => {
             if (response.data.response) {
-                console.log('response --> ', response.data.response);
                 const filteredSimilarBlogs = response.data.response.filter(blog => blog.title !== singleBlogData?.title); // Filter out the blog with the same ID
                 setSimilarBlogs(filteredSimilarBlogs);
             }
-
         }
     })
 
     const { mutate: addReadCount } = useMutation({
         mutationFn: increaseReadCount,
         onSuccess: () => {
-            // alert('success')
             console.log('increased read count')
         }
     })
@@ -108,18 +101,12 @@ const ShowBlogContent = ({ blogId }) => {
     useEffect(() => {
         if (tags.length > 0) {
             fetchSimilarBlog(tags)
-
-
         }
     }, [tags])
 
     useEffect(() => {
         if (!timerStarted) {
             const timer = setTimeout(() => {
-                // call the function to increase the read count
-                console.log('Api calling')
-                console.log(typeof userId, '/??///', typeof blogId)
-
                 const data = {
                     userId: userId,
                     blogId: blogId
@@ -132,25 +119,18 @@ const ShowBlogContent = ({ blogId }) => {
     }, [timerStarted, userId, blogId])
 
     useEffect(() => {
-        console.log('????????????????????????????????????????/')
-        console.log(authorId, '.....', userData.following)
         if (authorId && userData.following?.includes(authorId)) {
-            console.log('reached here')
             setIsFollowing(true);
         } else {
             setIsFollowing(false);
         }
-        console.log('......................................')
     }, [followings, authorId]);
 
-    
 
     const content = singleBlogData?.content[0].blocks
 
-    const handleUnfollow  = () => {
-        console.log('clicked unfollow user')
-        // setIsFollowing(false)
-        if (singleBlogData!== null && singleBlogData?._id) {
+    const handleUnfollow = () => {
+        if (singleBlogData !== null && singleBlogData?._id) {
             const authorId = singleBlogData?.author._id
             const data = {
                 authorId: authorId,
@@ -161,18 +141,18 @@ const ShowBlogContent = ({ blogId }) => {
     }
 
     const handleFollow = () => {
-        console.log('clicked follow user')
-        if (singleBlogData!== null && singleBlogData?._id) {
+        if (singleBlogData !== null && singleBlogData?._id) {
             const authorId = singleBlogData?.author._id
             const data = {
                 authorId: authorId,
                 userId: userId
             }
             followUser(data)
-            
         }
     }
 
+    const status = userId === authorId
+    
     return (
         <div>
             {isLoading ? (
@@ -197,26 +177,27 @@ const ShowBlogContent = ({ blogId }) => {
                                         <br />
                                         @ <Link to={`/user/${singleBlogData?.author._id}`} className="underline">{singleBlogData?.author.personal_info.username}</Link>
                                     </Typography>
-                                    <div className="py-1">
-
-                                        {isFollowing ? (
-                                            <Typography
-                                                variant="body1"
-                                                className="capitalize font-normal text-lg text-red-700 cursor-pointer"
-                                                onClick={handleUnfollow}
-                                            >
-                                                Unfollow <RemoveIcon />
-                                            </Typography>
-                                        ) : (
-                                            <Typography
-                                                variant="body1"
-                                                className="capitalize font-normal text-lg text-blue-700 cursor-pointer"
-                                                onClick={handleFollow}
-                                            >
-                                                Follow <AddIcon />
-                                            </Typography>
-                                        )}
-                                    </div>
+                                    {!status && ( // Conditionally render based on user being the author or not
+                                        <div className="py-1">
+                                            {isFollowing ? (
+                                                <Typography
+                                                    variant="body1"
+                                                    className="capitalize font-normal text-lg text-red-700 cursor-pointer"
+                                                    onClick={handleUnfollow}
+                                                >
+                                                    Unfollow <RemoveIcon />
+                                                </Typography>
+                                            ) : (
+                                                <Typography
+                                                    variant="body1"
+                                                    className="capitalize font-normal text-lg text-blue-700 cursor-pointer"
+                                                    onClick={handleFollow}
+                                                >
+                                                    Follow <AddIcon />
+                                                </Typography>
+                                            )}
+                                        </div>
+                                    )}
                                 </div>
                                 <Typography variant="body1" className="text-lg font-normal text-gray-600 opacity-75 max-sm:mt-6 max-sm:ml-20 max-sm:pl-5">
                                     Published on {getDay(singleBlogData?.publishedAt)}
@@ -224,7 +205,6 @@ const ShowBlogContent = ({ blogId }) => {
                             </div>
                         </div>
                         <BlogInteraction />
-
                         <div className="my-12 font-serif   ">
                             {
                                 content?.map((block, i) => {
@@ -243,7 +223,6 @@ const ShowBlogContent = ({ blogId }) => {
                                         <Grid item xs={12} sm={6} md={4} key={blog._id}>
                                             <motion.div
                                                 whileHover={{ scale: 1.01, transition: { duration: 0.3 } }}
-                                                // whileTap={{ scale: 0.95 }}
                                                 className="blog-card"
                                             >
                                                 <Card>
@@ -258,7 +237,6 @@ const ShowBlogContent = ({ blogId }) => {
                                                             <Typography gutterBottom variant="h6" component="div">
                                                                 {blog.title}
                                                             </Typography>
-                                                            {/* Add other blog details like author, published date, etc. */}
                                                         </CardContent>
                                                     </CardActionArea>
                                                 </Card>
@@ -268,17 +246,14 @@ const ShowBlogContent = ({ blogId }) => {
                                 </Grid>
                             ) : (
                                 <NoSimilarBlogMessage />
-
                             )}
                         </div>
-
                     </motion.div>
                 </BlogContext.Provider>
             ) : (
                 <Typography variant="body1" className="text-lg font-normal text-gray-600 opacity-75 max-sm:mt-6 max-sm:ml-20 max-sm:pl-5">
                     Blog not found
                 </Typography>
-
             )}
         </div>
     )

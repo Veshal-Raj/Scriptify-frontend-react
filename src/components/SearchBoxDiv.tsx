@@ -68,16 +68,13 @@ const SearchBoxDiv = ({ setSearchDiv }) => {
                 }}
             >
                 <TextField id="outlined-basic" label="Search" variant="outlined" fullWidth value={searchTerm} onChange={handleSearchChange} autoFocus />
-                {/* Display loading state if data is still loading */}
                 {isLoading && <>
                     <Skeleton variant="text" width={'auto'} />
                     <Skeleton variant="text" width={'auto'} />
                     <Skeleton variant="text" width={'auto'} />
                     <Skeleton variant="text" width={'auto'} />
                 </>}
-                {/* Display error message if there's an error */}
                 {isError && <p>Error fetching data</p>}
-                {/* Display if there is no search results */}
                 {searchResults && suggestions?.length === 0 ? (
                     <div className="flex items-center justify-center h-full p-5">
                         <div className="flex items-center">
@@ -88,7 +85,6 @@ const SearchBoxDiv = ({ setSearchDiv }) => {
                 ) : (
                     <></>
                 )}
-                {/* Display search results */}
                 {suggestions && (
                    <div className="rounded-lg">
                    <ul className="hover:cursor-pointer">

@@ -17,7 +17,6 @@ const ProfileFollowersDrawer = ({ open, onClose }) => {
 
     const { id: userId } = useParams()
 
-
     const { data: listFollowers, refetch: refetchFollowers } = useQuery({
         queryKey: ["listFollowersQuery"],
         queryFn: () => listFollowersApi(userId),
@@ -47,28 +46,18 @@ const ProfileFollowersDrawer = ({ open, onClose }) => {
         }
     }, [open, refetchFollowers])
 
-    console.log('listFollowers //', listFollowers?.data.response)
-
-
-
-
-
     const handleDrawerClose = () => {
         setDrawerOpen(false);
         onClose();
     };
 
     const closeDrawer = () => {
-        // setDrawerOpen(false);
         onClose();
-
-
     }
 
     const fetchFollowings = async () => {
         await refetchFollowings();
     };
-
 
     const isSmallScreen = useMediaQuery('(max-width:600px)');
 
@@ -93,10 +82,8 @@ const ProfileFollowersDrawer = ({ open, onClose }) => {
             </div>
             <div className="my-[16px] mx-[20px]">
                 {viewFollowers ? (
-                    // If viewing followers, check if the array is empty
                     followersArray.length === 0 ? (
                         <div className="flex justify-center border border-black border-opacity-50 p-5 rounded-lg">
-
                             <Typography>No Followers</Typography>
                         </div>
                     ) : (
@@ -118,14 +105,11 @@ const ProfileFollowersDrawer = ({ open, onClose }) => {
                         ))
                     )
                 ) : (
-                    // If viewing followings, check if the array is empty
                     followingsArray.length === 0 ? (
                         <div className="flex justify-center border border-black border-opacity-50 p-5 rounded-lg ">
-
                             <Typography>No Following</Typography>
                         </div>
                     ) : (
-                        // Map through followings array and render names
                         followingsArray.map((following, index) => (
                             <Link to={`/user/${following._id}`} key={index} className="text-black text-opacity-50">
                                 <motion.div key={index} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}

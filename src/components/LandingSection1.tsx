@@ -55,8 +55,8 @@ const LandingSection1 = () => {
     ];
 
     return (
-        <div className="bg-white py-10">
-            <div className="py-20 mx-10">
+        <div className="bg-white ">
+            <div className="pt-10 mx-10">
                 <Typography variant="h2" component="h3" className="text-center"
                     sx={{
                         padding: '0px',
