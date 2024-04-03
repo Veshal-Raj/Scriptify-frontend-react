@@ -1,12 +1,33 @@
-import { Avatar, Box, Button, Grid, List, ListItem, ListItemText, Typography, useMediaQuery } from "@mui/material";
+import { Avatar, Box, Button, CircularProgress, Grid, List, ListItem, ListItemText, Typography, useMediaQuery } from "@mui/material";
 import logo from '../assests/imgs/logo.png';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { benefits, personAvatarUrl } from "../utils/constants/constants";
+import { useState } from "react";
 
 
 
 const SubscriptionPage = () => {
+    const [isLoadingMonthly, setIsLoadingMonthly] = useState(false);
+    const [isLoadingYearly, setIsLoadingYearly] = useState(false);
     const isSmallScreen = useMediaQuery('(max-width:600px)');
+
+    const handleClickMonthly = () => {
+        setIsLoadingMonthly(true);
+
+        // Simulating an async operation
+        setTimeout(() => {
+            setIsLoadingMonthly(false);
+        }, 2000);
+    };
+
+    const handleClickYearly = () => {
+        setIsLoadingYearly(true);
+
+        // Simulating an async operation
+        setTimeout(() => {
+            setIsLoadingYearly(false);
+        }, 2000);
+    };
     return (
         <>
             <div className="flex justify-center">
@@ -31,7 +52,12 @@ const SubscriptionPage = () => {
                         <Typography variant="subtitle2" sx={{ opacity: 0.7 }}>
                             Subscribe to unlock direct author chat and unlimited access to our entire story collection.
                         </Typography>
-                        <Button variant="contained" color="success" fullWidth sx={{ marginY: 2, borderRadius: 10 }}>Select</Button>
+                        <Button variant="contained" color="success" fullWidth sx={{ marginY: 2, borderRadius: 10 }}
+                            disabled={isLoadingMonthly || isLoadingYearly} 
+                            onClick={handleClickMonthly}
+                        >
+                        {isLoadingMonthly ? <CircularProgress size={24} color="inherit" /> : 'Select'}
+                        </Button>
                         <hr />
                         <List>
                             {benefits.map((benefit, index) => (
@@ -61,7 +87,12 @@ const SubscriptionPage = () => {
                         <Typography variant="subtitle2" sx={{ opacity: 0.7 }}>
                             Subscribe to unlock direct author chat and unlimited access to our entire story collection.
                         </Typography>
-                        <Button variant="contained" color="success" fullWidth sx={{ marginY: 2, borderRadius: 10 }}>Select</Button>
+                        <Button variant="contained" color="success" fullWidth sx={{ marginY: 2, borderRadius: 10 }}
+                            disabled={isLoadingMonthly || isLoadingYearly} 
+                            onClick={handleClickYearly}
+                        >
+                        {isLoadingYearly ? <CircularProgress size={24} color="inherit" /> : 'Select'}
+                        </Button>
                         <hr />
                         <List>
                             {benefits.map((benefit, index) => (
