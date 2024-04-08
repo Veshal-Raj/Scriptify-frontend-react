@@ -3,6 +3,10 @@ import logo from '../assests/imgs/logo.png';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import { benefits, personAvatarUrl } from "../utils/constants/constants";
 import { useState } from "react";
+import { useMutation } from "@tanstack/react-query";
+import { useSelector } from "react-redux";
+import { annualSubscriptionApi, monthlySubscriptionApi } from "../api/user";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -10,23 +14,54 @@ const SubscriptionPage = () => {
     const [isLoadingMonthly, setIsLoadingMonthly] = useState(false);
     const [isLoadingYearly, setIsLoadingYearly] = useState(false);
     const isSmallScreen = useMediaQuery('(max-width:600px)');
+    const { userData } = useSelector(state => state.user)
+    const navigate = useNavigate()
+
+    const userId = userData._id
+
+    const { mutate: monthlySubscription } = useMutation({
+        mutationFn: monthlySubscriptionApi,
+        onSuccess: (response) => {
+            console.log('mutation working')
+            console.log(response.data.response)
+            if (response.data.response) {
+                window.location.href = response.data.response;
+            }
+        }
+    })
+
+    const { mutate: annuallySubscription } = useMutation({
+        mutationFn: annualSubscriptionApi,
+        onSuccess: (response ) => {
+            console.log(response.data.response) 
+            if (response.data.response) {
+                window.location.href = response.data.response;
+            }
+        }
+    })
 
     const handleClickMonthly = () => {
         setIsLoadingMonthly(true);
 
-        // Simulating an async operation
-        setTimeout(() => {
-            setIsLoadingMonthly(false);
-        }, 2000);
+        const data = {
+            userId: userId,
+            subscriptionType: 'monthly',
+        }
+
+        monthlySubscription(data)
+       
     };
 
     const handleClickYearly = () => {
         setIsLoadingYearly(true);
 
-        // Simulating an async operation
-        setTimeout(() => {
-            setIsLoadingYearly(false);
-        }, 2000);
+        const data = {
+            userId: userId,
+            subscriptionType: 'annually',
+        }
+
+        annuallySubscription(data)
+        
     };
     return (
         <>
@@ -64,7 +99,7 @@ const SubscriptionPage = () => {
                                 <ListItem key={index}>
                                     <ListItemText>
                                         <Typography variant="subtitle2" >
-                                            <CheckCircleOutlineIcon sx={{ fontSize: 'medium', marginRight: '5px', verticalAlign: 'middle' }}
+                                            <CheckCircleOutlineIcon sx={{ fontSize: '25px', marginRight: '5px', verticalAlign: 'middle' }}
                                                 color="success"
                                             />
                                             {benefit}</Typography>
@@ -99,7 +134,7 @@ const SubscriptionPage = () => {
                                 <ListItem key={index}>
                                     <ListItemText>
                                         <Typography variant="subtitle2" >
-                                            <CheckCircleOutlineIcon sx={{ fontSize: 'medium', marginRight: '5px', verticalAlign: 'middle', }}
+                                            <CheckCircleOutlineIcon sx={{ fontSize: '25px', marginRight: '5px', verticalAlign: 'middle', }}
                                                 color="success"
                                             />
                                             {benefit}</Typography>
