@@ -1,6 +1,7 @@
 import Api from '../services/axios';
 import userRoutes from '../services/endpoints/userEndPoints';
 import { userFormData } from "../@types/Tuser";
+import { QueryFunctionContext } from '@tanstack/react-query';
 
 type UserOTP = {
     otp: string;
@@ -311,6 +312,60 @@ export const replyCommentApi = async (data: any) => {
     try {
         console.log('reply data >>> ', data)
         const response = await Api.post(userRoutes.replyComment, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const reportBlogApi = async (data: any )=> {
+    try {
+        console.log('report data >> ', data)
+        const response = await Api.post(userRoutes.reportBlog, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const checkUserSubscribedApi = async (userId: string) => {
+    
+    try {
+        const response = await Api.post(userRoutes.checkUserSubscribed, userId)
+        console.log('response -->> ', response)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const monthlySubscriptionApi = async (data: any) => {
+    try {
+        const response = await Api.post(userRoutes.monthlySubscription, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error        
+    }
+}
+
+export const annualSubscriptionApi = async (data: any) => {
+    try {
+        const response = await Api.post(userRoutes.annualSubscription, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+
+export const reciptUrlApi = async (userId: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.reciptUrl}?userId=${userId}`)
         return response
     } catch (error) {
         console.error(error);
