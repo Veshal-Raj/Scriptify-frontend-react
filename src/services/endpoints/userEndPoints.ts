@@ -25,7 +25,12 @@ const userRoutes = {
     listFollowings:'/user/listFollowings',
     addComment: '/user/addComment',
     initialComments: '/user/initialComments',
-    replyComment: '/user/replyComment'
+    replyComment: '/user/replyComment',
+    reportBlog: '/user/reportBlog',
+    checkUserSubscribed: '/user/checkUserSubscribed',
+    monthlySubscription: '/user/monthlySubscription',
+    annualSubscription: '/user/annualSubscription',
+    reciptUrl: '/user/reciptUrl'
 }   
 
 export default userRoutes;
