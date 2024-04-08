@@ -4,6 +4,7 @@ import UserRoutes from "./routeComponents/UserRoutes"
 import Write from "../pages/Write"
 import Profile from "../pages/Profile"
 import SingleBlogPage from "../pages/SingleBlogPage"
+import Chat from "../pages/Chat"
 
 
 const AuthorizedOnly = () => {
@@ -15,6 +16,7 @@ const AuthorizedOnly = () => {
                 <Route path="/write" element={<Write />}/>
                 <Route path="/blog/:blogId" element={<SingleBlogPage />} />
                 <Route path="/:id" element={<Profile />}/>
+                <Route path="/chat" element={<Chat />}/>
             </Route>
         </Routes>
     </>
