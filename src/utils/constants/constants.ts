@@ -2,10 +2,10 @@ export const characterLimit = 200;
 export const tagLimit = 10;
 
 export const benefits = [
-    "Access to exclusive live Q&A sessions with authors.",
-    "Early access to unpublished articles and blog posts.",
-    "Customized recommendations tailored to your interests.",
-    "Exclusive access to monthly giveaways and contests.",
+    "Join exclusive live Q&A sessions with authors.",
+    "Get early access to unpublished content.",
+    "Personalized recommendations for you.",
+    "Get exclusive monthly giveaways and contests.",
     "Priority support for all inquiries.",
     "Access to premium in-depth content."
 ];
