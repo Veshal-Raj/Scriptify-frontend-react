@@ -211,15 +211,15 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title, com
                     style={{ marginBottom: "16px", borderRadius: '50px' }}
                 >
                     Post Comment
-                </Button> :
-                <Button
+                </Button> : <></> }
+                {/* {<Button
                     variant="outlined"
                     color="primary"
                     onClick={()=>handleReplyComment}
                     style={{ marginBottom: "16px", borderRadius: '50px' }}
                 >
                     Reply Comment
-                </Button>}
+                </Button>} */}
                 {showEmojiPicker && (
                     <EmojiPicker onEmojiClick={handleEmojiClick} />
                 )}
