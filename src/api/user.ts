@@ -1,7 +1,7 @@
 import Api from '../services/axios';
 import userRoutes from '../services/endpoints/userEndPoints';
 import { userFormData } from "../@types/Tuser";
-import { QueryFunctionContext } from '@tanstack/react-query';
+import { IConversation } from '../@types/Tchat';
 
 type UserOTP = {
     otp: string;
@@ -366,6 +366,28 @@ export const annualSubscriptionApi = async (data: any) => {
 export const reciptUrlApi = async (userId: string) => {
     try {
         const response = await Api.get(`${userRoutes.reciptUrl}?userId=${userId}`)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const sendChatApi = async (chatSendData: IConversation) => {
+    try {
+        const response = await Api.post(userRoutes.sendChat, chatSendData)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const getChatApi = async (senderId: string, receiverId: string) => {
+    try {
+        console.log('sender id ', senderId , ' --- ', 'reciverid ', receiverId)
+        if (receiverId == null) return 
+        const response = await Api.get(`${userRoutes.getChat}?senderId=${senderId}&receiverId=${receiverId}`)
         return response
     } catch (error) {
         console.error(error);
