@@ -5,11 +5,13 @@ import { persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage";
 import { Persistor, persistStore } from "redux-persist";
 import searchSlice from "./slice/searchSlice";
+import chatSlice from "./slice/chatSlice";
 
 const rootReducer = combineReducers({
   user: userReducer,
   editor: editorReducer,
-  search: searchSlice
+  search: searchSlice,
+  chat: chatSlice
 });
 
 const persistConfig = {
@@ -18,7 +20,7 @@ const persistConfig = {
   storage,
 };
 
-const persistedReducer = persistReducer<any, any>(persistConfig, rootReducer);
+const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export const store = configureStore({
   reducer: persistedReducer,
