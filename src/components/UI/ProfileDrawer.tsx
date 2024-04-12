@@ -21,8 +21,8 @@ const DrawerContent = () => {
     
     const menuItems = [
         { text: "Profile", icon: AccountCircleIcon, route: `/user/${userId}` }, 
-        { text: "Dashboard", icon: DashboardIcon, route: "/dashboard" },
-        { text: "Change Password", icon: LockIcon, route: "/change-password" },
+        // { text: "Dashboard", icon: DashboardIcon, route: "/dashboard" },
+        // { text: "Change Password", icon: LockIcon, route: "/change-password" },
         { text: "Logout", icon: LogoutIcon, route: "/logout" }
     ];
     return (
