@@ -1,4 +1,5 @@
 interface TuserType {
+    username: string | undefined;
     slice(startIndex: number, endIndex: number): unknown;
     _id?: string;
     personal_info: {
