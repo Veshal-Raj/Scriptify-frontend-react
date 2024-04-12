@@ -15,6 +15,8 @@ export const getFullDay = (joinedAt: string | number | Date) => {
     return `${date.getDate()} ${months[date.getMonth()]} ${date.getFullYear()}`
 }
 
+
+
 export const timeAgo = (commentTime: string | number | Date) => {
     const currentTime = new Date();
     const commentDate = new Date(commentTime);
