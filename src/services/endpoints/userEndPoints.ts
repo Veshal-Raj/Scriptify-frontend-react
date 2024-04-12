@@ -30,7 +30,10 @@ const userRoutes = {
     checkUserSubscribed: '/user/checkUserSubscribed',
     monthlySubscription: '/user/monthlySubscription',
     annualSubscription: '/user/annualSubscription',
-    reciptUrl: '/user/reciptUrl'
+    reciptUrl: '/user/reciptUrl',
+    fetchAllUsers: '/user/fetchAllUsers',
+    sendChat: '/user/sendChat',
+    getChat: '/user/getChat'
 }   
 
 export default userRoutes;
