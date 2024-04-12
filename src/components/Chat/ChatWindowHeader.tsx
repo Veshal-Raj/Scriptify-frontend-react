@@ -1,37 +1,34 @@
-import React from 'react';
+
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
+import { useSelector } from 'react-redux';
+import { Toaster } from 'sonner';
 
-const placeholderImageURL = 'https://via.placeholder.com/150';
 
-const user = {
-    id: 1,
-    name: 'John Doe',
-    online: true,
-    lastSeen: 'Just now', // Assuming it's a string representation of the last seen time
-  };
 
 
 const ChatWindowHeader = () => {
+  const selectedUser = useSelector((state) => state.chat.selectedUser);
+  const renderOnlineStatus = () => {
+    if (selectedUser.online) {
+      return <Typography variant="caption" style={{ color: 'green' }}>Online</Typography>;
+    } else {
+      // Assuming 'lastSeen' is a property representing the last seen time
+      return <Typography variant="caption">Last seen: {selectedUser.lastSeen}</Typography>;
+    }
+  };
 
-    const renderOnlineStatus = () => {
-        if (user.online) {
-          return <Typography variant="caption" style={{ color: 'green' }}>Online</Typography>;
-        } else {
-          // Assuming 'lastSeen' is a property representing the last seen time
-          return <Typography variant="caption">Last seen: {user.lastSeen}</Typography>;
-        }
-      };
-
-      return (
-<div className="flex items-center py-3 px-3 border-b ">
-          <Avatar alt={user.name} src={placeholderImageURL} />
-          <div style={{ marginLeft: '10px' }}>
-            <Typography variant="subtitle1">{user.name}</Typography>
-            {renderOnlineStatus()}
-          </div>
-        </div>
-      );
+  // console.log('selecteduser -- from header --', selectedUser)
+  return (
+    <div className="flex items-center py-3 px-3 border-b ">
+      <Toaster position="top-center" />
+      <Avatar alt={selectedUser.name} src={selectedUser.profileImage} />
+      <div style={{ marginLeft: '10px' }}>
+        <Typography variant="subtitle1">{selectedUser.username}</Typography>
+        {renderOnlineStatus()}
+      </div>
+    </div>
+  );
 }
 
 export default ChatWindowHeader
