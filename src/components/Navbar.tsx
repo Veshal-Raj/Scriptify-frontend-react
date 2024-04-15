@@ -1,4 +1,4 @@
-import { Box, AppBar, Toolbar, Typography, IconButton, Drawer } from "@mui/material";
+import { Box, AppBar, Toolbar, Typography, IconButton, Drawer, Badge } from "@mui/material";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import SideBar from "./UI/SideBar";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,12 +10,14 @@ import NavButton from "./UI/NavButton";
 import { Toaster, toast } from 'sonner'
 import NavLink from "./UI/NavLink";
 import { setBlog } from "../redux/slice/editorSlice";
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { EditorContext } from "../pages/Write";
 import SearchBoxDiv from "./SearchBoxDiv";
 import logo from '../assests/imgs/logo.png'
 import DrawerContent from "./UI/ProfileDrawer";
 import ForumIcon from '@mui/icons-material/Forum';
+import { useQuery } from "@tanstack/react-query";
+import { notificationCountApi } from "../api/user";
 
 
 export default function Navbar() {
@@ -24,6 +26,7 @@ export default function Navbar() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [searchDiv, setSearchDiv] = useState(false)
+  const [ notificationCounts, setNotificationCounts ] = useState(0)
   // const navigate = useNavigate()
 
   const { textEditor, setTextEditor, setEditorState } = useContext(EditorContext)
@@ -38,6 +41,23 @@ export default function Navbar() {
   console.log(userData?.role)
   const userRole = userData?.role || 'guest'; // default value 'guest' if userData is null
 
+  const { data: notificationCount, refetch: refetchNotificationCount } = useQuery({
+    queryKey: ['notificationCount'],
+    queryFn: ()=> notificationCountApi(userData._id)
+  })
+
+  useEffect(()=> {
+    refetchNotificationCount()
+  }, [])
+
+  console.log(' notification count  ---- ', notificationCount)
+
+  useEffect(()=>{
+    if (notificationCount?.data.response) {
+      console.log(notificationCount.data.response)
+      setNotificationCounts(notificationCount.data.response)
+    }
+  },[notificationCount])
   const handlePublish = () => {
 
     // Check if title and banner are not empty
@@ -130,7 +150,9 @@ export default function Navbar() {
               </Link>
               <Link to='/user/notifications'>
                 <IconButton sx={{ '& svg': { fontSize: '32px' }, display: { xs: 'none', lg: 'block', xl: 'block' } }} className="text-black hover:border-black hover:rounded-full mx-5">
+                <Badge badgeContent={notificationCounts} color="primary">
                   <NotificationsNoneSharpIcon />
+                  </Badge>
                 </IconButton>
               </Link>
               <Link to='/user/chat'>
