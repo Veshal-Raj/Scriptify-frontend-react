@@ -32,6 +32,10 @@ interface CommentData {
     comment: string[];
 }
 
+interface  Data {
+    notificationId: string;
+}
+
 export const signup = async (userData: userFormData) => {
     try {
         const response = await Api.post(userRoutes.signup, userData);
@@ -398,6 +402,26 @@ export const getChatApi = async (senderId: string, receiverId: string) => {
 export const fetchAllUserNotification = async (userId: string) => {
     try {
         const response = await Api.get(`${userRoutes.fetchAllUserNotification}?userId=${userId}`)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const notificationSeenApi = async (Data: Data) =>{
+    try {
+        const response = await Api.post(userRoutes.notificationSeen, Data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const notificationCountApi = async (userId: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.notificationCount}?userId=${userId}`)
         return response
     } catch (error) {
         console.error(error);
