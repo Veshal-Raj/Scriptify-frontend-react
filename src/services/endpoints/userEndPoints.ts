@@ -33,7 +33,8 @@ const userRoutes = {
     reciptUrl: '/user/reciptUrl',
     fetchAllUsers: '/user/fetchAllUsers',
     sendChat: '/user/sendChat',
-    getChat: '/user/getChat'
+    getChat: '/user/getChat',
+    fetchAllUserNotification: '/user/fetchAllUserNotification'
 }   
 
 export default userRoutes;
