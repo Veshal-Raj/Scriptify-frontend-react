@@ -18,7 +18,6 @@ import DrawerContent from "./UI/ProfileDrawer";
 import ForumIcon from '@mui/icons-material/Forum';
 
 
-
 export default function Navbar() {
   const [isProfileDrawerOpen, setIsProfileDrawerOpen] = useState(false)
   const location = useLocation();
@@ -98,7 +97,6 @@ export default function Navbar() {
     <>
       <Box sx={{ flexGrow: 1, width: '100%' }}>
         {searchDiv && <div className="backdrop" onClick={handleSearchDiv} />}
-
         <AppBar position="static" sx={{
           backgroundColor: "white",
           backgroundSize: "100% 100%",
@@ -107,22 +105,10 @@ export default function Navbar() {
         }}>
           <Toolbar>
             {userRole === 'admin' && <SideBar isOpen={true} onClose={false} />}
-
-            <div className="lg:hidden">
-
-              {/* {userRole === 'user' && <UserSideBar  />} */}
-            </div>
-
-
-
-
             <img src={logo} alt="logo" height='30px' width='30' className="gap-2 ml-3 cursor-pointer" onClick={() => navigate('/user/feed')} />
             <Typography variant="h4" component="h5" color="black" display={{ xs: 'none', md: 'block', lg: 'block' }} sx={{ flexGrow: 1, paddingLeft: '5px', cursor: 'pointer' }} onClick={() => navigate('/user/feed')}>
               Scriptify
             </Typography>
-
-
-
             <div className="flex ms-auto">
               {!userData && <NavLink to="/sign-up" text="Sign Up" backgroundColor="#007bff" hoverBackgroundColor="white" color="white" hoverColor="#007bff" />}
               {!userData && <NavLink to="/sign-in" text="Login" variant="contained" backgroundColor="white" hoverBackgroundColor="#007bff" color="#007bff" hoverColor="white" />}
@@ -138,38 +124,32 @@ export default function Navbar() {
                 <SearchSharpIcon />
               </IconButton>
               <Link to='/user/write'>
-
                 <IconButton sx={{ '& svg': { fontSize: '32px' }, display: { xs: 'none', lg: 'block', xl: 'block' } }} className="text-black hover:border-black hover:rounded-full mx-5 ">
                   <EditNoteSharpIcon /> <span className="text-xl">Write</span>
                 </IconButton>
               </Link>
-              <IconButton sx={{ '& svg': { fontSize: '32px' }, display: { xs: 'none', lg: 'block', xl: 'block' } }} className="text-black hover:border-black hover:rounded-full mx-5">
-                <NotificationsNoneSharpIcon />
-              </IconButton>
-              <IconButton sx={{ '& svg': { fontSize: '30px', paddingTop: '5px' } }}>
-                <ForumIcon />
-              </IconButton>
+              <Link to='/user/notifications'>
+                <IconButton sx={{ '& svg': { fontSize: '32px' }, display: { xs: 'none', lg: 'block', xl: 'block' } }} className="text-black hover:border-black hover:rounded-full mx-5">
+                  <NotificationsNoneSharpIcon />
+                </IconButton>
+              </Link>
+              <Link to='/user/chat'>
+                <IconButton sx={{ '& svg': { fontSize: '30px', paddingTop: '5px' } }}>
+                  <ForumIcon />
+                </IconButton>
+              </Link>
             </>}
             {!isWriteRoute && userData && <IconButton sx={{ '& svg': { fontSize: '32px' }, display: { xs: 'none', lg: 'block', xl: 'block' } }} className="text-black hover:border-black hover:rounded-full mx-5" onClick={handleProfileClick}>
               <AccountCircleIcon />
             </IconButton>}
           </Toolbar>
         </AppBar>
-
-        {searchDiv && (
-
-          <SearchBoxDiv setSearchDiv={setSearchDiv} />
-
-
-        )}
-
+        {searchDiv && ( <SearchBoxDiv setSearchDiv={setSearchDiv} /> )}
         <Drawer anchor="right" open={isProfileDrawerOpen} onClose={handleProfileClick}>
           <DrawerContent />
         </Drawer>
       </Box>
-
       <Toaster richColors position="top-right" expand={false} />
-
     </>
   );
 }
