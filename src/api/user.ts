@@ -394,3 +394,13 @@ export const getChatApi = async (senderId: string, receiverId: string) => {
         throw error
     }
 }
+
+export const fetchAllUserNotification = async (userId: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.fetchAllUserNotification}?userId=${userId}`)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
