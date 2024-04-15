@@ -1,17 +1,41 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EditNoteSharpIcon from '@mui/icons-material/EditNoteSharp';
 import NotificationsNoneSharpIcon from '@mui/icons-material/NotificationsNoneSharp';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import HomeIcon from '@mui/icons-material/Home';
-import { IconButton, Drawer } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
+import { IconButton, Drawer, Badge } from '@mui/material';
+import { To, useNavigate } from 'react-router-dom';
 import DrawerContent from './UI/ProfileDrawer'; // Import the DrawerContent component
+import { useQuery } from '@tanstack/react-query';
+import { notificationCountApi } from '../api/user';
+import { useSelector } from 'react-redux';
 
-const MobileFooter = ({ icon }) => {
+interface Props {
+    icon: string
+}
+const MobileFooter = ({ icon }: Props) => {
     const navigate = useNavigate();
+    const { userData } = useSelector(state => state.user)
     const [drawerOpen, setDrawerOpen] = useState(false);
+    const [ notificationCounts, setNotificationCounts ] = useState(0)
 
-    const handleIconClick = (route) => {
+    const { data: notificationCount, refetch: refetchNotificationCount } = useQuery({
+        queryKey: ['notificationCount'],
+        queryFn: ()=> notificationCountApi(userData._id)
+      })
+    
+      useEffect(()=> {
+        refetchNotificationCount()
+      }, [])
+
+      useEffect(()=>{
+        if (notificationCount?.data.response) {
+          console.log(notificationCount.data.response)
+          setNotificationCounts(notificationCount.data.response)
+        }
+      },[notificationCount])
+
+    const handleIconClick = (route: To) => {
         navigate(route);
     };
 
@@ -31,9 +55,10 @@ const MobileFooter = ({ icon }) => {
                             <EditNoteSharpIcon color={icon === 'edit' ? 'primary' : 'inherit'} />
                         </IconButton>
                         <IconButton onClick={() => handleIconClick('/user/notifications')}>
+                        <Badge badgeContent={notificationCounts} color="primary">
                             <NotificationsNoneSharpIcon color={icon === 'notifications' ? 'primary' : 'inherit'} />
-                        </IconButton>
-                        
+                            </Badge>
+                        </IconButton>                        
                         <IconButton onClick={toggleDrawer}>
                             <AccountCircleIcon color={icon === 'account' ? 'primary' : 'inherit'} />
                         </IconButton>
