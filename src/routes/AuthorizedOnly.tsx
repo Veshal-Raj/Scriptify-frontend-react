@@ -22,8 +22,7 @@ const AuthorizedOnly = () => {
   let token: string;
 
   async function requestPermission() {
-    const permission = await Notification.requestPermission();
-
+    const permission = await window.Notification.requestPermission();
     if (permission === "granted") {
       token = await getToken(messaging, {
         vapidKey: "BDLnANRW7xs9Gl00TM1khbPkd62cPlFDISXiBXQLdF2fBMdCxsAH0ajhBHjkwztEdNwIvksLt40aYWyAwAkTWqk",
