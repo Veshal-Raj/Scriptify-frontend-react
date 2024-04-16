@@ -30,14 +30,21 @@ const UserList: React.FC<UserListProps> = ({ onUserClick}) => {
   const maxHeight = isSmallScreen ? 'auto' : '655px';
   const [userListData, setUserListData ] = useState<IUserList[]>([])
   const { userData } = useSelector(state => state.user)
-
+  const searchUserList = useSelector((state)=>state?.chat?.searchUserList)
   const userId = userData._id
 
   const { data: allUserForList, refetch } = useQuery({
     queryKey: ['fetchAllUserForChatList'],
     queryFn: fetchAllUsersApi,
     enabled: false, // Disable auto-fetching on mount
-  });
+  }); 
+
+  useEffect(() => {
+    if (searchUserList) {
+      const filteredUsers = searchUserList.filter((user: any) => user.userId !== userId);
+      setUserListData(filteredUsers);
+    }
+  }, [searchUserList, userId]);
 
   useEffect(() => {
     if (allUserForList?.data && allUserForList.data.response ) {
