@@ -36,7 +36,8 @@ const userRoutes = {
     getChat: '/user/getChat',
     fetchAllUserNotification: '/user/fetchAllUserNotification',
     notificationSeen: '/user/notificationSeen',
-    notificationCount: '/user/notificationCount'
+    notificationCount: '/user/notificationCount',
+    chatUserSearch: '/user/chatUserSearch'
 }   
 
 export default userRoutes;
