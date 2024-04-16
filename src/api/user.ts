@@ -438,3 +438,13 @@ export const chatUserSearchApi = async (searchText: string) => {
         throw error
     }
 }
+
+export const EditProfileDataApi = async (data) => {
+    try {
+        const response = await Api.post(userRoutes.editUserProfile, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
