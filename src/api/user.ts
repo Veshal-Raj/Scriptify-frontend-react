@@ -428,3 +428,13 @@ export const notificationCountApi = async (userId: string) => {
         throw error
     }
 }
+
+export const chatUserSearchApi = async (searchText: string) => {
+    try {
+        const response = await Api.get(`${userRoutes.chatUserSearch}?searchText=${searchText}`)
+        return response
+    } catch(error) {
+        console.error(error);
+        throw error
+    }
+}
