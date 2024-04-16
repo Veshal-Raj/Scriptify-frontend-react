@@ -140,7 +140,7 @@ const Profile = () => {
             onClose={handleDrawerClose}
           />
           <div className="flex gap-4 mt-2">
-            {isSameUser && (<Link to='/settings/edit-profile' className="btn-dark bg-gray-50 text-black px-5 py-3 rounded-md">Edit Profile </Link>)}
+            {isSameUser && (<Link to='/user/settings/edit-profile' className="btn-dark bg-gray-50 text-black px-5 py-3 rounded-md">Edit Profile </Link>)}
             {!isSameUser && <Tooltip title="Chat" placement="right">
               <IconButton className="p-5">
                 <ForumIcon />
