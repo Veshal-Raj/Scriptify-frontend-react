@@ -11,6 +11,7 @@ import { messaging } from "../utils/firebase"
 import { useEffect } from "react"
 import axios from "axios"
 import Notification from "../pages/Notification"
+import EditUserProfile from "../pages/EditUserProfile"
 
 
 const AuthorizedOnly = () => {
@@ -65,7 +66,8 @@ const AuthorizedOnly = () => {
                 <Route path="/blog/:blogId" element={<SingleBlogPage />} />
                 <Route path="/notifications" element={<Notification />}/>
                 <Route path="/:id" element={<Profile />}/>
-                <Route path="/chat" element={<Chat />}/>
+                <Route path="/chat" element={<Chat />}/> 
+                <Route path="/settings/edit-profile" element={<EditUserProfile />}/> 
             </Route>
         </Routes>
     </>
