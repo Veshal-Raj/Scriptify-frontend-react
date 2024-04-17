@@ -7,6 +7,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { TransitionProps } from '@mui/material/transitions';
 import OtpInput from './OTPinput';
+import ForgotPasswordModal from './ForgotPasswordModal';
 
 const Transition = React.forwardRef(function Transition(
   props: TransitionProps & {
@@ -17,7 +18,7 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AlertDialogSlide() {
+export default function AlertDialogSlide({currentPage, setIsModalOpen}) {
   const [open, setOpen] = React.useState(true);
 
   return (
@@ -31,7 +32,9 @@ export default function AlertDialogSlide() {
         <DialogTitle>{"Please Enter the OTP Sent to Your Email"}</DialogTitle>
         <DialogContent>
           <DialogContentText id="alert-dialog-slide-description">
-             <OtpInput />
+            
+            {currentPage === "signUp" ? <OtpInput />: <></>}
+            {currentPage === "forgotPassword" ? <ForgotPasswordModal setIsModalOpen={setIsModalOpen}  />: <></>}
           </DialogContentText>
         </DialogContent>
         <DialogActions>
