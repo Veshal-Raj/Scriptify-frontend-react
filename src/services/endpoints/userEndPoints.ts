@@ -38,7 +38,12 @@ const userRoutes = {
     notificationSeen: '/user/notificationSeen',
     notificationCount: '/user/notificationCount',
     chatUserSearch: '/user/chatUserSearch',
-    editUserProfile: '/user/editUserProfile'
+    editUserProfile: '/user/editUserProfile',
+    changePassword: '/user/changePassword',
+    forgotPasswordEmail: '/user/forgotPasswordEmail',
+    forgotPasswordOtp: '/user/forgotPasswordOtp',
+    changePasswordNotLoggedIn: '/user/changePasswordNotLoggedIn',
+    resendOtp: '/user/resendOtp'
 }   
 
 export default userRoutes;
