@@ -12,6 +12,7 @@ import { useEffect } from "react"
 import axios from "axios"
 import Notification from "../pages/Notification"
 import EditUserProfile from "../pages/EditUserProfile"
+import ChangePassword from "../pages/ChangePassword"
 
 
 const AuthorizedOnly = () => {
@@ -68,6 +69,7 @@ const AuthorizedOnly = () => {
                 <Route path="/:id" element={<Profile />}/>
                 <Route path="/chat" element={<Chat />}/> 
                 <Route path="/settings/edit-profile" element={<EditUserProfile />}/> 
+                <Route path="/settings/change-password" element={<ChangePassword />}/> 
             </Route>
         </Routes>
     </>
