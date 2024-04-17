@@ -448,3 +448,64 @@ export const EditProfileDataApi = async (data) => {
         throw error
     }
 }
+
+export const changePasswordApi = async (data: any) => {
+    try {
+        const response = await Api.put(userRoutes.changePassword, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const ForgotPasswordEmailApi = async (data) => {
+    try {
+       
+        const response = await Api.post(userRoutes.forgotPasswordEmail, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const forgotPasswordOtpApi = async (otp: UserOTP) => {
+    try {
+        const response = await Api.post(userRoutes.forgotPasswordOtp, otp)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const changePasswordNotLoggedInApi = async (data) => {
+    try {
+        const response = await Api.post(userRoutes.changePasswordNotLoggedIn, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+export const resentOtpApi = async () => {
+    try {
+        const response = await Api.get(userRoutes.resendOtp)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
+
+// export const resendOtpApi = async (userOTP: UserOTP) => {
+//     try {
+//         const response = await Api.post(userRoutes.resendOtp, userOTP)
+//         return response
+//     } catch (error) {
+//         console.error(error);
+//         throw error
+//     }
+// }
