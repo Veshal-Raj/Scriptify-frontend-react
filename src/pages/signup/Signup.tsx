@@ -77,7 +77,7 @@ export default function SignIn() {
       <Box
         sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }}
       >
-        {isModalOpen && <AlertDialogSlide />}
+        {isModalOpen && <AlertDialogSlide currentPage="signUp" />}
         <Typography component="h1" variant="h4" sx={{ mb: '20px' }}>
           Join Scriptify.
         </Typography>
@@ -126,7 +126,7 @@ export default function SignIn() {
               {...register("password", {
                 required: "Password is required",
                 validate: {
-                  validatePassword: (value) => validatePassword(value)
+                  validatePassword: (value) => value ? validatePassword(value) : false
                 },
               })}
             />
