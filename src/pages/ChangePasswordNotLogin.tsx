@@ -97,7 +97,7 @@ const ChangePasswordNotLogin = () => {
       <>
         {/* <Navbar /> */}
         <Container maxWidth="sm" sx={{ marginY: 15}}>
-        <Toaster position='top-center'/>
+        <Toaster richColors position='top-center'/>
           <Typography variant="h5" textAlign="center" gutterBottom sx={{ marginY: 5}}>
             Change Password
           </Typography>
