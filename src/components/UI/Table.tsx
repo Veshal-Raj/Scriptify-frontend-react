@@ -7,7 +7,7 @@ import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import TableContainer from '@mui/material/TableContainer';
-import { Button, FormControl, IconButton, MenuItem, Select } from '@mui/material';
+import { Button, FormControl, IconButton, MenuItem, Select, Typography } from '@mui/material';
 import TuserType from '../../@types/TuserType';
 import PaginationComponent from './Pagination';
 import BlockUserDialog from '../BlogUserDialogBox';
@@ -16,10 +16,10 @@ import InfoIcon from '@mui/icons-material/Info';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { changeUserStatus } from '../../api/admin';
 
-export const TableComponent = ({ data }) => {
+export const TableComponent = ({ data }: { data: TuserType[] }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [selectedUserId, setSelectedUserId] = useState(null);
+  const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
   const [openBlockDialog, setOpenBlockDialog] = useState(false);
   const [openUserInfoDialog, setOpenUserInfoDialog] = useState(false);
   const [userInfo, setUserInfo] = useState(null);
@@ -57,18 +57,29 @@ export const TableComponent = ({ data }) => {
   const endIndex = startIndex + rowsPerPage;
 
   const handleActiveButtonClick = (userId: string | undefined | SetStateAction<null>) => {
-    setSelectedUserId(userId);
+    if (typeof userId === 'string') {
+      setSelectedUserId(userId);
+    } else if (userId !== undefined) {
+      setSelectedUserId(null);
+    }
     setOpenBlockDialog(true);
   };
 
   const handleInfoIconClick = (user: SetStateAction<null> | TuserType) => {
-    setUserInfo(user);
+    if (typeof user === 'function' || user === null) {
+      setUserInfo(user);
+    } else {
+      setUserInfo(null);
+    }
     setOpenUserInfoDialog(true);
   };
 
   return (
     <Box>
-      <TableContainer sx={{ margin: '10px', padding: '20px', maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '50px' }} component={Paper} elevation={3}>
+      <Typography variant="h5" color="GrayText" sx={{    maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '40px' }} >
+          Users
+      </Typography>
+      <TableContainer sx={{ margin: '10px', padding: '20px', maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '30px' }} component={Paper} elevation={3}>
         <Table stickyHeader aria-label='simple table'>
           <TableHead>
             <TableRow sx={{ '& .MuiTableCell-root': { fontWeight: 'bold' } }}>
