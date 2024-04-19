@@ -136,7 +136,7 @@ export default function Navbar() {
             {
               isWriteRoute ? (<div>
                 <NavButton text="Publish" backgroundColor="#007bff" hoverBackgroundColor="white" color="white" hoverColor="#007bff" onClick={handlePublish} />
-                <NavButton text="Save Draft" variant="contained" backgroundColor="white" hoverBackgroundColor="#007bff" color="#007bff" hoverColor="white" onClick={handleSaveDraft} />
+                {/* <NavButton text="Save Draft" variant="contained" backgroundColor="white" hoverBackgroundColor="#007bff" color="#007bff" hoverColor="white" onClick={handleSaveDraft} /> */}
               </div>) : (<></>)
             }
             {!isWriteRoute && userRole === 'user' && <>
