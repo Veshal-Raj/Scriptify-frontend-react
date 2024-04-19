@@ -22,3 +22,35 @@ export const changeUserStatus = async (userId: string | null) => {
     throw error;
   }
 };
+
+
+export const getAllBlogsApi = async () => {
+  try {
+    const response = await Api.get(adminRoutes.getAllBlogs)
+    return response?.data
+  } catch (error) {
+    console.error(error);
+    throw error
+  }
+}
+
+export const changeBlogStatusApi = async (data) => {
+  try {
+    const response = await Api.post(adminRoutes.changeBlogStatus, data)
+    return response
+  } catch (error) {
+    console.error(error);
+    throw error
+  }
+}
+
+export const getAllReportsApi = async () => {
+  try {
+    const response = await Api.get(adminRoutes.getAllReports)
+    return response
+
+  } catch (error) {
+    console.error(error);
+    throw error
+  }
+}
