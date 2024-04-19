@@ -500,12 +500,12 @@ export const resentOtpApi = async () => {
     }
 }
 
-// export const resendOtpApi = async (userOTP: UserOTP) => {
-//     try {
-//         const response = await Api.post(userRoutes.resendOtp, userOTP)
-//         return response
-//     } catch (error) {
-//         console.error(error);
-//         throw error
-//     }
-// }
+export const googleAuthUserApi = async (data) => {
+    try {
+        const response = await Api.post(userRoutes.googleAuthUser, data)
+        return response
+    } catch (error) {
+        console.error(error);
+        throw error
+    }
+}
