@@ -128,7 +128,7 @@ const Profile = () => {
   return (
     <>
       <Navbar />
-      <Toaster richColors position="top-right" expand={false} />
+      <Toaster richColors  position="top-right" expand={false} />
       <section className="min-h-[calc(100vh-80px)] mb-24 m-5 md:flex flex-row-reverse items-start gap-5 min-[1100px]:gap-12">
         <div className="flex flex-col max-md:items-center gap-5 min-w-[250px] ">
           <img src={profile_img} alt="profile_img" className="w-48 h-48 bg-gray-50 rounded-full md:h-32 md:w-32" />
