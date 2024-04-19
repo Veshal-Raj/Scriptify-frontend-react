@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Drawer, List, ListItem, ListItemText, TextField, Button, Typography, IconButton, Box, Collapse } from "@mui/material";
 import CloseIcon from '@mui/icons-material/Close';
 import { useMediaQuery } from '@mui/material';
@@ -9,6 +9,7 @@ import { addCommentApi, initialCommentsApi, replyCommentApi } from "../api/user"
 import { useSelector } from "react-redux";
 import { timeAgo } from "../hooks/useDate";
 import { Link } from "react-router-dom";
+import { BlogContext } from "./ShowBlogContent";
 
 
 interface CommentDrawerProps {
@@ -41,6 +42,8 @@ interface CommentResponse {
 
 const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title, commentData }) => {
 
+    const { singleBlogData: { activity: { total_comments } }, setSingleBlogData } = useContext(BlogContext);
+
     const [commentText, setCommentText] = useState(''); // onchange text
     const [comments, setComments] = useState<CommentResponse[]>([]); // comment from the backend
     const [showEmojiPicker, setShowEmojiPicker] = useState(false); 
@@ -61,7 +64,15 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title, com
         mutationFn: addCommentApi,
         onSuccess: (response) => {
             const responseData: CommentResponse = response.data.response;
-            setComments([responseData ,...comments])
+            setComments([responseData ,...comments]);
+            setSingleBlogData(prevState => ({
+                ...prevState,
+                activity: {
+                    ...prevState.activity,
+                    total_comments: prevState.activity.total_comments + 1
+                }
+            }));
+
         }
     })
     
