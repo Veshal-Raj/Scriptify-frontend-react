@@ -83,7 +83,7 @@ const ForgotPassword = () => {
 
     return (
         <Container maxWidth="sm" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "70vh", paddingTop: "50px" }}>
-            <Toaster position="top-center" />
+            <Toaster richColors position="top-center" />
 
             <motion.div
                 initial={{ opacity: 0, y: 50 }}
