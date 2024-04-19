@@ -21,7 +21,7 @@ const ChatWindowHeader = () => {
   // console.log('selecteduser -- from header --', selectedUser)
   return (
     <div className="flex items-center py-3 px-3 border-b ">
-      <Toaster position="top-center" />
+      <Toaster richColors position="top-center" />
       <Avatar alt={selectedUser.name} src={selectedUser.profileImage} />
       <div style={{ marginLeft: '10px' }}>
         <Typography variant="subtitle1">{selectedUser.username}</Typography>
