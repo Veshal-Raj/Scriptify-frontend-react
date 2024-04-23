@@ -18,18 +18,18 @@ const BlogTable = ({ blogs }) => {
       toast.error(error.message)
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({queryKey: ['getAllBlogs']});
+      await queryClient.invalidateQueries({ queryKey: ['getAllBlogs'] });
       toast.success('Blog status changed successfully.')
     }
   })
 
   console.log(blogs)
-  
+
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-   const handleBlogStatus = async (blogId) => {
+  const handleBlogStatus = async (blogId) => {
     const data = {
       blogId: blogId
     }
