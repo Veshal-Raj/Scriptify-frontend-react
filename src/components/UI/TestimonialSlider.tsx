@@ -25,7 +25,6 @@ const TestimonialSlider = () => {
                       src={`https://source.unsplash.com/100x100/?portrait,${testimonial.name}`}
                       className="size-14 rounded-full object-cover"
                     />
-
                     <div>
                       <div className="flex justify-center gap-0.5 text-green-500">
                         {[...Array(testimonial.rating)].map((_, index) => (
@@ -42,11 +41,9 @@ const TestimonialSlider = () => {
                           </svg>
                         ))}
                       </div>
-
                       <p className="mt-0.5 text-lg font-medium text-gray-900">{testimonial.name}</p>
                     </div>
                   </div>
-
                   <p className="mt-4 text-gray-700">{testimonial.content}</p>
                 </blockquote>
               </motion.div>
