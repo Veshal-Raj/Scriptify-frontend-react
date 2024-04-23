@@ -9,10 +9,10 @@ const LandingSection2 = () => {
       sx={{
         padding: '10px',
         '@media (max-width: 600px)': {
-            fontSize: '1.6rem', // Adjust the font size for small screens
+            fontSize: '1.6rem', 
             textAlign: 'center',
-            mx: '5px', // Reduce horizontal margin for small screens
-            py: '10px', // Reduce vertical padding for small screens
+            mx: '5px', 
+            py: '10px', 
         },
     }}
     >
