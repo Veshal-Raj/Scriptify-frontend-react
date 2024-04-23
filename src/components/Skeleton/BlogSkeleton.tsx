@@ -25,7 +25,7 @@ const BlogPostCardSkeleton = () => {
                             </motion.div>
                         </Link>
                     </CardContent>
-                    <Box className="h-28 md:aspect-square bg-gray-50 mx-auto my-auto"  sx={{ maxWidth: '1000px' }}>
+                    <Box className="h-28 md:aspect-square bg-gray-50 mx-auto my-auto" sx={{ maxWidth: '1000px' }}>
                         <Skeleton variant="rectangular" width="100%" height="100%" />
                     </Box>
                 </Card>
