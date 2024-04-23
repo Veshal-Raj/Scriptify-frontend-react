@@ -19,13 +19,10 @@ const Timer: React.FC<Props> = ({ seconds, handleResendOTP }: Props) => {
   })
 
   const handleResendClick = () => {
-    console.log("Resend OTP"); // Log "Resend OTP" when button is clicked
     setTrigger(true)
-    // console.log( 'resend otp --- ', )
     const message = resendOtp?.data.response.message
-    if (message) toast(message)
-    
-    !isLoading ? handleResendOTP() : ''; // Call the provided handleResendOTP function
+    if (message) toast(message)    
+    !isLoading ? handleResendOTP() : ''; 
   };
 
   return (
