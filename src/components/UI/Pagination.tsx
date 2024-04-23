@@ -1,6 +1,12 @@
 import Pagination from '@mui/material/Pagination';
 
-const PaginationComponent = ({ count, page, onChange }) => {
+interface PaginationComponentProps {
+  count: number;
+  page: number;
+  onChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+ }
+
+ const PaginationComponent = ({ count, page, onChange }: PaginationComponentProps) => {
   return (
     <Pagination
       count={count}
