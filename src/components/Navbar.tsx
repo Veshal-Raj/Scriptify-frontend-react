@@ -10,14 +10,16 @@ import NavButton from "./UI/NavButton";
 import { Toaster, toast } from 'sonner'
 import NavLink from "./UI/NavLink";
 import { setBlog } from "../redux/slice/editorSlice";
-import { useContext, useEffect, useState } from "react";
+import React, { Suspense, useContext, useEffect, useState } from "react";
 import { EditorContext } from "../pages/Write";
-import SearchBoxDiv from "./SearchBoxDiv";
+// import SearchBoxDiv from "./SearchBoxDiv";
 import logo from '../assests/imgs/logo.png'
 import DrawerContent from "./UI/ProfileDrawer";
 import ForumIcon from '@mui/icons-material/Forum';
 import { useQuery } from "@tanstack/react-query";
 import { notificationCountApi } from "../api/user";
+
+const SearchBoxDiv = React.lazy(() => import('./SearchBoxDiv'))
 
 
 export default function Navbar() {
@@ -27,7 +29,6 @@ export default function Navbar() {
   const dispatch = useDispatch()
   const [searchDiv, setSearchDiv] = useState(false)
   const [ notificationCounts, setNotificationCounts ] = useState(0)
-  // const navigate = useNavigate()
 
   const { textEditor, setTextEditor, setEditorState } = useContext(EditorContext)
 
@@ -50,11 +51,9 @@ export default function Navbar() {
     refetchNotificationCount()
   }, [])
 
-  console.log(' notification count  ---- ', notificationCount)
-
+ 
   useEffect(()=>{
     if (notificationCount?.data.response) {
-      console.log(notificationCount.data.response)
       setNotificationCounts(notificationCount.data.response)
     }
   },[notificationCount])
@@ -67,15 +66,10 @@ export default function Navbar() {
       });
       return;
     }
-    console.log(textEditor)
 
     if (textEditor.isReady) {
-      // console.log(textEditor)
-
       textEditor.save().then((data: { blocks: string | unknown[]; }) => {
         if (data.blocks.length) {
-          console.log('inside the if block of the textEditor')
-          console.log('data --->>> ', data)
           // Dispatch action to update blog content in Redux state
           dispatch(setBlog({ ...blog, content: data }));
           // Change editor state to 'publish'
@@ -89,11 +83,6 @@ export default function Navbar() {
         console.error('Error saving text editor content:', error);
       });
     }
-
-    console.log('Publishing...');
-    // navigate('/user/publish');
-    console.log('--------------------------------')
-
   }
 
   const handleSaveDraft = () => {
@@ -166,7 +155,7 @@ export default function Navbar() {
             </IconButton>}
           </Toolbar>
         </AppBar>
-        {searchDiv && ( <SearchBoxDiv setSearchDiv={setSearchDiv} /> )}
+        {searchDiv && ( <Suspense fallback={<div>Loading...</div>}><SearchBoxDiv setSearchDiv={setSearchDiv} /> </Suspense> )}
         <Drawer anchor="right" open={isProfileDrawerOpen} onClose={handleProfileClick}>
           <DrawerContent />
         </Drawer>
