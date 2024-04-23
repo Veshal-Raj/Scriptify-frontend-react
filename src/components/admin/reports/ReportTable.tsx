@@ -27,7 +27,7 @@ const ReportTable = ({ reports }) => {
       toast.error(error.message)
     },
     onSuccess: async () => {
-      await queryClient.invalidateQueries({queryKey: ['allReports']});
+      await queryClient.invalidateQueries({ queryKey: ['allReports'] });
       toast.success('Blog status changed successfully.')
     }
   })
@@ -49,55 +49,44 @@ const ReportTable = ({ reports }) => {
 
   return (
     <Box>
-      <Typography variant="h5" color="GrayText" sx={{    maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '40px' }} >
-          Reports
+      <Typography variant="h5" color="GrayText" sx={{ maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '40px' }} >
+        Reports
       </Typography>
-        <TableContainer sx={{ margin: '10px', padding: '20px', maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '30px' }} component={Paper} elevation={3}>
-
+      <TableContainer sx={{ margin: '10px', padding: '20px', maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '30px' }} component={Paper} elevation={3}>
         <Table stickyHeader aria-label='simple table'>
-      <TableHead>
-      <TableRow sx={{ '& .MuiTableCell-root': { fontWeight: 'bold' } }}>
-          <TableCell>Blog </TableCell>
-          <TableCell>Blog Title</TableCell>
-          <TableCell>Reported By</TableCell>
-          <TableCell>Status </TableCell>
-          <TableCell>Reason</TableCell>
-          <TableCell>Reported At</TableCell>
-          <TableCell>SendMail</TableCell>
-        </TableRow>
-      </TableHead>
-      <TableBody>
-        {(rowsPerPage > 0 ? reports.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage): reports).map((report) => (
-          <TableRow key={report.reportId}>
-            <TableCell><img src={report.blogBanner} alt='blog-banner' className='object-cover h-[70px] w-[100px]' /></TableCell>
-            <TableCell>{report.blogTitle}</TableCell>
-            <TableCell>{report.reportedByUsername}</TableCell>
-            <TableCell>
-            <Button variant="contained" color={report.isBlocked ? 'error' : 'primary'} onClick={() => handleBlogStatus(report.blogId)}>
+          <TableHead>
+            <TableRow sx={{ '& .MuiTableCell-root': { fontWeight: 'bold' } }}>
+              <TableCell>Blog </TableCell>
+              <TableCell>Blog Title</TableCell>
+              <TableCell>Reported By</TableCell>
+              <TableCell>Status </TableCell>
+              <TableCell>Reason</TableCell>
+              <TableCell>Reported At</TableCell>
+              <TableCell>SendMail</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {(rowsPerPage > 0 ? reports.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) : reports).map((report) => (
+              <TableRow key={report.reportId}>
+                <TableCell><img src={report.blogBanner} alt='blog-banner' className='object-cover h-[70px] w-[100px]' /></TableCell>
+                <TableCell>{report.blogTitle}</TableCell>
+                <TableCell>{report.reportedByUsername}</TableCell>
+                <TableCell>
+                  <Button variant="contained" color={report.isBlocked ? 'error' : 'primary'} onClick={() => handleBlogStatus(report.blogId)}>
                     {report.isBlocked ? 'Blocked' : 'Active'}
                   </Button>
-                  </TableCell>
-            <TableCell>{report.reason}</TableCell>
-            <TableCell>{getFullDay(report.publishedAt)}</TableCell>
-            <TableCell>
-            <Button variant="contained" className='bg-blue-200' onClick={() => handleSendMail(report.authorEmail)}>
+                </TableCell>
+                <TableCell>{report.reason}</TableCell>
+                <TableCell>{getFullDay(report.publishedAt)}</TableCell>
+                <TableCell>
+                  <Button variant="contained" className='bg-blue-200' onClick={() => handleSendMail(report.authorEmail)}>
                     Send
                   </Button>
-                  </TableCell>
-          </TableRow>
-        ))}
-      </TableBody>
-    </Table>
-    {/* <Box sx={{ display: 'flex', justifyContent: 'flex-end', alignItems: 'center', padding: '10px' }}>
-          <Pagination
-            count={Math.ceil(reports.length / rowsPerPage)}
-            page={page}
-            onChange={handleChangePage}
-            // rowsPerPageOptions={[5, 10, 20]} // You can customize the options according to your requirement
-            onPageChange={handleChangePage}
-            onRowsPerPageChange={handleChangeRowsPerPage}
-          />
-        </Box> */}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
         <TablePagination
           rowsPerPageOptions={[2, 4, 5, 10, 25]}
           component="div"
@@ -107,8 +96,7 @@ const ReportTable = ({ reports }) => {
           onPageChange={handleChangePage}
           onRowsPerPageChange={handleChangeRowsPerPage}
         />
-    </TableContainer>
-
+      </TableContainer>
     </Box>
   );
 };
