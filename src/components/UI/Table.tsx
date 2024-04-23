@@ -7,22 +7,20 @@ import TableCell from '@mui/material/TableCell';
 import TableBody from '@mui/material/TableBody';
 import TableHead from '@mui/material/TableHead';
 import TableContainer from '@mui/material/TableContainer';
-import { Button, FormControl, IconButton, MenuItem, Select, Typography } from '@mui/material';
+import { Button, FormControl, MenuItem, Select, Typography } from '@mui/material';
 import TuserType from '../../@types/TuserType';
 import PaginationComponent from './Pagination';
 import BlockUserDialog from '../BlogUserDialogBox';
-import UserInfoDialog from '../UserInfoDialog';
-import InfoIcon from '@mui/icons-material/Info';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { changeUserStatus } from '../../api/admin';
+import { SelectChangeEvent } from '@mui/material';
+
 
 export const TableComponent = ({ data }: { data: TuserType[] }) => {
   const [page, setPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null)
   const [openBlockDialog, setOpenBlockDialog] = useState(false);
-  const [openUserInfoDialog, setOpenUserInfoDialog] = useState(false);
-  const [userInfo, setUserInfo] = useState(null);
 
   const queryClient = useQueryClient()
 
@@ -34,25 +32,20 @@ export const TableComponent = ({ data }: { data: TuserType[] }) => {
     }
   })
 
-  const handleChangePage = (_event: unknown, newPage: SetStateAction<number>) => {
-    setPage(newPage);
-  };
+  const handleChangePage = (_event: unknown, newPage: SetStateAction<number>) => setPage(newPage);
 
-  const handleChangeRowsPerPage = (event: { target: { value: SetStateAction<number>; }; }) => {
-    setRowsPerPage(event.target.value);
-    setPage(1); // Reset page number to 1 when changing rows per page
-  };
+  const handleChangeRowsPerPage = (event: SelectChangeEvent<number>) => {
+    const newRowsPerPage = event.target.value as number;
+    setRowsPerPage(newRowsPerPage);
+    setPage(1); 
+   };
 
   const handleConfirmBlockUser = () => {
-    // Here you can implement the logic to block the user
-    console.log('User with ID', selectedUserId, 'will be blocked.');
     changeStatus(selectedUserId)
     setOpenBlockDialog(false);
-
   };
 
   const tableData = data as TuserType[];
-
   const startIndex = (page - 1) * rowsPerPage;
   const endIndex = startIndex + rowsPerPage;
 
@@ -65,18 +58,9 @@ export const TableComponent = ({ data }: { data: TuserType[] }) => {
     setOpenBlockDialog(true);
   };
 
-  const handleInfoIconClick = (user: SetStateAction<null> | TuserType) => {
-    if (typeof user === 'function' || user === null) {
-      setUserInfo(user);
-    } else {
-      setUserInfo(null);
-    }
-    setOpenUserInfoDialog(true);
-  };
-
   return (
     <Box>
-      <Typography variant="h5" color="GrayText" sx={{    maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '40px' }} >
+      <Typography variant="h5" color="GrayText" sx={{ maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '40px' }} >
           Users
       </Typography>
       <TableContainer sx={{ margin: '10px', padding: '20px', maxWidth: '1000px', marginX: 'auto', borderRadius: '20px', marginTop: '30px' }} component={Paper} elevation={3}>
@@ -98,9 +82,6 @@ export const TableComponent = ({ data }: { data: TuserType[] }) => {
                 <TableCell>
                   <div style={{ display: 'flex', alignItems: 'center' }}>
                     <span>{row?._id?.toString()}</span>
-                    <IconButton onClick={() => handleInfoIconClick(row)}>
-                      <InfoIcon />
-                    </IconButton>
                   </div>
                 </TableCell>
                 <TableCell>{row?.personal_info?.username}</TableCell>
@@ -109,7 +90,6 @@ export const TableComponent = ({ data }: { data: TuserType[] }) => {
                 <TableCell align='center'>
                   <Button
                     variant="contained"
-                    // Conditionally set the background color based on the status
                     sx={{ 
                       backgroundColor: row?.isVerified ? undefined : 'red', 
                       color: row?.isVerified ? undefined : 'white',
@@ -147,7 +127,6 @@ export const TableComponent = ({ data }: { data: TuserType[] }) => {
           </FormControl>
         </Box>
         <BlockUserDialog open={openBlockDialog} onClose={() => setOpenBlockDialog(false)} onConfirm={handleConfirmBlockUser} />
-        <UserInfoDialog open={openUserInfoDialog} onClose={() => setOpenUserInfoDialog(false)} userInfo={userInfo} />
       </TableContainer>
     </Box>
   );
