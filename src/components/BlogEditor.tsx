@@ -12,7 +12,7 @@ import { EditorContext } from "../pages/Write";
 export const BlogEditor = () => {
   const dispatch = useDispatch()
   const blog = useSelector((state) => state.editor.blog);
-  const editorState = useSelector((state) => state.editor.editorState);
+  
 
   const { textEditor, setTextEditor } = useContext(EditorContext)
 
@@ -48,14 +48,14 @@ export const BlogEditor = () => {
     if (e.keyCode === 13) e.preventDefault()
   }
 
-  const handleTitleChange = (e: { target: any; }) => {
+  const handleTitleChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const input = e.target;
     input.style.height = 'auto';
     input.style.height = input.scrollHeight + 'px'
     dispatch(setBlog({ ...blog, title: input.value }));
   }
 
-  const handleError = (e: { target: any; }) => {
+  const handleError = (e: React.ChangeEvent<HTMLImageElement>)  => {
     const img = e.target;
     img.src = blogBanner
   }
@@ -71,12 +71,11 @@ export const BlogEditor = () => {
             <label htmlFor="uploadBanner">
               <img
                 src={blog.banner} className="z-20" onError={handleError} />
-              <input type="text" id="uploadBanner" type="file" accept=".png, .jpg, .jpeg ,.webp" hidden
+              <input type="file" id="uploadBanner"  accept=".png, .jpg, .jpeg ,.webp" hidden
                 onChange={handleBannerUpload}
               />
             </label>
           </div>
-
           <textarea
             placeholder="Blog Title"
             className="text-4xl font-medium w-full mx-5 h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
@@ -87,7 +86,6 @@ export const BlogEditor = () => {
           </textarea>
           <hr className="w-full my-5" />
           <div id="textEditor" className="font-serif mx-5"></div>
-
         </div>
       </section>
     </>
