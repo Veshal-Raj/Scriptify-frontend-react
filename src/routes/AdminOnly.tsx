@@ -1,20 +1,23 @@
 import { Route, Routes } from "react-router-dom"
-import Dashboard from "../components/Admin/Dashboard"
 import AdminRoutes from "./routeComponents/AdminRoutes"
-import Users from "../components/Admin/Users"
-import Blog from "../components/Admin/blog/Blog"
-import Reports from "../components/Admin/reports/Reports"
+import React, { Suspense } from "react"
+import DefaultSkeletionPage from "../components/Skeleton/DefaultSkeletionPage"
 
+
+const Dashboard = React.lazy(() => import('../components/Admin/dashboard/Dashboard'))
+const Users = React.lazy(() => import('../components/Admin/Users'))
+const Blog = React.lazy(() => import('../components/Admin/blog/Blog'))
+const Reports = React.lazy(() => import("../components/Admin/reports/Reports"))
 
 const AdminOnly = () => {
   return (
     <>
         <Routes>
             <Route element={<AdminRoutes />}>
-                <Route path="/dashboard" element={<Dashboard />} />
-                <Route path="/users" element={<Users />} />
-                <Route path="/blogs" element={<Blog />} />
-                <Route path="/Reports" element={<Reports />} />
+                <Route path="/dashboard" element={<Suspense fallback={<DefaultSkeletionPage />}><Dashboard /></Suspense>} />
+                <Route path="/users" element={<Suspense fallback={<DefaultSkeletionPage />}><Users /></Suspense>} />
+                <Route path="/blogs" element={<Suspense fallback={<DefaultSkeletionPage />}><Blog /></Suspense>} />
+                <Route path="/Reports" element={<Suspense fallback={<DefaultSkeletionPage />}><Reports /></Suspense>} />
             </Route>
         </Routes>
     </>
