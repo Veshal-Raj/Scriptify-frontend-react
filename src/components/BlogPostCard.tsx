@@ -5,7 +5,29 @@ import { Card, CardContent, Typography, Chip, Box } from '@mui/material';
 import avatar from '../assests/imgs/avatar.png'
 import { Link } from "react-router-dom";
 
-const BlogPostCard = ({ content, author, index }) => {
+interface Content {
+    publishedAt: string;
+    title: string;
+    banner: string;
+    des: string;
+    tags: string[];
+    activity: {
+       total_likes: number;
+    };
+    blog_id: string;
+   }
+   
+   interface Author {
+    username: string;
+   }
+
+interface BlogPostCardProps {
+    content: Content;
+    author: Author;
+    index: number;
+   }
+
+const BlogPostCard = ({ content, author, index }: BlogPostCardProps) => {
     const { publishedAt, title, banner, des, tags, activity: { total_likes }, blog_id } = content;
     const { username } = author;
     const truncateString = (str: string, num: number) => {
@@ -44,7 +66,6 @@ const BlogPostCard = ({ content, author, index }) => {
                                     {truncateString(des, 80)} </Typography>
                             </motion.div>
                             <motion.div className="flex   mt-7">
-
                                 <Chip label={tags[0]} variant="outlined" color="primary" />
                                 <FavoriteBorderIcon className="text-xl ml-5 mr-3" />
                                 <Typography variant="body1" component="span" className="flex items-center text-gray-600 ">{total_likes}</Typography>
