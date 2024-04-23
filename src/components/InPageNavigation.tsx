@@ -1,4 +1,4 @@
-import { ReactNode, useState } from "react";
+import { ReactNode, SetStateAction, useState } from "react";
 import { Button, Chip, Drawer, IconButton, Typography } from "@mui/material";
 import FilterListIcon from '@mui/icons-material/FilterList';
 import CloseIcon from '@mui/icons-material/Close';
@@ -20,31 +20,24 @@ const InPageNavigation: React.FC<Props> = ({ routes, defaultHidden = [], childre
 
 
 
-    const changePageState = (i: number) => {
-        setInPageNavIndex(i);
-    };
+    const changePageState = (i: number) => setInPageNavIndex(i);
 
 
-    const handleClick = () => {
-        setIsClicked(!isClicked);
-    }
+    const handleClick = () => setIsClicked(!isClicked);
 
-    const handleChipClick = (tag: string, index) => {
+    const handleChipClick = (tag: string, index: SetStateAction<number | null>) => {
         if (chipSelected === index) {
             setChipSelected(null);
             setIsClicked(false);
             onResetBlogs();
         } else {
             setChipSelected(index);
-        setIsClicked(false);
-
+            setIsClicked(false);
             onTagFilter(tag);
         }
     }
-    
-    const handleCloseDrawer = () => {
-        setIsClicked(false);
-    }
+
+    const handleCloseDrawer = () =>  setIsClicked(false);
 
     return (
         <>
@@ -60,7 +53,6 @@ const InPageNavigation: React.FC<Props> = ({ routes, defaultHidden = [], childre
                         </Button>
                     ))}
                     <div className="lg:hidden mt-3 ml-auto">
-
                         <IconButton className="" onClick={handleClick}>
                             <FilterListIcon color={isClicked ? 'secondary' : 'inherit'} />
                         </IconButton>
@@ -71,39 +63,36 @@ const InPageNavigation: React.FC<Props> = ({ routes, defaultHidden = [], childre
             <Drawer anchor="bottom" open={isClicked} onClose={handleClick}
                 PaperProps={{
                     sx: {
-                        borderTopLeftRadius: '20px', 
-                        borderTopRightRadius: '20px', 
+                        borderTopLeftRadius: '20px',
+                        borderTopRightRadius: '20px',
                     }
                 }}
             >
                 <div className="flex flex-wrap gap-3 mt-10 m-5 " style={{ flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-
-
                     {tags.map((tag, index) => (
-                       <motion.div
-                       key={index}
-                       initial={{ opacity: 0, y: 20 }}
-                       animate={{ opacity: 1, y: 0 }}
-                       exit={{ opacity: 0, y: -20 }}
-                       transition={{ duration: 0.5, delay: index * 0.1 }}
-                   >
-                       <Chip
-                           label={tag}
-                           variant="outlined"
-                           className="mb-2 "
-                           color={chipSelected === index ? "default" : "primary"} 
-                           onClick={() => handleChipClick(tag, index)} 
-                       />
-                   </motion.div>
+                        <motion.div
+                            key={index}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: -20 }}
+                            transition={{ duration: 0.5, delay: index * 0.1 }}
+                        >
+                            <Chip
+                                label={tag}
+                                variant="outlined"
+                                className="mb-2 "
+                                color={chipSelected === index ? "default" : "primary"}
+                                onClick={() => handleChipClick(tag, index)}
+                            />
+                        </motion.div>
                     ))}
                 </div>
-                <div style={{ textAlign: 'center', marginBottom: '15px'  }}>
+                <div style={{ textAlign: 'center', marginBottom: '15px' }}>
                     <IconButton onClick={handleCloseDrawer} sx={{ border: '1px solid rgba(0, 0, 0, 0.5)', borderRadius: '50%' }}>
                         <CloseIcon />
                     </IconButton>
                 </div>
             </Drawer>
-
         </>
     );
 };
