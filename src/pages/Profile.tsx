@@ -1,21 +1,23 @@
 import { Link, useParams } from "react-router-dom"
 import Navbar from "../components/Navbar"
-import { useEffect, useState } from "react"
+import React, { Suspense, useEffect, useState } from "react"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { fetchUserBlogs, profileDetails } from "../api/user"
 import { Toaster, toast } from 'sonner'
-import About from "../components/About"
 import { AnimatePresence } from "framer-motion"
-import BlogPostCardSkeleton from "../components/Skeleton/BlogSkeleton"
 import ProfileInPageNavigation from "../components/ProfileInPageNavigation"
-import MobileFooter from "../components/MobileFooter"
-import SavedBlogs from "../components/SavedBlogs"
 import ForumIcon from '@mui/icons-material/Forum';
 import ProfileBlogCard from "../components/ProfileBlogCard"
 import { IconButton, Tooltip } from "@mui/material"
 import { useSelector } from "react-redux"
-import NoBlogPublished from "../components/NoBlogPublished"
-import ProfileFollowersDrawer from "../components/ProfileFollowersDrawer"
+import MobileFooterSkeleton from "../components/Skeleton/MobileFooterSkeleton"
+
+const ProfileFollowersDrawer = React.lazy(() => import('../components/ProfileFollowersDrawer'))
+const MobileFooter = React.lazy(() => import('../components/MobileFooter'))
+const About = React.lazy(() => import("../components/About"))
+const SavedBlogs = React.lazy(() => import("../components/SavedBlogs"))
+const BlogPostCardSkeleton = React.lazy(() => import("../components/Skeleton/BlogSkeleton"))
+const NoBlogPublished = React.lazy(() => import('../components/NoBlogPublished'))
 
 export const profileDataStructure = {
   "personal_info": {
@@ -128,17 +130,19 @@ const Profile = () => {
   return (
     <>
       <Navbar />
-      <Toaster richColors  position="top-right" expand={false} />
+      <Toaster richColors position="top-right" expand={false} />
       <section className="min-h-[calc(100vh-80px)] mb-24 m-5 md:flex flex-row-reverse items-start gap-5 min-[1100px]:gap-12">
         <div className="flex flex-col max-md:items-center gap-5 min-w-[250px] ">
           <img src={profile_img} alt="profile_img" className="w-48 h-48 bg-gray-50 rounded-full md:h-32 md:w-32" />
           <h1 className="text-2xl font-medium"> @{username}</h1>
           <p>{total_posts.toLocaleString()} Blogs - {total_reads.toLocaleString()} Reads</p>
           <p className="cursor-pointer" onClick={handleDrawerOpen}>{followers} Followers - {followings} Following</p>
-          <ProfileFollowersDrawer
-            open={drawerOpen}
-            onClose={handleDrawerClose}
-          />
+          <Suspense fallback={<div>Loading..</div>}>
+            <ProfileFollowersDrawer
+              open={drawerOpen}
+              onClose={handleDrawerClose}
+            />
+          </Suspense>
           <div className="flex gap-4 mt-2">
             {isSameUser && (<Link to='/user/settings/edit-profile' className="btn-dark bg-gray-50 text-black px-5 py-3 rounded-md">Edit Profile </Link>)}
             {!isSameUser && <Tooltip title="Chat" placement="right">
@@ -160,11 +164,15 @@ const Profile = () => {
               <div className="grid grid-cols-1 gap-6">
                 {blogsLoading ? (
                   Array.from({ length: 5 }, (_, i) => (
-                    <BlogPostCardSkeleton key={`skeleton-${i}`} />
+                    <Suspense fallback={<MobileFooterSkeleton />}>
+                      <BlogPostCardSkeleton key={`skeleton-${i}`} />
+                    </Suspense>
                   ))
                 ) : activeTab === "blogPublished" ? (
                   fetchBlogs.length === 0 ? (
-                    <NoBlogPublished />
+                    <Suspense fallback={<MobileFooterSkeleton />}>
+                      <NoBlogPublished />
+                    </Suspense>
                   ) : (
                     fetchBlogs.map((blog, i) => (
                       <ProfileBlogCard key={blog.id} blog={blog} index={i} username={profile.personal_info.username} ProfileId={ProfileId} />
@@ -172,11 +180,15 @@ const Profile = () => {
                   )
                 ) : activeTab === "savedBlogs" ? (
                   <div key="savedBlogs">
-                    <SavedBlogs />
+                    <Suspense fallback={<MobileFooterSkeleton />}>
+                      <SavedBlogs />
+                    </Suspense>
                   </div>
                 ) : activeTab === "about" ? (
                   <div key="about" className="md:hidden">
-                    <About bio={bio} social_links={social_links} joinedAt={joinedAt} />
+                    <Suspense fallback={<MobileFooterSkeleton />}>
+                      <About bio={bio} social_links={social_links} joinedAt={joinedAt} />
+                    </Suspense>
                   </div>
                 ) : null}
               </div>
@@ -184,7 +196,9 @@ const Profile = () => {
           </AnimatePresence>
         </div>
       </section>
-      <MobileFooter icon='account' />
+      <Suspense fallback={<MobileFooterSkeleton />}>
+        <MobileFooter icon='account' />
+      </Suspense>
     </>
   )
 }
