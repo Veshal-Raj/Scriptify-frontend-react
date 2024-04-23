@@ -1,19 +1,22 @@
 import { Route, Routes } from "react-router-dom"
-import { Feed } from "../pages/Feed"
 import UserRoutes from "./routeComponents/UserRoutes"
-import Write from "../pages/Write"
-import Profile from "../pages/Profile"
-import SingleBlogPage from "../pages/SingleBlogPage"
-import Chat from "../pages/Chat"
 import { useSelector } from "react-redux"
 import { getToken } from "firebase/messaging"
 import { messaging } from "../utils/firebase"
-import { useEffect } from "react"
+import React, { Suspense, useEffect } from "react"
 import axios from "axios"
-import Notification from "../pages/Notification"
-import EditUserProfile from "../pages/EditUserProfile"
-import ChangePassword from "../pages/ChangePassword"
+import DefaultSkeletionPage from "../components/Skeleton/DefaultSkeletionPage"
 
+
+
+const Feed = React.lazy(() => import("../pages/Feed"))
+const Write = React.lazy(() => import("../pages/Write"))
+const SingleBlogPage = React.lazy(() => import("../pages/SingleBlogPage"))
+const Notification = React.lazy(() => import("../pages/Notification"))
+const Profile = React.lazy(() => import("../pages/Profile"))
+const Chat = React.lazy(() => import('../pages/Chat'))
+const EditUserProfile = React.lazy(() => import('../pages/EditUserProfile'))
+const ChangePassword = React.lazy(() => import('../pages/ChangePassword'))
 
 const AuthorizedOnly = () => {
   const { userData } = useSelector(state => state.user)
@@ -62,14 +65,14 @@ const AuthorizedOnly = () => {
     <>
         <Routes>
             <Route element={<UserRoutes />} >
-                <Route path="/feed" element={<Feed />} />
-                <Route path="/write" element={<Write />}/>
-                <Route path="/blog/:blogId" element={<SingleBlogPage />} />
-                <Route path="/notifications" element={<Notification />}/>
-                <Route path="/:id" element={<Profile />}/>
-                <Route path="/chat" element={<Chat />}/> 
-                <Route path="/settings/edit-profile" element={<EditUserProfile />}/> 
-                <Route path="/settings/change-password" element={<ChangePassword />}/> 
+                <Route path="/feed" element={<Suspense fallback={<DefaultSkeletionPage />}><Feed /></Suspense> } />
+                <Route path="/write" element={<Suspense fallback={<DefaultSkeletionPage />}><Write /></Suspense>}/>
+                <Route path="/blog/:blogId" element={<Suspense fallback={<DefaultSkeletionPage />}><SingleBlogPage /></Suspense>} />
+                <Route path="/notifications" element={<Suspense fallback={<DefaultSkeletionPage />}><Notification /></Suspense>}/>
+                <Route path="/:id" element={<Suspense fallback={<DefaultSkeletionPage />}><Profile /></Suspense>}/>
+                <Route path="/chat" element={<Suspense fallback={<DefaultSkeletionPage />}><Chat /></Suspense>}/> 
+                <Route path="/settings/edit-profile" element={<Suspense fallback={<DefaultSkeletionPage />}><EditUserProfile /></Suspense>}/> 
+                <Route path="/settings/change-password" element={<Suspense fallback={<DefaultSkeletionPage />}><ChangePassword /></Suspense>}/> 
             </Route>
         </Routes>
     </>
