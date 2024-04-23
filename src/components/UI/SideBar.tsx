@@ -29,7 +29,6 @@ export default function SideBar() {
       ) {
         return;
       }
-
       setState({ ...state, left: open });
     };
 
