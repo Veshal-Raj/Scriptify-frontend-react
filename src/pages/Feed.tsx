@@ -2,7 +2,7 @@ import Navbar from '../components/Navbar'
 import HomePage from '../components/HomePage'
 import MobileFooter from '../components/MobileFooter'
 
-export const Feed = () => {
+ const Feed = () => {
   return (
     <>
       <div className='flex flex-col  mb-16'>
@@ -13,3 +13,5 @@ export const Feed = () => {
     </>
   )
 }
+
+export default Feed
