@@ -9,10 +9,10 @@ const LandingSection3 = () => {
                 sx={{
                     paddingY: '0px',
                     '@media (max-width: 600px)': {
-                        fontSize: '1.5rem', // Adjust the font size for small screens
+                        fontSize: '1.5rem', 
                         textAlign: 'initial',
-                        mx: '5px', // Reduce horizontal margin for small screens
-                        py: '10px', // Reduce vertical padding for small screens
+                        mx: '5px', 
+                        py: '10px', 
                     },
                 }}
             >Scriptify Pro</Typography>
@@ -20,10 +20,10 @@ const LandingSection3 = () => {
                 sx={{
                     padding: '0px',
                     '@media (max-width: 600px)': {
-                        fontSize: '1.8rem', // Adjust the font size for small screens
+                        fontSize: '1.8rem', 
                         textAlign: 'center',
-                        mx: '5px', // Reduce horizontal margin for small screens
-                        py: '0px', // Reduce vertical padding for small screens
+                        mx: '5px', 
+                        py: '0px', 
                     },
                 }}
             >
