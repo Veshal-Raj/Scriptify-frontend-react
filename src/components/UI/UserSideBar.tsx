@@ -19,24 +19,24 @@ const UserSideBar = () => {
     });
 
     const toggleDrawer =
-        (open) =>
-        (event) => {
-            if (
-                event.type === 'keydown' &&
-                ((event).key === 'Tab' ||
-                    (event).key === 'Shift')
-            ) {
-                return;
-            }
-
-            setState({ ...state, left: open });
-        };
+        (open: boolean) =>
+            (event:  React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>) => {
+                if (
+                    event.type === 'keydown' &&
+                    ((event as React.KeyboardEvent<HTMLButtonElement>).key === 'Tab' ||
+                        (event as React.KeyboardEvent<HTMLButtonElement>).key === 'Shift')
+                ) {
+                    return;
+                }
+                setState({ ...state, left: open });
+            };
 
     const location = useLocation();
     const navigate = useNavigate();
 
     const list = () => (
         <Box
+            component="div"
             sx={{
                 width: 250,
                 display: 'flex',
@@ -49,11 +49,10 @@ const UserSideBar = () => {
         >
             <Box sx={{ display: 'flex', alignItems: 'center', padding: '10px' }} >
                 <Link to='/user/feed' className="flex">
-
-                <img src={logo} alt="logo" height='30px' width='30px' />
-                <Typography variant="h6" sx={{ paddingLeft: '10px' }} onClick={() => navigate('/user/feed')}>
-                    Scriptify
-                </Typography>
+                    <img src={logo} alt="logo" height='30px' width='30px' />
+                    <Typography variant="h6" sx={{ paddingLeft: '10px' }} onClick={() => navigate('/user/feed')}>
+                        Scriptify
+                    </Typography>
                 </Link>
             </Box>
             <hr />
@@ -77,7 +76,7 @@ const UserSideBar = () => {
             </List>
         </Box>
     );
-    
+
     return (
         <div>
             <IconButton
