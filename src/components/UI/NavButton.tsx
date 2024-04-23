@@ -1,6 +1,17 @@
 import { Button } from '@mui/material';
 
-const NavButton = ({  text, variant = 'outlined', backgroundColor = '#007bff', color = 'white', hoverBackgroundColor = 'white', hoverColor = '#007bff' , onClick}) => {
+// Define an interface for the props
+interface NavButtonProps {
+  text: string;
+  variant?: 'text' | 'outlined' | 'contained';
+  backgroundColor?: string;
+  color?: string;
+  hoverBackgroundColor?: string;
+  hoverColor?: string;
+  onClick?: () => void; // Adjust the type as needed
+ }
+
+const NavButton: React.FC<NavButtonProps> = ({  text, variant = 'outlined', backgroundColor = '#007bff', color = 'white', hoverBackgroundColor = 'white', hoverColor = '#007bff' , onClick}) => {
     return (
       <Button
           variant={variant}
@@ -22,8 +33,6 @@ const NavButton = ({  text, variant = 'outlined', backgroundColor = '#007bff', c
         >
           {text}
         </Button>
-      //     <Link to={to} style={{ textDecoration: 'none' }}>
-      // </Link>
     );
   };
 
