@@ -1,6 +1,12 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
 
-const BlockUserDialog = ({ open, onClose, onConfirm }) => {
+interface BlockUserDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+ }
+
+const BlockUserDialog = ({ open, onClose, onConfirm }: BlockUserDialogProps) => {
   return (
     <Dialog open={open} onClose={onClose} >
       <DialogTitle>User Block Confirmation</DialogTitle>
