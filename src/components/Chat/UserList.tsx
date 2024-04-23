@@ -8,21 +8,16 @@ import Stack from '@mui/material/Stack';
 import Badge from '@mui/material/Badge';
 import { useMediaQuery } from '@mui/material';
 import { useQuery } from '@tanstack/react-query';
-
 import { fetchAllUsersApi } from '../../api/chat';
 import {  IUserList } from '../../@types/Tchat';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedUser } from '../../redux/slice/chatSlice';
-import { timeAgo } from '../../hooks/useDate';
 
 type UserClickHandler = (user: IUserList) => void;
 
 interface UserListProps {
   onUserClick: UserClickHandler;
 }
-
-
-
 
 const UserList: React.FC<UserListProps> = ({ onUserClick}) => {
   const dispatch = useDispatch()
@@ -47,8 +42,7 @@ const UserList: React.FC<UserListProps> = ({ onUserClick}) => {
   }, [searchUserList, userId]);
 
   useEffect(() => {
-    if (allUserForList?.data && allUserForList.data.response ) {
-      
+    if (allUserForList?.data && allUserForList.data.response ) {      
       const filteredUsers = allUserForList.data.response.filter((user: { userId: string; }) => user.userId !== userId);
       setUserListData(filteredUsers);
     }
@@ -56,16 +50,11 @@ const UserList: React.FC<UserListProps> = ({ onUserClick}) => {
 
   
   useEffect(() => {
-    // Call the fetch function when the component mounts
     refetch();
   }, [refetch]);
   
-  // console.log('all users ---- ',  userListData)
-
   const handleUserClick = (user: IUserList) => {
-    console.log('user -||-- ', user)
-    dispatch(setSelectedUser(user))
-    
+    dispatch(setSelectedUser(user))    
     onUserClick(user.userId)
   }
 
@@ -85,8 +74,7 @@ const UserList: React.FC<UserListProps> = ({ onUserClick}) => {
                       horizontal: 'right',
                     }}
                     variant="dot"
-                    invisible={!user.online}
-                    
+                    invisible={!user.online}                    
                   >
                     <Avatar alt={user.username} src={user.profileImage} />
                   </Badge>
