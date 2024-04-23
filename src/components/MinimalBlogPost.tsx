@@ -3,7 +3,24 @@ import { motion } from 'framer-motion';
 import { CardContent, Typography } from '@mui/material';
 import { getDay } from '../hooks/useDate';
 
-const MinimalBlogPost = ({ blog, index }) => {
+interface Blog {
+    publishedAt: string;
+    title: string;
+    author: {
+       personal_info: {
+         username: string;
+       };
+    };
+    blog_id: string;
+   }
+
+   interface MinimalBlogPostProps {
+    blog: Blog;
+    index: number;
+   }
+
+   
+const MinimalBlogPost = ({ blog, index }: MinimalBlogPostProps) => {
     const { publishedAt, title, author: { personal_info: { username } }, blog_id } = blog;
 
     return (
