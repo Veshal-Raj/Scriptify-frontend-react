@@ -27,8 +27,6 @@ const ChatBody = () => {
   const selectedUserId = selectedUserFromRedux ? selectedUserFromRedux.userId : '';
   const { userData } = useSelector(state => state.user)
   const userId = userData._id
-  // console.log('userdata 0000 ', userData)
-  // console.log('userdata 0000 ', userData._id)
 
   const isSmallScreen = useMediaQuery('(max-width:600px)');
 
@@ -64,8 +62,6 @@ const ChatBody = () => {
 
   useEffect(()=> {
     if (userChatData?.data) {
-      // console.log('finding selecteduserid --->> ', userChatData.data)
-
       setConversationData(userChatData?.data.response)
     }
   }, [userChatData])
@@ -74,7 +70,6 @@ const ChatBody = () => {
   return (
     <>
       <div className='flex  min-h-screen'>
-
         <div className={`${isSmallScreen ? 'w-full' : 'w-1/3'} `}>
           <UserSearch />
           <UserList onUserClick={handleUserClick} />
@@ -91,7 +86,6 @@ const ChatBody = () => {
               Open a conversation to start a chat.
             </p>
           </div>
-
         )}
       </div>
     </>
