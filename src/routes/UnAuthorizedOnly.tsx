@@ -1,21 +1,24 @@
 import { Route, Routes } from "react-router-dom"
-import Login from '../pages/Login'
-import Signup from "../pages/signup/Signup";
-import LandingPage from "../pages/LandingPage";
+import React, { Suspense } from "react";
 import NotUserRoutes from "./routeComponents/NotUserRoutes";
-import ForgotPassword from "../pages/ForgotPassword";
-import ChangePasswordNotLogin from "../pages/ChangePasswordNotLogin";
+import DefaultSkeletionPage from "../components/Skeleton/DefaultSkeletionPage";
+
+const LandingPage  = React.lazy(() => import('../pages/LandingPage'))
+const Login = React.lazy(() => import("../pages/Login"))
+const Signup = React.lazy(() => import('../pages/signup/Signup'))
+const ForgotPassword = React.lazy(() => import('../pages/ForgotPassword'))
+const ChangePasswordNotLogin = React.lazy(() => import('../pages/ChangePasswordNotLogin'))
 
 const UnAuthorizedOnly = () => {
   return (
     <>
       <Routes>
         <Route element={<NotUserRoutes />} >
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/sign-in" element={<Login />} />
-          <Route path="/sign-up" element={<Signup />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/change-password" element={<ChangePasswordNotLogin />} />
+          <Route path="/" element={<Suspense fallback={<DefaultSkeletionPage />}><LandingPage /></Suspense>} />
+          <Route path="/sign-in" element={<Suspense fallback={<DefaultSkeletionPage />}><Login /></Suspense>} />
+          <Route path="/sign-up" element={<Suspense fallback={<DefaultSkeletionPage />}><Signup /></Suspense>} />
+          <Route path="/forgot-password" element={<Suspense fallback={<DefaultSkeletionPage />}><ForgotPassword /></Suspense>} />
+          <Route path="/change-password" element={<Suspense fallback={<DefaultSkeletionPage />}><ChangePasswordNotLogin /></Suspense>} />
         </Route>
       </Routes>
     </>
