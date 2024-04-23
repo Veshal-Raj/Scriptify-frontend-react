@@ -5,7 +5,6 @@ import { getAllUsers } from "../../api/admin"
 import TuserType from "../../@types/TuserType"
 
 
-
 const Users = () => {
 
   const { data: AllUsers, isLoading } = useQuery({
@@ -15,8 +14,6 @@ const Users = () => {
   })
 
   const userData: TuserType = AllUsers?.data
-
-
 
   return (
     <>
