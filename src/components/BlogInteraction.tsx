@@ -16,32 +16,57 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 import { checkUserSubscribedApi, initialLikeApi, likeBlogApi, reportBlogApi, saveBlogApi, unLikeBlogApi, unSaveBlogApi } from "../api/user";
 import { toast } from 'sonner'
 import CommentDrawer from "./CommentDrawer";
-import SubscriptionModal from "./SubscriptionModal";
+
+
+interface BlogData {
+    title: string;
+    _id: string;
+    blog_id: string;
+    activity: {
+        total_likes: number;
+        total_comments: number;
+    };
+    author: {
+        personal_info: {
+            username: string;
+        };
+        _id: string;
+    };
+}
+
+// interface BlogContextValue {
+//     singleBlogData: BlogData; // Assuming BlogData is the type of your blog data
+//     setSingleBlogData: React.Dispatch<React.SetStateAction<BlogData>>;
+//    }
 
 
 const BlogInteraction = () => {
-    const { singleBlogData: { title, _id, blog_id, activity, activity: { total_likes, total_comments }, author: { personal_info: { username: author_username }, _id: authorId } },
+    const { singleBlogData: { title, _id, blog_id, activity: { total_likes, total_comments }, author: { _id: authorId } },
         setSingleBlogData } = useContext(BlogContext)
     const { userData } = useSelector(state => state.user)
 
     const [isLiked, setIsLiked] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
-    const [anchorEl, setAnchorEl] = useState(null);
+    const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
     const [isCommentsDrawerOpen, setIsCommentsDrawerOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [reportReason, setReportReason] = useState('');
     const [chatClicked, setChatClicked] = useState(false)
-    
 
     const userId = userData._id
 
     const blogId = _id
 
+    const data = {
+        blogId: blogId,
+        userId: userId
+    }
+
     const commentData = {
-        userId : userId,
+        userId: userId,
         authorId: authorId,
         blogId: blog_id,
-        _id: _id 
+        _id: _id
     }
 
     const { data: initialBlogQuery } = useQuery({
@@ -49,15 +74,11 @@ const BlogInteraction = () => {
         queryFn: () => initialLikeApi(userId, blogId)
     })
 
-   
     const navigate = useNavigate()
-    
 
     useEffect(() => {
-
         initialBlogQuery
     }, [])
-
 
     useEffect(() => {
         if (initialBlogQuery && initialBlogQuery.data && initialBlogQuery.data.response) {
@@ -70,7 +91,7 @@ const BlogInteraction = () => {
         mutationFn: likeBlogApi,
         onSuccess: () => {
             setIsLiked(true)
-            setSingleBlogData(prevState => ({
+            setSingleBlogData((prevState: BlogData) => ({
                 ...prevState,
                 activity: {
                     ...prevState.activity,
@@ -78,16 +99,14 @@ const BlogInteraction = () => {
                 }
             }));
         },
-        onError: () => {
-            toast.error('Something went wrong, Please try again later.')
-        }
+        onError: () =>  toast.error('Something went wrong, Please try again later.')
     })
 
     const { mutate: unLikeBlog } = useMutation({
         mutationFn: unLikeBlogApi,
         onSuccess: () => {
             setIsLiked(false)
-            setSingleBlogData(prevState => ({
+            setSingleBlogData((prevState: BlogData) => ({
                 ...prevState,
                 activity: {
                     ...prevState.activity,
@@ -95,39 +114,31 @@ const BlogInteraction = () => {
                 }
             }));
         },
-        onError: () => {
-            toast.error('Something went wrong, Please try again later.')
-        }
+        onError: () => toast.error('Something went wrong, Please try again later.')
     })
 
     const { mutate: saveBlog } = useMutation({
         mutationFn: saveBlogApi,
         onSuccess: (response) => {
-            console.log('response form save blog -->>> ', response.data.response.success)
             const result = response.data.response.success
             if (result) {
                 setIsSaved(true)
                 toast.success('Blog Saved Successfully')
             }
         },
-        onError: () => {
-            toast.error('Something went wrong, Please try again later.')
-        }
+        onError: () => toast.error('Something went wrong, Please try again later.')
     })
 
     const { mutate: unSaveBlog } = useMutation({
         mutationFn: unSaveBlogApi,
         onSuccess: (response) => {
-            console.log('response from unsave blog -->> ', response.data.response.success)
             const result = response.data.response.success
             if (result) {
                 setIsSaved(false)
                 toast.success('Blog Unsaved Successfully')
             }
         },
-        onError: () => {
-            toast.error('Something went wrong, Please try agian later.')
-        }
+        onError: () =>  toast.error('Something went wrong, Please try agian later.')
     })
 
     const { mutate: reportBlog } = useMutation({
@@ -135,106 +146,55 @@ const BlogInteraction = () => {
         onSuccess: (response) => {
             if (response.status == 200) {
                 setAnchorEl(null)
-                toast.success('Blog reported successfully!') 
+                toast.success('Blog reported successfully!')
             }
         },
         onError: () => {
             console.log('report blog errro')
             toast.error('Blog reported successfully!', {
                 description: 'Please try again later',
-              })
+            })
         }
     })
 
     const { mutate: userSubscribed } = useMutation({
         mutationFn: checkUserSubscribedApi,
         onSuccess: (response) => {
-            console.log('success....')
-            console.log(response)
-            if (response.data.response === true) {
-                // alert('true')
-                navigate('/user/chat')
-            } else navigate('/subscription')
+            if (response.data.response === true)  navigate('/user/chat')
+            else navigate('/subscription')
         }
     })
 
-   
-    
+    const handlePopoverOpen = (event: React.MouseEvent<HTMLElement>) =>  setAnchorEl(event.currentTarget);
 
-    const handlePopoverOpen = (event) => {
-        setAnchorEl(event.currentTarget);
-    };
-
-    const handlePopoverClose = () => {
-        setAnchorEl(null);
-    };
+    const handlePopoverClose = () =>  setAnchorEl(null);
 
     const open = Boolean(anchorEl);
 
-
     const isSameUser = userId === authorId
 
+    const handleLike = () => likeBlog(data)
 
-    const handleLike = () => {
+    const handleUnLike = () => unLikeBlog(data)
 
-        const data = {
-            blogId: blogId,
-            userId: userId
-        }
-        likeBlog(data)
-    }
+    const handleSave = () => saveBlog(data)
 
-    const handleUnLike = () => {
+    const handleUnSave = () => unSaveBlog(data)
 
-        const data = {
-            blogId: blogId,
-            userId: userId
-        }
-        unLikeBlog(data)
-    }
+    const handleCommentsDrawerOpen = () => setIsCommentsDrawerOpen(true);
 
-    const handleSave = () => {
-        const data = {
-            blogId: blogId,
-            userId: userId
-        }
-        saveBlog(data)
-    }
+    const handleCommentsDrawerClose = () =>  setIsCommentsDrawerOpen(false);
 
-    const handleUnSave = () => {
-        const data = {
-            blogId: blogId,
-            userId: userId
-        }
-        unSaveBlog(data)
-    }
+    const handleReportClick = () => setIsModalOpen(true);
 
-    const handleCommentsDrawerOpen = () => {
-        setIsCommentsDrawerOpen(true);
-      };
-    
-      const handleCommentsDrawerClose = () => {
-        setIsCommentsDrawerOpen(false);
-      };
+    const handleCloseModal = () => setIsModalOpen(false);
 
-      const handleReportClick = () => {
-        setIsModalOpen(true);
-    };
-
-    const handleCloseModal = () => {
-        setIsModalOpen(false);
-    };
-
-    const handleReportReasonChange = (event) => {
-        setReportReason(event.target.value);
-    };
+    const handleReportReasonChange = (event: React.ChangeEvent<HTMLInputElement>) => setReportReason(event.target.value);
 
     const handleReportSubmit = () => {
-        // You can send the reportReason to your API endpoint or take further action here
-        console.log('Report Reason:', reportReason);
         if (reportReason.trim() === '') {
             toast.error("Please write the reason for reporting.")
-            return 
+            return
         }
         const data = {
             blog_id: blogId,
@@ -247,14 +207,12 @@ const BlogInteraction = () => {
 
     const handleChatClick = () => {
         setChatClicked(true)
-        // checkUserSubscribedApi(userId);
         userSubscribed(userId)
     }
 
     return (
         <>
             <hr className="border-gray-200 my-2" />
-
             <div className="flex gap-6 justify-between">
                 <div>
                     <div className="flex gap-3 items-center">
@@ -273,35 +231,26 @@ const BlogInteraction = () => {
                         </>
                         }
                         <p className="text-xl text-gray-600">{total_likes}</p>
-
                         <Tooltip title="Comment" placement="bottom">
                             <IconButton onClick={handleCommentsDrawerOpen}>
                                 <CommentIcon />
                             </IconButton>
                         </Tooltip>
                         <p className="text-xl text-gray-600">{total_comments}</p>
-
                         <CommentDrawer
                             open={isCommentsDrawerOpen}
                             onClose={handleCommentsDrawerClose}
-                            title={ title }
-                            commentData  = {commentData}
-                            
+                            title={title}
+                            commentData={commentData}
                         />
-
                         {!isSameUser && <Tooltip title="Chat" placement="right">
                             <IconButton onClick={handleChatClick}>
                                 <ForumIcon />
                             </IconButton>
                         </Tooltip>}
-
-
                     </div>
                 </div>
-
                 <div className="flex gap-6 items-center">
-                    { /** <<<---- Edit Blog --->>> */}
-                    {/* {isSameUser && <Link to={`/editor/${blog_id}`} className="hover:text-blue-600">Edit</Link>} */}
                     <Tooltip title="Twitter" placement="top">
                         <div>
                             <Link to={`https://twitter.com/intent/tweet?text=Read${title}&url=${location.href}`}>
@@ -330,7 +279,6 @@ const BlogInteraction = () => {
                                 <Paper>
                                     <List>
                                         <ListItem button>
-
                                             {isSaved ? (
                                                 <ListItemIcon onClick={handleUnSave}>
                                                     <BookmarkIcon color="primary" />
@@ -340,7 +288,6 @@ const BlogInteraction = () => {
                                                     <BookmarkBorderIcon />
                                                 </ListItemIcon>
                                             )}
-
                                             <ListItemText primary="Save" />
                                         </ListItem>
                                         <ListItem button onClick={handleReportClick}>
@@ -353,33 +300,31 @@ const BlogInteraction = () => {
                                 </Paper>
                             </Popover>
                             <Dialog open={isModalOpen} onClose={handleCloseModal} sx={{ borderRadius: '12px' }} >
-                <DialogTitle>Report Blog</DialogTitle>
-                <DialogContent>
-                    <TextField
-                        autoFocus
-                        margin="dense"
-                        id="report-reason"
-                        label="Reason for report *"
-                        type="text"
-                        fullWidth
-                        value={reportReason}
-                        onChange={handleReportReasonChange}
-                        multiline
-                        rows={4}
-                    />
-                </DialogContent>
-                <DialogActions>
-                    <Button onClick={handleCloseModal} color="secondary">Cancel</Button>
-                    <Button onClick={handleReportSubmit} color="primary">Report</Button>
-                </DialogActions>
-            </Dialog>
+                                <DialogTitle>Report Blog</DialogTitle>
+                                <DialogContent>
+                                    <TextField
+                                        autoFocus
+                                        margin="dense"
+                                        id="report-reason"
+                                        label="Reason for report *"
+                                        type="text"
+                                        fullWidth
+                                        value={reportReason}
+                                        onChange={handleReportReasonChange}
+                                        multiline
+                                        rows={4}
+                                    />
+                                </DialogContent>
+                                <DialogActions>
+                                    <Button onClick={handleCloseModal} color="secondary">Cancel</Button>
+                                    <Button onClick={handleReportSubmit} color="primary">Report</Button>
+                                </DialogActions>
+                            </Dialog>
                         </>
                     }
                 </div>
             </div>
-
             <hr className="border-gray-200 my-2" />
-            {/* <SubscriptionModal open={showHelloWorldModal} onClose={handleCloseHelloWorldModal} /> */}
         </>
     )
 }
