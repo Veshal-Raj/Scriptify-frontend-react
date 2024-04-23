@@ -18,37 +18,21 @@ const ChatWindow: React.FC<Props> = ({ conversationData, selectedUserId }) => {
     const messagesEndRef =  useRef<HTMLDivElement>(null);
     const { userData } = useSelector(state => state.user)
     const cData = conversationData[0]
-    const { selectedUser } = useSelector(state => state.chat)
+    const { selectedUser } = useSelector(state => state.chat)   
 
-    console.log('select user from store in chatwindow --- ', selectedUser)
-    // if (cData?.receiver.id !== selectedUserId) return <></>
-   
-
-    const scrollToBottom = () => {
-        messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-    }
-
+    const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
     const userId = userData._id
-
-    // console.log('receiver id --> ', conversationData[0])
-    // console.log('selected user id -->',selectedUserId)
 
     useEffect(()=>{
         scrollToBottom()
     }, [conversationData])
-
-    
-    // console.log('selected user from state --- ', sel)
-
    
     return (
         <>
             <Box className='bg-[#E1DFEA] h-[100%] pt-5 pb-10 relative' sx={{ overflowY: 'auto', maxHeight: 'calc(100vh - 130px)' }} >
                 {conversationData.map((conversation, index) => (
                     <Grid key={index} container spacing={2} >
-
-                        {/* Sender's message */}
                         <Grid item xs={12} container justifyContent={conversation.sender.id === userId ? "flex-end" : "flex-start"} sx={{ padding: '5px' }}>
                             <Grid item >
                                 <Box sx={{ padding: 1 }} >
@@ -80,7 +64,6 @@ const ChatWindow: React.FC<Props> = ({ conversationData, selectedUserId }) => {
                             </Grid>
                             <Grid item >
                                 <Box sx={{ padding: 1 }}>
-                                    {/** need to change the avatar logic, ( !== ) change this into ( === ) */}
                                     {conversation.sender.id === userId ? <Avatar  src={conversation.sender.profile_img} /> : null}
                                 </Box>
                             </Grid>
@@ -89,7 +72,6 @@ const ChatWindow: React.FC<Props> = ({ conversationData, selectedUserId }) => {
                 ))}
             <div ref={messagesEndRef} />
             </Box>
-            {/** for rendering this window */}
             <p className='hidden' >{selectedUserId}</p>
         </>
     );
