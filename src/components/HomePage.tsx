@@ -39,13 +39,10 @@ const HomePage = () => {
                 setBlogs(response?.data.response)
                 setShowSkeleton(false)
             }
-            
         }
       })
     
-      
-
-    const handleClick = async (e: React.MouseEvent<HTMLDivElement, MouseEvent>,index: number) => {
+      const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
         const chipIndex = index ;
         if (selectedChip === chipIndex) {
             setSelectedChip(null);
@@ -56,7 +53,7 @@ const HomePage = () => {
         } else {
             setSelectedChip(chipIndex);
             setShowSkeleton(true);
-            const text = e.target.innerText.toLowerCase();
+            const text = (e.target as HTMLElement).innerText.toLowerCase();
             const page = pageState.toLowerCase(); 
             setPageState(text);
             const tag = {tag: text}
@@ -102,8 +99,7 @@ const HomePage = () => {
         }
     };
 
-    const resetBlogs = () => {
-        
+    const resetBlogs = () => {        
         setBlogs(latestBlog.response);
         setPageState('home')
     }
@@ -156,7 +152,6 @@ const HomePage = () => {
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -20 }}
                                         transition={{ duration: 0.5, delay: i * 0.3 }}
-                                        
                                     >
                                         <MinimalBlogPost blog={blog} index={i} />
                                     </motion.div>
@@ -176,15 +171,10 @@ const HomePage = () => {
                             <TagSkeleton count={tagsFetched.length > 0 ? tagsFetched.length : 15} />
                         ) : (
                             <div className="flex flex-wrap gap-3 my-5" style={{ flexWrap: 'wrap', justifyContent: 'flex-start' }}>
-                                {/* Mapping over tags to render chips */}
                                 {tagsFetched.map((data, i) => (
                                     <motion.div key={i} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.5, delay: 0.1 * i }}>
-                                        <Chip
-                                            label={data}
-                                            variant="outlined"
-                                            color={selectedChip === i ? "default" : "primary"}
-                                            onClick={(e) => handleClick(e,i)}
-                                        />
+                                        <Chip label={data} variant="outlined" color={selectedChip === i ? "default" : "primary"}
+                                            onClick={(e) => handleClick(e,i)} />
                                     </motion.div>
                                 ))}
                             </div>
@@ -193,8 +183,6 @@ const HomePage = () => {
                         <Typography variant="h5" sx={{ marginY: '2rem' }}> Upgrade to Scriptify Plus </Typography>
                     </motion.div>
                 </div>
-
-
             </section>
         </>
     );
