@@ -2,26 +2,27 @@ import { Box, List, ListItem, ListItemText, Typography } from "@mui/material";
 import { Link, To, useNavigate } from "react-router-dom";
 import logo from '../../assests/imgs/logo.png';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import LockIcon from '@mui/icons-material/Lock';
 import LogoutIcon from '@mui/icons-material/Logout';
 import { useSelector } from "react-redux";
 
-
+interface RootState {
+    user: {
+       userData: {
+         _id: string;
+       };
+    };
+   }
 
 
 const DrawerContent = () => {
     const navigate = useNavigate();
-    const { userData } = useSelector(state => state.user)
+    const { userData } =  useSelector((state: RootState) => state.user);
     const userId = userData._id
-    console.log('userData', userData._id)
-    const handleItemClick = (route: To) => {
-        navigate(route);
-    };
+    const handleItemClick = (route: To) => navigate(route);
     
     const menuItems = [
         { text: "Profile", icon: AccountCircleIcon, route: `/user/${userId}` }, 
-        // { text: "Dashboard", icon: DashboardIcon, route: "/dashboard" },
         { text: "Change Password", icon: LockIcon, route: "/user/settings/change-password" },
         { text: "Logout", icon: LogoutIcon, route: "/logout" }
     ];
