@@ -108,7 +108,7 @@ export const fetchTags = async () => {
     }
 }
 
-export const filterbyTags = async (tag: string) => {
+export const filterbyTags = async (tag: any) => {
     try {
         console.log(tag)
         // return
