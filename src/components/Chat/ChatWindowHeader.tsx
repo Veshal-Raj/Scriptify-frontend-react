@@ -1,10 +1,7 @@
-
 import Avatar from '@mui/material/Avatar';
 import Typography from '@mui/material/Typography';
 import { useSelector } from 'react-redux';
 import { Toaster } from 'sonner';
-
-
 
 
 const ChatWindowHeader = () => {
@@ -13,12 +10,9 @@ const ChatWindowHeader = () => {
     if (selectedUser.online) {
       return <Typography variant="caption" style={{ color: 'green' }}>Online</Typography>;
     } else {
-      // Assuming 'lastSeen' is a property representing the last seen time
       return <Typography variant="caption">Last seen: {selectedUser.lastSeen}</Typography>;
     }
   };
-
-  // console.log('selecteduser -- from header --', selectedUser)
   return (
     <div className="flex items-center py-3 px-3 border-b ">
       <Toaster richColors position="top-center" />
