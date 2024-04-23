@@ -12,7 +12,13 @@ interface SocialIcons {
   [key: string]: JSX.Element; 
 }
 
-const About = ({  bio, social_links, joinedAt }) => {
+interface AboutProps {
+  bio: string; // Assuming bio is a string
+  social_links: Record<string, string>; // Assuming social_links is an object with string keys and string values
+  joinedAt: string; // Assuming joinedAt is a string representing a date
+ }
+
+const About = ({  bio, social_links, joinedAt }: AboutProps) => {
   const socialIcons: SocialIcons = {
     instagram: <InstagramIcon />,
     youtube: <YouTubeIcon />,
@@ -38,7 +44,6 @@ const About = ({  bio, social_links, joinedAt }) => {
           return link ? (
             <Link key={index} to={link} target="_blank" rel="noopener noreferrer" className="flex items-center">
               {IconComponent}
-              {/* <span className="ml-2">{key}</span> */}
             </Link>
           ) : null;
         })}
