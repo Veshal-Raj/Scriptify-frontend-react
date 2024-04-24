@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
-import { Table, TableHead, TableRow, TableCell, TableBody, Box, TableContainer, Paper, Typography, Button, Pagination, TablePagination } from '@mui/material';
+import { Table, TableHead, TableRow, TableCell, TableBody, Box, TableContainer, Paper, Typography, Button, TablePagination } from '@mui/material';
 import { getFullDay } from '../../../hooks/useDate';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { changeBlogStatusApi } from '../../../api/admin';
 import { toast } from 'sonner';
+import { ReportTableProps } from '../../../@types/TreportAdminTable';
 
-const ReportTable = ({ reports }) => {
+
+const ReportTable: React.FC<ReportTableProps> = ({ reports }) => {
 
   const queryClient = useQueryClient();
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
+  const handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => setPage(newPage);
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (event:  React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -23,29 +23,21 @@ const ReportTable = ({ reports }) => {
   const { mutate: blogStatusChange } = useMutation({
     mutationKey: ['blogStatus'],
     mutationFn: changeBlogStatusApi,
-    onError: (error) => {
-      toast.error(error.message)
-    },
+    onError: (error) => toast.error(error.message),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['allReports'] });
       toast.success('Blog status changed successfully.')
     }
   })
 
-  const handleSendMail = (authorEmail) => {
-    window.open(`mailto:${authorEmail}`);
-  };
+  const handleSendMail = (authorEmail: string) => window.open(`mailto:${authorEmail}`);
 
-  const handleBlogStatus = async (blogId) => {
+  const handleBlogStatus = async (blogId: string) => {
     const data = {
       blogId: blogId
     }
     blogStatusChange(data)
   }
-
-  const startIndex = (page - 1) * rowsPerPage;
-  const endIndex = startIndex + rowsPerPage;
-  const paginatedReports = reports.slice(startIndex, endIndex);
 
   return (
     <Box>
@@ -72,7 +64,7 @@ const ReportTable = ({ reports }) => {
                 <TableCell>{report.blogTitle}</TableCell>
                 <TableCell>{report.reportedByUsername}</TableCell>
                 <TableCell>
-                  <Button variant="contained" color={report.isBlocked ? 'error' : 'primary'} onClick={() => handleBlogStatus(report.blogId)}>
+                  <Button variant="contained" color={report.isBlocked ? 'error' : 'primary'} onClick={() => handleBlogStatus(String(report.blogId))}>
                     {report.isBlocked ? 'Blocked' : 'Active'}
                   </Button>
                 </TableCell>
