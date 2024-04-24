@@ -1,6 +1,9 @@
+interface ListComponentProps {
+    style: 'ordered' | 'unordered';
+    items: string[];
+   }
 
-
-const ListComponent = ({ style, items }) => {
+const ListComponent = ({ style, items }: ListComponentProps) => {
     return (
         <ol className={`pl-5 ${ style === 'ordered' ? "list-decimal" : "list-disc"}`}>
             {
