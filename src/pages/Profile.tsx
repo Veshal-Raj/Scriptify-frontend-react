@@ -11,6 +11,7 @@ import ProfileBlogCard from "../components/ProfileBlogCard"
 import { IconButton, Tooltip } from "@mui/material"
 import { useSelector } from "react-redux"
 import MobileFooterSkeleton from "../components/Skeleton/MobileFooterSkeleton"
+import { RootState } from "../redux/appStore"
 
 const ProfileFollowersDrawer = React.lazy(() => import('../components/ProfileFollowersDrawer'))
 const MobileFooter = React.lazy(() => import('../components/MobileFooter'))
@@ -24,7 +25,8 @@ export const profileDataStructure = {
     "username": "",
     "email": "",
     "password": "",
-    "bio": ""
+    "bio": "",
+    "profile_img": ""
   },
   "social_links": {
     "youtube": "",
@@ -46,42 +48,41 @@ export const profileDataStructure = {
   "joinedAt": "",
   "__v": 0
 }
+
+interface Blog {
+  id: string; 
+ }
+
 const Profile = () => {
   const { id: ProfileId } = useParams()
   const [profile, setProfile] = useState(profileDataStructure)
-  const [fetchBlogs, setFetchBlogs] = useState([])
+  const [fetchBlogs, setFetchBlogs] = useState<Blog[]>([])
   const [activeTab, setActiveTab] = useState("blogPublished");
   const [followers, setFollowers] = useState(0)
   const [followings, setFollowings] = useState(0)
   const [drawerOpen, setDrawerOpen] = useState(false);
   const userParams = useParams()
-  const { userData } = useSelector(state => state.user)
+  const { userData } = useSelector((state: RootState) => state.user)
 
-  const userId = userData._id
+  const userId = userData?._id
   console.log('idddd', userId)
   console.log('profileIddddd', ProfileId)
   const isSameUser = userId === ProfileId;
 
-  let {
-    personal_info: { username, email, profile_img, bio, password },
+  const {
+    personal_info: { username, profile_img, bio },
     social_links,
-    account_info: { total_posts, total_reads },
-    _id,
-    blogs,
-    role,
-    isVerified,
-    isSubscribed,
+    account_info: {  total_reads },
     joinedAt,
   } = profile;
+
+  let {account_info: { total_posts}} = profile
 
 
   const { mutate: getProfileDetails } = useMutation({
     mutationFn: profileDetails,
     onSuccess: (response) => {
       if (response.data.response) {
-        console.log('user details >>>> ', response.data.response)
-        console.log('user followers >>>> ', response.data.response.followers)
-        console.log('user following >>>> ', response.data.response.following)
         setProfile(response.data.response)
         setFollowers(response.data.response.followers.length)
         setFollowings(response.data.response.following.length)
@@ -96,9 +97,16 @@ const Profile = () => {
     }
   })
 
-  const { data: userBlogs, isLoading: blogsLoading, isError, refetch } = useQuery({
-    queryKey: ["fetchUserBlogs"], // Include debounced search term in the query key
-    queryFn: () => fetchUserBlogs(ProfileId),
+  const { data: userBlogs, isLoading: blogsLoading, refetch } = useQuery({
+    queryKey: ["fetchUserBlogs"], 
+    queryFn: async () => {
+      if (ProfileId) {
+        const response = await fetchUserBlogs(ProfileId);
+        return response;
+      } else {
+        return Promise.resolve({ data: '' });
+      }
+    },
   });
 
   useEffect(() => {
@@ -112,20 +120,13 @@ const Profile = () => {
   console.log(fetchBlogs)
 
   useEffect(() => {
-    getProfileDetails(ProfileId)
+    if (ProfileId) getProfileDetails(ProfileId)
     refetch()
   }, [userParams, ProfileId])
 
+  const handleDrawerOpen = () => setDrawerOpen(true);
 
-
-  const handleDrawerOpen = () => {
-    setDrawerOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setDrawerOpen(false);
-  };
-
+  const handleDrawerClose = () => setDrawerOpen(false);
 
   return (
     <>
