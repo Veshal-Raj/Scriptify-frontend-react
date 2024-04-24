@@ -1,7 +1,15 @@
 import { Checkbox, FormControlLabel } from "@mui/material";
 
+interface ChecklistItem {
+    checked: boolean;
+    text: string;
+   }
+   
+   interface ChecklistContentProps {
+    items: ChecklistItem[];
+   }
 
-const ChecklistContent = ({ items }) => {
+const ChecklistContent: React.FC<ChecklistContentProps> = ({ items }) => {
     return (
         <div >
             {items.map((item, index) => (
