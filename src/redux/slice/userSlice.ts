@@ -1,11 +1,34 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+interface UserData {
+  _id?: string;
+  personal_info: {
+    username?: string;
+    email?: string;
+    bio?: string;
+    profile_img?: string;
+ };
+ social_links: {
+  youtube?: string;
+  instagram?: string;
+  facebook?: string;
+  twitter?: string;
+  github?: string;
+  website?: string;
+};
+role: string;
+  followers: string[]; // Assuming followers are an array of strings (user IDs)
+  following: string[]; // Assuming following is an array of strings (user IDs)
+  // Add other properties as needed
+ }
+
 export const userSlice = createSlice({
   name: "user",
   initialState: {
-    userData: null,
+    userData:  null as UserData | null,
     followers: [],
-    following: []
+    following: [],
+    isFollowing: false,
   },
   reducers: {
     setUser: (state, action) => {
@@ -19,7 +42,7 @@ export const userSlice = createSlice({
       state?.userData?.followers?.push(action.payload) 
     },
     addFollowing: (state, action) => {
-      if (!state?.userData.following.includes(action.payload)) {
+      if (state.userData && !state?.userData.following.includes(action.payload)) {
         // If not, push it into the following list
         state?.userData.following.push(action.payload);
         // Update isFollowing state
@@ -34,7 +57,7 @@ export const userSlice = createSlice({
 
     removeFollowing: (state, action) => {
       const authorId = action.payload;
-      state.userData.following = state.userData.following.filter(id => id !== authorId);
+      if (state.userData) state.userData.following = state.userData.following.filter(id => id !== authorId);
     }
     
  
