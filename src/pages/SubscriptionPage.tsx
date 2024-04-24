@@ -6,16 +6,21 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useSelector } from "react-redux";
 import { annualSubscriptionApi, monthlySubscriptionApi } from "../api/user";
-import { useNavigate } from "react-router-dom";
 
+interface RootState {
+    user: {
+       userData: {
+         _id: string;         
+       };      
+    };
+   }
 
 
 const SubscriptionPage = () => {
     const [isLoadingMonthly, setIsLoadingMonthly] = useState(false);
     const [isLoadingYearly, setIsLoadingYearly] = useState(false);
     const isSmallScreen = useMediaQuery('(max-width:600px)');
-    const { userData } = useSelector(state => state.user)
-    const navigate = useNavigate()
+    const { userData } = useSelector((state: RootState) => state.user)
 
     const userId = userData._id
 
