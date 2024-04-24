@@ -4,7 +4,6 @@ import { Button } from "@mui/material"
 import GoogleIcon from '@mui/icons-material/Google';
 import { toast } from 'sonner';
 import { useMutation } from '@tanstack/react-query';
-import { useState } from 'react';
 import { googleAuthUserApi } from '../../api/user';
 import { useDispatch } from 'react-redux';
 import { setUser } from '../../redux/slice/userSlice';
@@ -15,7 +14,6 @@ interface UserData {
 }
 
 const GoogleAuthButton = () => {
-  const [googleUid, setGoogleUid] = useState<UserData>({ uid: '' })
   const dispatch = useDispatch()
   const navigate = useNavigate()
 
@@ -41,7 +39,6 @@ const GoogleAuthButton = () => {
         uid: result.user.uid
       }
       if (result.user.uid) {
-        setGoogleUid(data)
         googleAuthUserData(data)
       }
     } catch (error) {
