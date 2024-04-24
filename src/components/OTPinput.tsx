@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, ChangeEvent, KeyboardEvent, useCallback } from "react";
 import { useMutation } from "@tanstack/react-query";
-import { forgotPasswordOtpApi, verifyOTP } from "../api/user";
+import { verifyOTP } from "../api/user";
 import { useNavigate } from "react-router-dom";
 import BackdropLoading from "./UI/BackdropLoading";
 import { useDispatch } from "react-redux";
@@ -18,7 +18,7 @@ const OtpInput: React.FC<Props> = ({
   onOtpSubmit = () => { },
 }: Props) => {
 
-  const [sendOTP, setSendOTP] = useState('');
+  const [, setSendOTP] = useState('');
   const navigate = useNavigate()
   const dispatch = useDispatch()
   const [otp, setOtp] = useState<string[]>(new Array(length).fill(""));
@@ -43,12 +43,12 @@ const OtpInput: React.FC<Props> = ({
     }
   })
 
-    const { mutate: forgotPasswordOtp} = useMutation({
-      mutationFn: forgotPasswordOtpApi,
-      onSuccess: () => {
-        alert('success')
-      }
-    })
+    // const { mutate: forgotPasswordOtp} = useMutation({
+    //   mutationFn: forgotPasswordOtpApi,
+    //   onSuccess: () => {
+    //     alert('success')
+    //   }
+    // })
 
     const verifyOTPCallback = useCallback((combinedOtp: string) => {
     setIsSubmitting(true);
