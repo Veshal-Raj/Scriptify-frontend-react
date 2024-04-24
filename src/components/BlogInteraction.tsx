@@ -34,17 +34,13 @@ interface BlogData {
     };
 }
 
-// interface BlogContextValue {
-//     singleBlogData: BlogData; // Assuming BlogData is the type of your blog data
-//     setSingleBlogData: React.Dispatch<React.SetStateAction<BlogData>>;
-//    }
+
 
 
 const BlogInteraction = () => {
     const { singleBlogData: { title, _id, blog_id, activity: { total_likes, total_comments }, author: { _id: authorId } },
         setSingleBlogData } = useContext(BlogContext)
     const { userData } = useSelector(state => state.user)
-
     const [isLiked, setIsLiked] = useState(false);
     const [isSaved, setIsSaved] = useState(false);
     const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
