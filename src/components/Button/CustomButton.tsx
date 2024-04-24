@@ -2,8 +2,15 @@
 import { Button } from "@mui/material";
 import { Link } from "react-router-dom";
 import GroupsIcon from '@mui/icons-material/Groups';
+import { ReactNode } from "react";
 
-const CustomButton = ({ to, children }) => {
+interface CustomButtonProps {
+  to: string; 
+  children: ReactNode; 
+}
+
+
+const CustomButton: React.FC<CustomButtonProps> = ({ to, children }) => {
   return (
     <Link to={to} style={{ textDecoration: 'none', display: 'inline-block', width: 'fit-content' }}>
       <Button
