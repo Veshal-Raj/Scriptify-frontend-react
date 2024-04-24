@@ -8,13 +8,19 @@ import { Button } from "@mui/material";
 import { useMediaQuery } from '@mui/material';
 import paymentSucces from '../assests/imgs/payment_success.jpg'
 
+interface RootState {
+    user: {
+       userData: {
+         _id: string;
+       };
+    };
+   }
 
 const SuccessPage = () => {
     const navigate = useNavigate();
-    const { userData } = useSelector((state) => state.user);
+    const { userData } = useSelector((state: RootState) => state.user);
     const userId = userData._id;
     const [fetchReceipt, setFetchReceipt] = useState(false);
-    const [reciptData, setReciptData] = useState(null);
     const [isLoading, setIsLoading] = useState(false)
     const isSmallScreen = useMediaQuery('(max-width:600px)');
 
@@ -24,20 +30,13 @@ const SuccessPage = () => {
     });
 
     const handleRecipt = async () => {
-        console.log('recipt clicked..');
-        // Call the API only if fetchReceipt is true
-        console.log('recipt ', reciptUrl);
         setFetchReceipt(true);
         setIsLoading(true)
     };
 
     useEffect(() => {
         refetchViewDetails();
-        console.log('recipt ', reciptUrl);
-        if (reciptUrl?.data) {
-            console.log(reciptUrl.data.response);
-            window.location.href = reciptUrl.data.response;
-        }
+        if (reciptUrl?.data) window.location.href = reciptUrl.data.response;
     }, [fetchReceipt]);
 
     return (
@@ -56,28 +55,14 @@ const SuccessPage = () => {
             </Grid>
             <img src={paymentSucces} alt='paymentsuccessfull' style={{ height: '500px' }} />
             <Grid item xs={6} sm={6}>
-                <Button
-                    fullWidth={!isSmallScreen}
-                    variant="contained"
-                    color="primary"
-                    onClick={() => navigate('/user/feed')}
-                >
+                <Button fullWidth={!isSmallScreen} variant="contained" color="primary" onClick={() => navigate('/user/feed')} >
                     GO BACK
                 </Button>
             </Grid>
             <Grid item xs={6} sm={6}>
-                <Button
-                    fullWidth={!isSmallScreen}
-                    variant="contained"
-                    color="success"
-                    onClick={handleRecipt}
-                    disabled={isLoading}
-                >
-                    {isLoading ? (
-                        <CircularProgress size={24} color="inherit" />
-                    ) : (
-                        'View Receipt'
-                    )}
+                <Button fullWidth={!isSmallScreen} variant="contained" color="success" onClick={handleRecipt} disabled={isLoading}>
+                    {isLoading ? ( <CircularProgress size={24} color="inherit" /> ) 
+                    : ('View Receipt' )}
                 </Button>
             </Grid>
         </Grid>
