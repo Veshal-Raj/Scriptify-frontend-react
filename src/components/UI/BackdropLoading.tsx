@@ -8,7 +8,7 @@ interface BackdropLoadingProps {
 
 export default function BackdropLoading({ isSubmitting }: BackdropLoadingProps) {
   console.log(isSubmitting)
-  const [open, setOpen] = React.useState(isSubmitting);
+  const [, setOpen] = React.useState(isSubmitting);
 
   const handleClose = () => {
     setOpen(false);
