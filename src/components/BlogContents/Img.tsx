@@ -1,5 +1,9 @@
+interface ImgProps {
+    url: string;
+    caption: string;
+   }
 
-const Img = ({ url, caption }) => {
+const Img = ({ url, caption }: ImgProps) => {
     return (
         <div>
             <img src={url} alt="image-of-blog" />
