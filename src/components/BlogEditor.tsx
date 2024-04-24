@@ -8,14 +8,13 @@ import { tools } from "./ToolsComponent";
 import { useDispatch, useSelector } from "react-redux";
 import { setBlog } from "../redux/slice/editorSlice";
 import { EditorContext } from "../pages/Write";
+import { RootState } from "../redux/appStore";
 
 export const BlogEditor = () => {
   const dispatch = useDispatch()
-  const blog = useSelector((state) => state.editor.blog);
+  const blog = useSelector((state: RootState) => state.editor.blog);
   
-
   const { textEditor, setTextEditor } = useContext(EditorContext)
-
 
   useEffect(() => {
     setTextEditor(new EditorJS({
@@ -26,12 +25,12 @@ export const BlogEditor = () => {
     }));
   }, []);
 
-  const handleBannerUpload = (e) => {
-    const img = e.target.files[0]
-    console.log(img)
+  const handleBannerUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const img = e.target.files?.[0]
     if (img) {
       const LoadingToast = toast.loading('Uploading...')
-      uploadImage(img).then((url) => {
+      const blobUrl = URL.createObjectURL(img);
+      uploadImage(blobUrl).then((url) => {
         if (url) {
           toast.dismiss(LoadingToast)
           toast.success('Uploaded 👍')
@@ -60,7 +59,6 @@ export const BlogEditor = () => {
     img.src = blogBanner
   }
 
-
   return (
     <>
       <Navbar />
@@ -69,18 +67,15 @@ export const BlogEditor = () => {
         <div className="mx-auto my-5 max-w-[900px] ">
           <div className="relative mx-5 aspect-video hover:opacity-80 bg-white border-4 border-gray">
             <label htmlFor="uploadBanner">
-              <img
-                src={blog.banner} className="z-20" onError={handleError} />
+              <img src={blog.banner} className="z-20" onError={handleError} />
               <input type="file" id="uploadBanner"  accept=".png, .jpg, .jpeg ,.webp" hidden
                 onChange={handleBannerUpload}
               />
             </label>
           </div>
-          <textarea
-            placeholder="Blog Title"
+          <textarea placeholder="Blog Title"
             className="text-4xl font-medium w-full mx-5 h-20 outline-none resize-none mt-10 leading-tight placeholder:opacity-40"
-            onKeyDown={handleTitleKeyDown}
-            onChange={handleTitleChange}
+            onKeyDown={handleTitleKeyDown} onChange={handleTitleChange}
             value={blog.title}
           >
           </textarea>
