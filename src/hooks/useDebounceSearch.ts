@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react"
 import { useSelector } from "react-redux"
 
+interface RootState {
+    search: any
+}
 
-const useDebounce = (value: string, delay: number, searchTerm, setSuggestions) => {
+const useDebounce = (value: string, delay: number, searchTerm: string, setSuggestions: (suggestions: any []) => void) => {
     const [debouncedValue, setDebouncedValue] = useState(value)
 
-    const searchCache = useSelector((store) => store.search)
+    const searchCache = useSelector((store: RootState) => store.search)
 
     useEffect(() => {
         const handler = setTimeout(() => {
