@@ -4,46 +4,60 @@ import CloseIcon from '@mui/icons-material/Close';
 import { motion } from "framer-motion";
 import { useQuery } from "@tanstack/react-query";
 import { listFollowersApi, listFollowingsApi } from "../api/user";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
+interface ProfileFollowersDrawerProps {
+    open: boolean;
+    onClose: () => void;
+   }
 
-const ProfileFollowersDrawer = ({ open, onClose }) => {
-    // const userParams = useParams()
-    const [drawerOpen, setDrawerOpen] = useState(open);
+   interface FollowerInfo {
+    _id: string;
+    personal_info: {
+        profile_img: string;
+        username: string;
+    };
+}
+
+const ProfileFollowersDrawer = ({ open, onClose }: ProfileFollowersDrawerProps) => {
+    const [, setDrawerOpen] = useState(open);
     const [viewFollowers, setViewFollowers] = useState(true);
-    const [followersArray, setFollowersArray] = useState([])
-    const [followingsArray, setFollowingsArray] = useState([])
-    const navigate = useNavigate()
+    const [followersArray, setFollowersArray] = useState<FollowerInfo[]>([])
+    const [followingsArray, setFollowingsArray] = useState<FollowerInfo[]>([])
 
     const { id: userId } = useParams()
 
     const { data: listFollowers, refetch: refetchFollowers } = useQuery({
         queryKey: ["listFollowersQuery"],
-        queryFn: () => listFollowersApi(userId),
+        queryFn: async () => {
+            if (userId) {
+            const result = await  listFollowersApi(userId)
+            return result
+            }
+        }
 
     });
 
     const { data: listFollowings, refetch: refetchFollowings } = useQuery({
         queryKey: ["listFollowingQuery"],
-        queryFn: () => listFollowingsApi(userId)
+        queryFn: async () => {
+            if (userId) {
+            const result = await listFollowingsApi(userId)
+            return result
+            }
+        }
     })
 
     useEffect(() => {
-        if (listFollowers) {
-            setFollowersArray(listFollowers.data.response); // Update followersArray with data from listFollowers
-        }
+        if (listFollowers)  setFollowersArray(listFollowers.data.response); 
     }, [listFollowers]);
 
     useEffect(() => {
-        if (listFollowings) {
-            setFollowingsArray(listFollowings.data.response)
-        }
+        if (listFollowings) setFollowingsArray(listFollowings.data.response)
     }, [listFollowings])
 
     useEffect(() => {
-        if (open) {
-            refetchFollowers();
-        }
+        if (open) refetchFollowers();
     }, [open, refetchFollowers])
 
     const handleDrawerClose = () => {
@@ -51,13 +65,9 @@ const ProfileFollowersDrawer = ({ open, onClose }) => {
         onClose();
     };
 
-    const closeDrawer = () => {
-        onClose();
-    }
+    const closeDrawer = () =>  onClose();
 
-    const fetchFollowings = async () => {
-        await refetchFollowings();
-    };
+    const fetchFollowings = async () => await refetchFollowings();
 
     const isSmallScreen = useMediaQuery('(max-width:600px)');
 
@@ -67,15 +77,10 @@ const ProfileFollowersDrawer = ({ open, onClose }) => {
         >
             <div className="my-[16px] mx-[20px]">
                 <ButtonGroup fullWidth variant="text" aria-label="outlined primary button group">
-                    <Button
-                        onClick={() => setViewFollowers(true)} // Set viewFollowers to false when following button is clicked
-                    >
+                    <Button onClick={() => setViewFollowers(true)} >
                         Followers
                     </Button>
-                    <Button
-                        sx={{ marginRight: 1 }}
-                        onClick={() => { setViewFollowers(false); fetchFollowings(); }} // Set viewFollowers to true when followers button is clicked
-                    >
+                    <Button sx={{ marginRight: 1 }} onClick={() => { setViewFollowers(false); fetchFollowings(); }} >
                         Followings
                     </Button>
                 </ButtonGroup>
@@ -87,7 +92,6 @@ const ProfileFollowersDrawer = ({ open, onClose }) => {
                             <Typography>No Followers</Typography>
                         </div>
                     ) : (
-                        // Map through followers array and render names
                         followersArray.map((follower, index) => (
                             <Link to={`/user/${follower._id}`} key={index} className="text-black text-opacity-50">
                                 <motion.div key={index} initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
