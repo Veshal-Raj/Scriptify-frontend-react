@@ -57,7 +57,7 @@ const HomePage = () => {
             const page = pageState.toLowerCase(); 
             setPageState(text);
             const tag = {tag: text}
-             filteringByTag(tag);
+            filteringByTag(tag);
             if (page === text) {
                 setPageState('home');
                 setShowSkeleton(false);
@@ -88,10 +88,9 @@ const HomePage = () => {
         }
     }, [tagsLoading, tags]);
 
-     // Handler for tag filtering
      const handleTagFilter = async (tag: string) => {
         setShowSkeleton(true);
-        const response = await filterbyTags({ tag });
+        const response = await filterbyTags(tag );
         if (response.data.response) {
             setBlogs(response.data.response);
             setShowSkeleton(false);
