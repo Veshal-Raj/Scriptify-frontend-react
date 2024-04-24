@@ -16,7 +16,7 @@ import { DefaultEventsMap } from '@socket.io/component-emitter'
 // const ENDPOINT = import.meta.env.SOCKET_SERVER_ENDPOINT
 const ENDPOINT = 'http://localhost:5000'
 
-let socket: Socket<DefaultEventsMap, DefaultEventsMap>, selectedChatCompare;
+let socket: Socket<DefaultEventsMap, DefaultEventsMap>
 
 socket = io(ENDPOINT)
 
