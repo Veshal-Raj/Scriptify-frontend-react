@@ -4,8 +4,9 @@ import { getFullDay } from '../../../hooks/useDate';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { changeBlogStatusApi } from '../../../api/admin';
 import { toast } from 'sonner';
+import { BlogTableProps } from '../../../@types/TblogAdminTable';
 
-const BlogTable = ({ blogs }) => {
+const BlogTable:  React.FC<BlogTableProps> = ({ blogs }) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -14,36 +15,28 @@ const BlogTable = ({ blogs }) => {
   const { mutate: blogStatusChange } = useMutation({
     mutationKey: ['blogStatus'],
     mutationFn: changeBlogStatusApi,
-    onError: (error) => {
-      toast.error(error.message)
-    },
+    onError: (error) => toast.error(error.message),
     onSuccess: async () => {
       await queryClient.invalidateQueries({ queryKey: ['getAllBlogs'] });
       toast.success('Blog status changed successfully.')
     }
   })
 
-  console.log(blogs)
+  const handleChangePage = (_event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => setPage(newPage);
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleBlogStatus = async (blogId) => {
+  const handleBlogStatus = async (blogId: string) => {
     const data = {
       blogId: blogId
     }
     blogStatusChange(data)
   }
 
-  const handleChangeRowsPerPage = (event) => {
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
 
-  const handleSendMail = (authorEmail) => {
-    window.open(`mailto:${authorEmail}`);
-  };
+  const handleSendMail = (authorEmail: string) =>  window.open(`mailto:${authorEmail}`);
 
   return (
     <Box>
