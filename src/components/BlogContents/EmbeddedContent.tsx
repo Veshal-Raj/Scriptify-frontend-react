@@ -1,6 +1,11 @@
+interface EmbeddedContentProps {
+    embed: string;
+    width: string | number;
+    height: string | number;
+    caption: string;
+   }
 
-
-const EmbeddedContent = ({ embed, width, height, caption }) => {
+const EmbeddedContent = ({ embed, width, height, caption }: EmbeddedContentProps) => {
     return (
         <div className="embedded-content flex justify-center">
             <iframe
