@@ -4,7 +4,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { Button } from "@mui/material";
 import { useMediaQuery } from '@mui/material';
-import paymentSucces from '../assests/imgs/payment_success.jpg'
 import paymentCancel from '../assests/imgs/payment_failed.jpg'
 
 
