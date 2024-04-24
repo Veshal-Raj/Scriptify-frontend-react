@@ -1,7 +1,10 @@
 import { Typography } from "@mui/material";
 
+type TableContentProps = {
+    content: string[][]; 
+   };
 
-const TableContent = ({ content }) => {
+const TableContent: React.FC<TableContentProps> = ({ content }) => {
     return (
         <div className="table-container overflow-x-auto">
             <table className="w-full border-collapse border border-gray-400">
