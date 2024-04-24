@@ -7,28 +7,38 @@ import { motion } from 'framer-motion'
 import { Link } from 'react-router-dom';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { getDay } from '../hooks/useDate';
+import { RootState } from '../redux/appStore';
 
+interface Blog {
+  banner: string | undefined;
+  title: string;
+  activity: any;
+  tags: any;
+  publishedAt: string | number | Date;
+  author: any;
+  _id: string;
+  blog_id: string;
+ }
 
 const SavedBlogs = () => {
   const [ savedBlogs, setSavedBlogs] = useState([])
-  const { userData } = useSelector(state => state.user)
-  const userId = userData._id
+  const { userData } = useSelector((state: RootState) => state.user)
+  const userId = userData?._id
   
   const { data: savedBlogsData } = useQuery({
     queryKey: ["initialQuery"],
-    queryFn: () => savedBlogsApi(userId),
-
+    queryFn: async () => {
+      if (userId) {
+        const result = await savedBlogsApi(userId)
+        return result
+      }
+    }
   });
 
   // Update the savedBlogs state when savedBlogsData changes
   useEffect(() => {
     if (savedBlogsData?.data?.response) {
-      // setSavedBlogs(savedBlogsData);
-      console.log('saved blogs >>> ', savedBlogsData.data.response)
-      if (savedBlogsData.data.response.length) {
-      setSavedBlogs(savedBlogsData.data.response)
-
-      }
+      if (savedBlogsData.data.response.length) setSavedBlogs(savedBlogsData.data.response)
     }
   }, [savedBlogsData]);
   
@@ -36,16 +46,9 @@ const SavedBlogs = () => {
   return (
     <Box mt={5} textAlign="center">
       {savedBlogs.length === 0 ? (
-        <Card sx={{
-          borderRadius: '15px',
-          width: 'auto', // Default width for all screen sizes
-          margin: 'auto',
-          '@media (min-width: 600px)': { // Adjust as per your requirements for medium screens
-            width: '1000px',
-          },
-          '@media (min-width: 960px)': { // Adjust as per your requirements for large screens
-            width: '1000px',
-          },
+        <Card sx={{ borderRadius: '15px', width: 'auto', margin: 'auto',
+          '@media (min-width: 600px)': { width: '1000px', },
+          '@media (min-width: 960px)': { width: '1000px', },
         }} 
         variant="outlined">
           <Box p={2}>
@@ -53,7 +56,7 @@ const SavedBlogs = () => {
           </Box>
         </Card>
       ) : (
-        savedBlogs?.map((blog, index) => (
+        savedBlogs?.map((blog: Blog, index) => (
           <div className="grid grid-cols-1 gap-6 md:min-w-[1000px] min-w-[300px]">
           <motion.div
             key={blog._id}
