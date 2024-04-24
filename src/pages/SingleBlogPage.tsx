@@ -5,7 +5,6 @@ import ShowBlogContent from "../components/ShowBlogContent"
 
 const SingleBlogPage = () => {
   const { blogId } = useParams()
-  console.log(blogId)
   return (
     <>
       <Navbar />
