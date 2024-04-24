@@ -1,29 +1,35 @@
 import CloseIcon from '@mui/icons-material/Close';
 import { useDispatch, useSelector } from 'react-redux';
 import { setBlog } from '../redux/slice/editorSlice';
+import { RootState } from '../redux/appStore';
 
-export const Tags = ({ tag, tagIndex }) => {
+interface TagsProps {
+    tag: string;
+    tagIndex: number;
+}
+
+
+export const Tags: React.FC<TagsProps> = ({ tag, tagIndex }) => {
     const dispatch = useDispatch()
-    const blog = useSelector((state) => state.editor.blog);
-    let tags = [...blog.tags];
+    const blog = useSelector((state: RootState) => state.editor.blog);
+    let tags: string[] = [...blog.tags];
     const handleTagDelete = () => {
-        tags = tags.filter( (t: string) => t !== tag)
-        dispatch(setBlog({...blog, tags }))
+        tags = tags.filter((t: string) => t !== tag)
+        dispatch(setBlog({ ...blog, tags }))
     }
-    const handleTagEdit = (e) => {
+    const handleTagEdit = (e: React.KeyboardEvent<HTMLParagraphElement>) => {
         if (e.keyCode === 13 || e.keyCode === 188) {
-            e.preventDefault()
-            const currentTag = e.target.innerText
-            tags[tagIndex] = currentTag
-            console.log(tags)
-            dispatch(setBlog({...blog, tags }))
-            console.log(tags)
-            e.target.setAttribute("contentEditable", false)
+            e.preventDefault();
+            const currentTag = (e.target as HTMLParagraphElement).innerText;
+            tags[tagIndex] = currentTag;
+            dispatch(setBlog({ ...blog, tags }));
+            (e.target as HTMLElement).setAttribute("contentEditable", "false");
         }
     }
-    const addEditable = (e) => {
-        e.target.setAttribute("contentEditable", true)
-        e.target.focus()
+    const addEditable = (e: React.MouseEvent<HTMLParagraphElement>) => {
+        const target = e.currentTarget as HTMLParagraphElement;
+        target.setAttribute("contentEditable", "true");
+        target.focus();
     }
     return (
         <div className="relative p-2 mt-2 mr-2 px-5 bg-white rounded-full inline-block hover:bg-opacity-50 pr-8">
