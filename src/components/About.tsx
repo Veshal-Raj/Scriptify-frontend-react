@@ -13,9 +13,9 @@ interface SocialIcons {
 }
 
 interface AboutProps {
-  bio: string; // Assuming bio is a string
-  social_links: Record<string, string>; // Assuming social_links is an object with string keys and string values
-  joinedAt: string; // Assuming joinedAt is a string representing a date
+  bio: string; 
+  social_links: Record<string, string>; 
+  joinedAt: string; 
  }
 
 const About = ({  bio, social_links, joinedAt }: AboutProps) => {
