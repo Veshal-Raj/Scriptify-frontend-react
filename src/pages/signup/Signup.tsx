@@ -9,7 +9,7 @@ import { CircularProgress } from "@mui/material";
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { Link as RouterLink } from "react-router-dom";
-import GoogleAuthButton from "../../components/UI/googleAuthButton";
+import GoogleAuthButton from "../../components/UI/GoogleAuthButton";
 import { signup } from "../../api/user";
 import { userFormData } from "../../@types/Tuser";
 import { useMutation } from "@tanstack/react-query";
@@ -43,10 +43,7 @@ export default function SignIn() {
       setLoading(false)
     },
     onSuccess: (response) => {
-      console.log('success', response)
-      if (response.success) {
-        setIsModalOpen(true)
-      }
+      if (response.success) setIsModalOpen(true)
     },
     
   })
@@ -55,7 +52,6 @@ export default function SignIn() {
     try {
       setLoading(true);
       setFormData(data);
-      console.log(' data -->>> ', data);
       const user = {
         username: data.username || "",
         email: data.email || "",
@@ -63,50 +59,33 @@ export default function SignIn() {
         repeat_password: data.repeat_password || "",
         token: captcha || "",
       };
-      console.log('form data -->>> ', user);
       signupMutation(user);
     } catch (error) {
       console.error(error);
     }
   };
 
-
   return (
     <Container component="main" maxWidth="xs" sx={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "70vh", paddingTop: "50px" }}>
      <Toaster richColors position="top-right" expand={false} />
-      <Box
-        sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }}
-      >
-        {isModalOpen && <AlertDialogSlide currentPage="signUp" />}
+      <Box sx={{ marginTop: 8, display: "flex", flexDirection: "column", alignItems: "center" }} >
+        {isModalOpen && <AlertDialogSlide currentPage="signUp" setIsModalOpen={setIsModalOpen} />}
         <Typography component="h1" variant="h4" sx={{ mb: '20px' }}>
           Join Scriptify.
         </Typography>
         <Box component="form" onSubmit={handleSubmit(handleFormSubmit)} noValidate sx={{ mt: 1 }}>
-        <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="Username"
-            autoComplete="username"
-            autoFocus
+        <TextField margin="normal" required fullWidth label="Username" autoComplete="username" autoFocus
             {...register("username", {
               validate: {
-                validUsername: (value) => validateUsername(value)
+                validUsername: (value) => value ? validateUsername(value) : false
               },
             })}
           />
           <span className="text-xs text-red-700">
             {errors?.username && errors?.username?.message}
           </span>
-
-          <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Email Address"
-              autoComplete="email"
-              {...register("email", {
-                required: "Email is a required field",
+          <TextField margin="normal" required fullWidth label="Email Address" autoComplete="email"
+              {...register("email", { required: "Email is a required field",
                 validate: {
                   validEmail: (value) => validateEmail(value)
                 },
@@ -115,16 +94,8 @@ export default function SignIn() {
           <span className="text-xs text-red-700">
             {errors?.email && errors?.email?.message}
           </span>
-
-          <TextField
-              margin="normal"
-              required
-              fullWidth
-              label="Password"
-              type="password"
-              autoComplete="current-password"
-              {...register("password", {
-                required: "Password is required",
+          <TextField margin="normal" required fullWidth label="Password" type="password" autoComplete="current-password"
+              {...register("password", { required: "Password is required",
                 validate: {
                   validatePassword: (value) => value ? validatePassword(value) : false
                 },
@@ -133,26 +104,16 @@ export default function SignIn() {
           <span className="text-xs text-red-700">
             {errors?.password && errors?.password?.message}
           </span>
-
-          <TextField
-            margin="normal"
-            required
-            fullWidth
-            label="Confirm Password"
-            type="password"
-            autoComplete="current-password"
-            {...register("repeat_password", {
-              required: "Confirm password is required",
+          <TextField margin="normal" required fullWidth label="Confirm Password" type="password" autoComplete="current-password"
+            {...register("repeat_password", { required: "Confirm password is required",
               validate: (val) => {
-                if (val !== watch("password"))
-                  return "Confirmation password should match password.";
+                if (val !== watch("password")) return "Confirmation password should match password.";
               },
             })}
           />
           <span className="text-xs text-red-700">
             {errors?.repeat_password && errors?.repeat_password?.message}
           </span>
-
           <ReCAPTCHA
           sitekey={PUBLIC_RECAPTCHA_SITE_KEY || ""}
           className="flex justify-center"
@@ -161,11 +122,7 @@ export default function SignIn() {
             setCaptcha(value);
           }}
         />
-
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
+          <Button type="submit" fullWidth variant="contained"
             sx={{ color: "white", bgcolor: "black", mt: 3, mb: 3, "&:hover": { bgcolor: "black", } }}
             disabled={loading}
           >
