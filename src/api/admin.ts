@@ -1,6 +1,10 @@
 import Api from "../services/axios";
 import adminRoutes from "../services/endpoints/adminEndPoints";
 
+interface BlogStatus {
+  blogId: string;
+ }
+
 export const getAllUsers = async () => {
   try {
     const response = await Api.get(adminRoutes.getAllUsers);
@@ -13,10 +17,9 @@ export const getAllUsers = async () => {
 
 export const changeUserStatus = async (userId: string | null) => {
   try {
-    const response = await Api.post(
+    return await Api.post(
       `${adminRoutes.changeUserStatus}/${userId}`
     );
-    return response;
   } catch (error) {
     console.error(error);
     throw error;
@@ -34,10 +37,9 @@ export const getAllBlogsApi = async () => {
   }
 }
 
-export const changeBlogStatusApi = async (data) => {
+export const changeBlogStatusApi = async (data: BlogStatus) => {
   try {
-    const response = await Api.post(adminRoutes.changeBlogStatus, data)
-    return response
+    return await Api.post(adminRoutes.changeBlogStatus, data)
   } catch (error) {
     console.error(error);
     throw error
@@ -46,9 +48,7 @@ export const changeBlogStatusApi = async (data) => {
 
 export const getAllReportsApi = async () => {
   try {
-    const response = await Api.get(adminRoutes.getAllReports)
-    return response
-
+    return await Api.get(adminRoutes.getAllReports)
   } catch (error) {
     console.error(error);
     throw error
