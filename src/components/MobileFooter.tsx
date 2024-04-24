@@ -13,9 +13,16 @@ import { useSelector } from 'react-redux';
 interface Props {
     icon: string
 }
+
+interface RootState {
+    user: {
+       userData: any;
+    };
+   }
+
 const MobileFooter = ({ icon }: Props) => {
     const navigate = useNavigate();
-    const { userData } = useSelector(state => state.user)
+    const { userData } = useSelector((state: RootState) => state.user)
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [ notificationCounts, setNotificationCounts ] = useState(0)
 
