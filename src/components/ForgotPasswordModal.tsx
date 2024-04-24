@@ -20,7 +20,7 @@ const ForgotPasswordModal: React.FC<Props> = ({
   onOtpSubmit = () => { },
 }: Props) => {
 
-  const [sendOTP, setSendOTP] = useState('');
+  const [, setSendOTP] = useState('');
   const navigate = useNavigate()
   const [otp, setOtp] = useState<string[]>(new Array(length).fill(""));
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false); // State for submission progress
@@ -80,7 +80,6 @@ const ForgotPasswordModal: React.FC<Props> = ({
     }
     setSendOTP(combinedOtp)
 
-    // Move to next input if current field is filled
     if (value && index < length - 1 && inputRefs.current[index + 1]) {
       inputRefs.current[index + 1].focus();
     }
@@ -90,7 +89,6 @@ const ForgotPasswordModal: React.FC<Props> = ({
     if (inputRefs.current[index]) {
       inputRefs.current[index].setSelectionRange(1, 1);
 
-      // optional
       if (index > 0 && !otp[index - 1]) {
         const emptyIndex = otp.indexOf("");
         if (inputRefs.current[emptyIndex]) {
