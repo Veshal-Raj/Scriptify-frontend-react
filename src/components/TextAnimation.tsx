@@ -3,7 +3,11 @@ import { useEffect, useState } from 'react';
 import { AnimatePresence } from 'framer-motion';
 import { Typography } from '@mui/material';
 
-const TextAnimation = ({ text }) => {
+interface TextAnimationProps {
+  text: string;
+ }
+
+const TextAnimation = ({ text }: TextAnimationProps) => {
   const [displayText, setDisplayText] = useState('');
 
   useEffect(() => {
