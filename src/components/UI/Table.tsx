@@ -93,9 +93,7 @@ export const TableComponent = ({ data }: { data: TuserType[] }) => {
                     sx={{ 
                       backgroundColor: row?.isVerified ? undefined : 'red', 
                       color: row?.isVerified ? undefined : 'white',
-                      '&:hover': {
-                          backgroundColor: row?.isVerified ? undefined : 'red',
-                      }
+                      '&:hover': { backgroundColor: row?.isVerified ? undefined : 'red', }
                   }}
                     onClick={() => handleActiveButtonClick(row?._id?.toString())}
                   >
@@ -115,12 +113,8 @@ export const TableComponent = ({ data }: { data: TuserType[] }) => {
             onChange={handleChangePage}
           />
           <FormControl>
-            <Select
-              labelId="rows-per-page-label"
-              id="rows-per-page-select"
-              value={rowsPerPage}
-              onChange={handleChangeRowsPerPage}
-            >
+            <Select labelId="rows-per-page-label" id="rows-per-page-select"
+              value={rowsPerPage} onChange={handleChangeRowsPerPage} >
               <MenuItem value={5}>5 Rows</MenuItem>
               <MenuItem value={10}>10 Rows</MenuItem>
             </Select>
