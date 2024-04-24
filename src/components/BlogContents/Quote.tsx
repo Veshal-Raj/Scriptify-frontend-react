@@ -1,7 +1,11 @@
 import { Typography } from "@mui/material";
 
+interface QuoteProps {
+    quote: string;
+    caption: string;
+   }
 
-const Quote = ({quote, caption }) => {
+const Quote = ({quote, caption }: QuoteProps) => {
     return (
         <div className="bg-blue-200 p-3 pl-5 border-l-4 border-blue-700">
             <Typography variant="h6" style={{ overflowX: 'auto' }}>{quote}</Typography>
