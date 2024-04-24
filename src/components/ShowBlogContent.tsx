@@ -14,25 +14,27 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { useDispatch, useSelector } from "react-redux"
 import { toast } from 'sonner'
 import { addFollowing, removeFollowing } from "../redux/slice/userSlice"
+import { RootState } from "../redux/appStore"
+import { Blog, BlogData } from "../@types/TshowBlogContent"
 
 export const BlogContext = createContext({})
 
-const ShowBlogContent = ({ blogId }) => {
-    const [singleBlogData, setSingleBlogData] = useState(null)
+const ShowBlogContent = ({ blogId }: { blogId: string | undefined }) => {
+    const [singleBlogData, setSingleBlogData] = useState<BlogData | null>(null)
     const [tags, setTags] = useState([])
     const [similarBlogs, setSimilarBlogs] = useState([]);
     const isSmallScreen = useMediaQuery('(max-width:600px)');
     const [timerStarted, setTimerStarted] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false)
-    const { userData } = useSelector(state => state.user)
+    const { userData } = useSelector((state: RootState) => state.user)
     const dispatch = useDispatch()
 
-    const userId = userData._id
+    const userId = userData?._id
     const authorId = singleBlogData?.author._id
-    const followings = userData.followings 
+    const followings = userData?.following
 
     useEffect(() => {
-        if (followings?.includes(authorId)) {
+        if (authorId && followings?.includes(authorId)) {
             setIsFollowing(true)
         } else {
             setIsFollowing(false)
@@ -41,25 +43,26 @@ const ShowBlogContent = ({ blogId }) => {
 
     const { data: SingleBlog, isLoading } = useQuery({
         queryKey: ["singleBlog", blogId],
-        queryFn: () => fetchSingleBlog(blogId),
-
+        queryFn: async () => {
+            if (blogId) {
+               const result = await fetchSingleBlog(blogId)
+                return result
+            }
+        }
     })
 
     const { mutate: fetchSimilarBlog } = useMutation({
         mutationFn: fetchSimilarBlogs,
         onSuccess: (response) => {
             if (response.data.response) {
-                const filteredSimilarBlogs = response.data.response.filter(blog => blog.title !== singleBlogData?.title); // Filter out the blog with the same ID
+                const filteredSimilarBlogs = response.data.response.filter((blog: Blog) => blog.title !== singleBlogData?.title);
                 setSimilarBlogs(filteredSimilarBlogs);
             }
         }
     })
 
     const { mutate: addReadCount } = useMutation({
-        mutationFn: increaseReadCount,
-        onSuccess: () => {
-            console.log('increased read count')
-        }
+        mutationFn: increaseReadCount
     })
 
     const { mutate: followUser } = useMutation({
@@ -69,9 +72,7 @@ const ShowBlogContent = ({ blogId }) => {
             setIsFollowing(true)
             dispatch(addFollowing(singleBlogData?.author._id))
         },
-        onError: () => {
-            toast.error('Something went wrong, Please try again later.')
-        }
+        onError: () => toast.error('Something went wrong, Please try again later.')
     })
 
     const { mutate: unfollowUser } = useMutation({
@@ -81,13 +82,11 @@ const ShowBlogContent = ({ blogId }) => {
             setIsFollowing(false)
             dispatch(removeFollowing(singleBlogData?.author._id))
         },
-        onError: () => {
-            toast.error('Something went wrong, Please try again later.')
-        }
+        onError: () => toast.error('Something went wrong, Please try again later.')
     })
 
     useEffect(() => {
-        fetchSingleBlog(blogId)
+        if (blogId) fetchSingleBlog(blogId)        
     }, [blogId])
 
 
@@ -99,9 +98,7 @@ const ShowBlogContent = ({ blogId }) => {
     }, [SingleBlog])
 
     useEffect(() => {
-        if (tags.length > 0) {
-            fetchSimilarBlog(tags)
-        }
+        if (tags.length > 0) fetchSimilarBlog(tags)
     }, [tags])
 
     useEffect(() => {
@@ -119,11 +116,8 @@ const ShowBlogContent = ({ blogId }) => {
     }, [timerStarted, userId, blogId])
 
     useEffect(() => {
-        if (authorId && userData.following?.includes(authorId)) {
-            setIsFollowing(true);
-        } else {
-            setIsFollowing(false);
-        }
+        if (authorId && userData?.following?.includes(authorId)) setIsFollowing(true);
+        else setIsFollowing(false);
     }, [followings, authorId]);
 
 
@@ -152,20 +146,15 @@ const ShowBlogContent = ({ blogId }) => {
     }
 
     const status = userId === authorId
-    
+
     return (
         <div>
             {isLoading ? (
                 <SingleBlogSkeleton />
             ) : singleBlogData ? (
                 <BlogContext.Provider value={{ singleBlogData, setSingleBlogData }}>
-                    <motion.div
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        exit={{ opacity: 0 }}
-                        transition={{ duration: 0.5 }}
-                        className="max-w-[900px] block mx-auto py-10 max-lg:px-[5vw]"
-                    >
+                    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+                        transition={{ duration: 0.5 }} className="max-w-[900px] block mx-auto py-10 max-lg:px-[5vw]" >
                         <img src={singleBlogData?.banner} alt="Banner" className="aspect-video" />
                         <div className="mt-12 font-inter text-4xl leading-normal font-bold max-md:text-3xl max-md:leading-snug !important">
                             <Typography variant={isSmallScreen ? "h5" : "h4"}>{singleBlogData?.title}</Typography>
@@ -177,22 +166,14 @@ const ShowBlogContent = ({ blogId }) => {
                                         <br />
                                         @ <Link to={`/user/${singleBlogData?.author._id}`} className="underline">{singleBlogData?.author.personal_info.username}</Link>
                                     </Typography>
-                                    {!status && ( // Conditionally render based on user being the author or not
+                                    {!status && (
                                         <div className="py-1">
                                             {isFollowing ? (
-                                                <Typography
-                                                    variant="body1"
-                                                    className="capitalize font-normal text-lg text-red-700 cursor-pointer"
-                                                    onClick={handleUnfollow}
-                                                >
+                                                <Typography variant="body1" className="capitalize font-normal text-lg text-red-700 cursor-pointer" onClick={handleUnfollow}>
                                                     Unfollow <RemoveIcon />
                                                 </Typography>
                                             ) : (
-                                                <Typography
-                                                    variant="body1"
-                                                    className="capitalize font-normal text-lg text-blue-700 cursor-pointer"
-                                                    onClick={handleFollow}
-                                                >
+                                                <Typography variant="body1" className="capitalize font-normal text-lg text-blue-700 cursor-pointer" onClick={handleFollow}>
                                                     Follow <AddIcon />
                                                 </Typography>
                                             )}
@@ -200,7 +181,7 @@ const ShowBlogContent = ({ blogId }) => {
                                     )}
                                 </div>
                                 <Typography variant="body1" className="text-lg font-normal text-gray-600 opacity-75 max-sm:mt-6 max-sm:ml-20 max-sm:pl-5">
-                                    Published on {getDay(singleBlogData?.publishedAt)}
+                                    Published on {getDay(new Date(singleBlogData?.publishedAt))}
                                 </Typography>
                             </div>
                         </div>
@@ -219,20 +200,12 @@ const ShowBlogContent = ({ blogId }) => {
                             <Typography variant="h5" sx={{ 'marginBottom': '20px' }}> Similar Blogs</Typography>
                             {similarBlogs.length > 0 ? ( // Conditional rendering based on similarBlogs array length
                                 <Grid container spacing={3}>
-                                    {similarBlogs.map(blog => (
+                                    {similarBlogs.map((blog: Blog) => (
                                         <Grid item xs={12} sm={6} md={4} key={blog._id}>
-                                            <motion.div
-                                                whileHover={{ scale: 1.01, transition: { duration: 0.3 } }}
-                                                className="blog-card"
-                                            >
+                                            <motion.div whileHover={{ scale: 1.01, transition: { duration: 0.3 } }} className="blog-card" >
                                                 <Card>
                                                     <CardActionArea component={Link} to={`/user/blog/${blog.blog_id}`}>
-                                                        <CardMedia
-                                                            component="img"
-                                                            height="140"
-                                                            image={blog.banner}
-                                                            alt="Blog Banner"
-                                                        />
+                                                        <CardMedia component="img" height="140" image={blog.banner} alt="Blog Banner" />
                                                         <CardContent>
                                                             <Typography gutterBottom variant="h6" component="div">
                                                                 {blog.title}
