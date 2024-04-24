@@ -1,6 +1,29 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-export const initialState = {
+interface AuthorType {
+    personal_info: any;
+}
+
+interface BlogType {
+    title: string;
+    banner: string;
+    content: string[];
+    tags: string[];
+    des: string;
+    author: AuthorType
+}
+
+interface TextEditorType {
+    isReady: boolean;
+}
+
+interface EditorSliceType {
+    blog: BlogType;
+    editorState: string;
+    textEditor: TextEditorType;
+}
+
+export const initialState: EditorSliceType = {
     blog: {
         title: '',
         banner: '',
