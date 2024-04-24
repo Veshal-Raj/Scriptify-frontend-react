@@ -9,16 +9,29 @@ import ListComponent from "./BlogContents/List";
 import Quote from "./BlogContents/Quote";
 import Img from "./BlogContents/Img";
 import { Typography, useMediaQuery } from "@mui/material";
+import { Block, ChecklistItem, FileType, headerLevelToElement } from "../@types/TblogContext";
 
+type HeaderLevel = 1 | 2 | 3 | 4 | 5 | 6;
 
-const BlogContent = ({ block }) => {
+const BlogContent = ({ block }: { block: Block }) => {
     const isSmallScreen = useMediaQuery('(max-width:600px)');
 
-    const { type, data } = block
- 
-    if (type === 'paragraph'){
-        return <Typography variant="body1" style={{ overflowX: 'auto' }} dangerouslySetInnerHTML={{ __html: data.text }} />
-    } 
+    const { type, data } = block as { type: string; data: {
+        message: string;
+        title: string;
+        content: string[][];
+        html: string;
+        height: string | number;
+        width: string | number;
+        embed: string;
+        code: string;
+        items: string[];
+        style: "ordered" | "unordered";
+        caption: string;
+        file: FileType; level: HeaderLevel; text: string 
+} };
+
+    if (type === 'paragraph') return <Typography variant="body1" style={{ overflowX: 'auto' }} dangerouslySetInnerHTML={{ __html: data.text }} />
 
     if (type === 'header') {
         let variant;
@@ -35,52 +48,37 @@ const BlogContent = ({ block }) => {
             default:
                 return null;
         }
-        return <Typography variant={variant} component={`h${data.level}`} style={{ overflowX: 'auto' }} dangerouslySetInnerHTML={{ __html: data.text }} />;
+        const headerElement = headerLevelToElement[data.level];
+        return <Typography variant={variant as 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6' | 'body1' | 'body2' | 'subtitle1' | 'subtitle2' | 'caption' | 'button' | 'overline'} component={headerElement as React.ElementType} style={{ overflowX: 'auto' }} dangerouslySetInnerHTML={{ __html: data.text }} />;
     }
 
-    if (type === 'image') {
-        return <Img url={data.file.url} caption={data.caption}/>
-    }
+    if (type === 'image') return <Img url={data.file.url} caption={data.caption} />
 
-    if (type === 'quote') {
-        return <Quote quote={data.text} caption={data.caption} />
-    }
+    if (type === 'quote') return <Quote quote={data.text} caption={data.caption} />
 
-    if (type === 'list') {
-        return <ListComponent style={data.style} items={data.items} />
-    }
+    if (type === 'list') return <ListComponent style={data.style} items={data.items} />
 
-    if (type === 'code') {
-        return <CodeBlock code={data.code} />;
-    }
+    if (type === 'code') return <CodeBlock code={data.code} />;
 
-    if (type === 'embed') {
-        return <EmbeddedContent embed={data.embed} width={data.width} height={data.height} caption={data.caption}/>;
-    }
-    
-    if (type === 'delimiter') {
-        return <DelimiterBlock />
-    }
+    if (type === 'embed') return <EmbeddedContent embed={data.embed} width={data.width} height={data.height} caption={data.caption} />;
 
-    if (type === 'raw') {
-        return <RawHTMLBlock code={data.html}/>
-    }
+    if (type === 'delimiter')  return <DelimiterBlock />
 
-    if (type === 'table') {
-        return <TableContent content={data.content} />
-    }
+    if (type === 'raw') return <RawHTMLBlock code={data.html} />
+
+    if (type === 'table') return <TableContent content={data.content} />
 
     if (type === 'checklist') {
-        return <ChecklistContent items={data.items} />
+        const checklistItems: ChecklistItem[] = data.items.map(item => ({
+            text: item,
+            checked: false,
+        }));
+        return <ChecklistContent items={checklistItems} />
     }
 
-    if (type === "warning") {
-        return <WarningContent title={data.title} message={data.message} />
-    }
+    if (type === "warning") return <WarningContent title={data.title} message={data.message} />
 
-    else {
-        return <Typography variant="h5" className="bg-black text-white">this is not the block</Typography>
-    }
+    else return <Typography variant="h5" className="bg-black text-white">this is not the block</Typography>
 }
 
 export default BlogContent
