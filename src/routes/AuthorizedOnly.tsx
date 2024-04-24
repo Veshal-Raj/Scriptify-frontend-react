@@ -18,8 +18,14 @@ const Chat = React.lazy(() => import('../pages/Chat'))
 const EditUserProfile = React.lazy(() => import('../pages/EditUserProfile'))
 const ChangePassword = React.lazy(() => import('../pages/ChangePassword'))
 
+interface RootState {
+  user: {
+     userData: any;
+  };
+ }
+
 const AuthorizedOnly = () => {
-  const { userData } = useSelector(state => state.user)
+  const { userData } = useSelector((state: RootState) => state.user)
 
   const userId = userData ? userData._id : null; // Add a null check here
   console.log('user id -- ', userId)
