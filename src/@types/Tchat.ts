@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import TuserType from "./TuserType";
 
 export interface IUserList {
     _id: string;
