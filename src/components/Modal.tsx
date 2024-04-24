@@ -18,8 +18,13 @@ const Transition = React.forwardRef(function Transition(
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AlertDialogSlide({currentPage, setIsModalOpen}) {
-  const [open, setOpen] = React.useState(true);
+interface AlertDialogSlideProps {
+  currentPage: string;
+  setIsModalOpen: (open: boolean) => void;
+ }
+
+export default function AlertDialogSlide({currentPage, setIsModalOpen}: AlertDialogSlideProps) {
+  const [open] = React.useState(true);
 
   return (
     <React.Fragment>     
