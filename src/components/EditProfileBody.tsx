@@ -9,14 +9,15 @@ import { CircularProgress } from "@mui/material";
 import { setUser } from "../redux/slice/userSlice";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
+import { RootState } from "../redux/appStore";
 
 
 const EditProfileBody = () => {
-    const { userData } = useSelector(state => state.user);
+    const { userData } = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
-    const personalInfo = userData.personal_info;
-    const socialLinks = userData.social_links;
-    const userId = userData._id
+    const personalInfo = userData?.personal_info;
+    const socialLinks = userData?.social_links;
+    const userId = userData?._id
 
     const [editedSocialLinks, setEditedSocialLinks] = useState(socialLinks);
     const [editedPersonalInfo, setEditedPersonalInfo] = useState(personalInfo)
@@ -56,8 +57,10 @@ const EditProfileBody = () => {
                 toast.warning('Bio must be maximum 200 characters');
                 return;
             }
-            setEditedPersonalInfo((prevState: Record<string, string>) => ({
-                ...prevState,
+            setEditedPersonalInfo((prevState: { username: string; email: string; bio: string; } | undefined) => ({
+                username: prevState?.username || '',
+                email: prevState?.email || '',
+                bio: prevState?.bio || '',
                 [name]: value.trim()
             }));
         } else {
@@ -97,9 +100,9 @@ const EditProfileBody = () => {
     }
 
     const handleSave = () => {
-        const trimmedUsername = editedPersonalInfo.username.trim();
-        const trimmedEmail = editedPersonalInfo.email.trim();
-        if (editedPersonalInfo.bio.length > 200) {
+        const trimmedUsername = editedPersonalInfo?.username.trim();
+        const trimmedEmail = editedPersonalInfo?.email.trim();
+        if (editedPersonalInfo?.bio && editedPersonalInfo?.bio.length > 200) {
             toast.error('Bio must be maximum 200 characters')
             return
         }
@@ -117,12 +120,12 @@ const EditProfileBody = () => {
     }
 
     const socialLinksTextFile = [
-        { label: "YouTube", name: "youtube", defaultValue: editedSocialLinks.youtube || 'https://youtube.com/username' },
-        { label: "Instagram", name: "instagram", defaultValue: editedSocialLinks.instagram || 'https://instagram.com/username' },
-        { label: "Facebook", name: "facebook", defaultValue: editedSocialLinks.facebook || 'https://facebook.com/username' },
-        { label: "Twitter", name: "twitter", defaultValue: editedSocialLinks.twitter || 'https://twitter.com/username' },
-        { label: "GitHub", name: "github", defaultValue: editedSocialLinks.github || 'https://github.com/username' },
-        { label: "Website", name: "website", defaultValue: editedSocialLinks.website || 'https://website.com' }
+        { label: "YouTube", name: "youtube", defaultValue: editedSocialLinks?.youtube || 'https://youtube.com/username' },
+        { label: "Instagram", name: "instagram", defaultValue: editedSocialLinks?.instagram || 'https://instagram.com/username' },
+        { label: "Facebook", name: "facebook", defaultValue: editedSocialLinks?.facebook || 'https://facebook.com/username' },
+        { label: "Twitter", name: "twitter", defaultValue: editedSocialLinks?.twitter || 'https://twitter.com/username' },
+        { label: "GitHub", name: "github", defaultValue: editedSocialLinks?.github || 'https://github.com/username' },
+        { label: "Website", name: "website", defaultValue: editedSocialLinks?.website || 'https://website.com' }
     ];
 
     return (
@@ -130,8 +133,8 @@ const EditProfileBody = () => {
             <Box display="flex" flexDirection="column" alignItems="center" mb={4}>
                 <label htmlFor="profileImage " className=" items-center flex justify-center flex-col">
                     <Avatar
-                        alt={editedPersonalInfo.username}
-                        src={uploadedImage || editedPersonalInfo.profile_img}
+                        alt={editedPersonalInfo?.username}
+                        src={uploadedImage || editedPersonalInfo?.profile_img}
                         sx={{ width: 100, height: 100, cursor: 'pointer', borderRadius: '50%', border: '2px solid #2E8B57' }}
                         onClick={() => { fileRef?.current?.click(); }}
                     />
@@ -152,13 +155,13 @@ const EditProfileBody = () => {
                 <input id="profileImage" ref={fileRef} type="file" accept=".png, .jpg, .jpeg, .webp" style={{ display: 'none' }} onChange={handleImage} />
                 <Box mt={2}>
                     <TextField label="Username" variant="outlined" fullWidth name="username"
-                        defaultValue={editedPersonalInfo.username} onChange={handleChange} margin="normal"
+                        defaultValue={editedPersonalInfo?.username} onChange={handleChange} margin="normal"
                     />
                     <TextField label="Email" variant="outlined" fullWidth name="email"
-                        defaultValue={editedPersonalInfo.email} onChange={handleChange} margin="normal"
+                        defaultValue={editedPersonalInfo?.email} onChange={handleChange} margin="normal"
                     />
                     <TextField label="Bio" variant="outlined" fullWidth name="bio" 
-                        defaultValue={editedPersonalInfo.bio || 'Type your bio...'} 
+                        defaultValue={editedPersonalInfo?.bio || 'Type your bio...'} 
                         onChange={handleChange} margin="normal"
                     />
                     <Typography variant="h5" mb={2}>Social Links:</Typography>
