@@ -2,6 +2,7 @@ import Navbar from "../Navbar"
 import { TableComponent } from "../UI/Table"
 import { useQuery } from "@tanstack/react-query"
 import { getAllUsers } from "../../api/admin"
+import MobileFooter from "../MobileFooter"
 
 
 const Users = () => {
@@ -16,7 +17,8 @@ const Users = () => {
     <>
       <Navbar />
       <TableComponent data={AllUsers?.data} />
-    </>
+      <MobileFooter icon='' />
+    </> 
   )
 }
 

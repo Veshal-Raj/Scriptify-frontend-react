@@ -10,6 +10,7 @@ import { setUser } from "../redux/slice/userSlice";
 import { toast } from "sonner";
 import { AxiosError } from "axios";
 import { RootState } from "../redux/appStore";
+import { UpdatedUserData } from "../@types/TuserApi";
 
 
 const EditProfileBody = () => {
@@ -57,7 +58,7 @@ const EditProfileBody = () => {
                 toast.warning('Bio must be maximum 200 characters');
                 return;
             }
-            setEditedPersonalInfo((prevState: { username: string; email: string; bio: string; } | undefined) => ({
+            setEditedPersonalInfo((prevState: { username?: string; email?: string; bio?: string; } | undefined) => ({
                 username: prevState?.username || '',
                 email: prevState?.email || '',
                 bio: prevState?.bio || '',
@@ -100,8 +101,13 @@ const EditProfileBody = () => {
     }
 
     const handleSave = () => {
-        const trimmedUsername = editedPersonalInfo?.username.trim();
-        const trimmedEmail = editedPersonalInfo?.email.trim();
+        if (!editedPersonalInfo) {
+            toast.error("Personal information is missing");
+            return;
+        }
+        const trimmedUsername = editedPersonalInfo?.username?.trim();
+        const trimmedEmail = editedPersonalInfo?.email?.trim();
+
         if (editedPersonalInfo?.bio && editedPersonalInfo?.bio.length > 200) {
             toast.error('Bio must be maximum 200 characters')
             return
@@ -110,12 +116,20 @@ const EditProfileBody = () => {
             toast.error("Name and email cannot be empty")
             return;
         }
-        const updatedUserData = {
-            personal_info: editedPersonalInfo,
-            social_links: editedSocialLinks,
-            ...(uploadedImage && { uploaded_image: uploadedImage }),
-            userId
+        const personalInfo = {
+            username: trimmedUsername,
+            email: trimmedEmail,
+            bio: editedPersonalInfo.bio || '', 
+            profile_img: editedPersonalInfo.profile_img || '' 
         };
+    
+        const updatedUserData: UpdatedUserData = {
+            userId,
+            uploaded_image: uploadedImage,
+            personal_info: personalInfo,
+            social_links: editedSocialLinks,
+        };
+        
         EditProfileData(updatedUserData)
     }
 

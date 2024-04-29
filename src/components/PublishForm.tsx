@@ -76,6 +76,7 @@ export const PublishForm = () => {
         toast.success('Published 👍')
         setTimeout(() => navigate('/user/feed'), 500)
         dispatch(setBlog(initialState.blog));
+        // @ts-ignore
         dispatch(setEditorState(initialState.editorState));
         dispatch(setTextEditor(initialState.textEditor));
       }).catch((error) => {

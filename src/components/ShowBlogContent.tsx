@@ -17,7 +17,23 @@ import { addFollowing, removeFollowing } from "../redux/slice/userSlice"
 import { RootState } from "../redux/appStore"
 import { Blog, BlogData } from "../@types/TshowBlogContent"
 
-export const BlogContext = createContext({})
+interface BlogDatas {
+    activity: any;
+    blogId: string;
+    userId: string | undefined;
+    title: string;
+  }
+
+interface BlogContextType {
+    singleBlogData: BlogData | null
+    setSingleBlogData: (data: BlogDatas | ((prevState: BlogDatas) => BlogDatas)) => void;
+   }
+
+   export const BlogContext = createContext<BlogContextType>({
+    singleBlogData: null,
+    setSingleBlogData: () => {},
+   });
+
 
 const ShowBlogContent = ({ blogId }: { blogId: string | undefined }) => {
     const [singleBlogData, setSingleBlogData] = useState<BlogData | null>(null)
@@ -27,7 +43,7 @@ const ShowBlogContent = ({ blogId }: { blogId: string | undefined }) => {
     const [timerStarted, setTimerStarted] = useState(false);
     const [isFollowing, setIsFollowing] = useState(false)
     const { userData } = useSelector((state: RootState) => state.user)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const userId = userData?._id
     const authorId = singleBlogData?.author._id
@@ -152,6 +168,7 @@ const ShowBlogContent = ({ blogId }: { blogId: string | undefined }) => {
             {isLoading ? (
                 <SingleBlogSkeleton />
             ) : singleBlogData ? (
+                // @ts-ignore
                 <BlogContext.Provider value={{ singleBlogData, setSingleBlogData }}>
                     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
                         transition={{ duration: 0.5 }} className="max-w-[900px] block mx-auto py-10 max-lg:px-[5vw]" >

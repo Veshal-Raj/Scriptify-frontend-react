@@ -54,3 +54,21 @@ export const getAllReportsApi = async () => {
     throw error
   }
 }
+
+export const getUserSubscribedDataApi = async () => {
+  try {
+    return await Api.get(adminRoutes.getUserSubscribedData)
+  } catch (error) {
+    console.error(error);
+    throw error
+  }
+}
+
+export const getTotalBlogDataApi = async () => {
+  try {
+    return await Api.get(adminRoutes.getTotalBlogData)
+  } catch (error) {
+    console.error(error);
+    throw error
+  }
+}

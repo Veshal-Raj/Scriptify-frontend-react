@@ -13,8 +13,10 @@ export interface FollowUserData {
 }
 
 export interface BlogData {
-  blogId: string;
-  userId: string;
+  title?: string;
+  activity?: any;
+  blogId: string | boolean;
+  userId: string | undefined;
 }
 
 export interface CommentData {
@@ -24,7 +26,7 @@ export interface CommentData {
     blogId: string;
     _id: string;
   };
-  comment: string[];
+  comment?: string[];
 }
 
 export interface Data {
@@ -76,9 +78,9 @@ export interface UpdatedUserData {
   uploaded_image?: string | undefined;
   personal_info:
     | {
-        username: string;
-        email: string;
-        bio: string;
+        username: string | undefined;
+        email: string | undefined;
+        bio: string | undefined;
       }
     | undefined;
   social_links:
@@ -99,7 +101,7 @@ export interface SubscriptionData {
 }
 
 export interface reportBlogData {
-  blog_id: string;
-  reportedBy: string;
+  blog_id: string | boolean;
+  reportedBy: string | undefined;
   reason: string;
 }

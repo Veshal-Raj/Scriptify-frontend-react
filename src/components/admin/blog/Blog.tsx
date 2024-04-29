@@ -2,6 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import Navbar from "../../Navbar"
 import BlogTable from "./BlogTable";
 import { getAllBlogsApi } from "../../../api/admin";
+import MobileFooter from "../../MobileFooter";
 
 const Blog = () => {
   const { data: AllBlogs, isLoading } = useQuery({
@@ -15,6 +16,8 @@ const Blog = () => {
     <>
       <Navbar />
       {isLoading ? <></> : <BlogTable blogs={blogs} />}
+      <MobileFooter icon='' />
+
     </>
   )
 }

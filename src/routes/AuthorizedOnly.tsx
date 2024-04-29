@@ -54,7 +54,6 @@ const AuthorizedOnly = () => {
   const registerToken = async () => {
     await requestPermission()
     try {
-      // if ()
       const data = {
         token : token,
         userId: userId

@@ -1,18 +1,24 @@
+import MobileFooter from "../../MobileFooter"
 import Navbar from "../../Navbar"
-import BarGraph from "./chart/Bar"
-import LineGraph from "./chart/Line"
-import PieGraph from "./chart/Pie"
+import SubscribedData from "./components/SubscribedData"
+import TopBlogs from "./components/TopBlogs"
+import TotalBlogs from "./components/TotalBlogs"
 
 const Dashboard = () => {
+
   return (
     <>
-        <Navbar />
-        <div>
-          <PieGraph />
-          <LineGraph />
-          <BarGraph />
-          <PieGraph />
+      <Navbar />
+      <div className="flex   justify-evenly ">
+        <div className="flex flex-col  ">
+          <SubscribedData />
+          <TotalBlogs />
         </div>
+        <div className="w-[500px]">
+          <TopBlogs />
+        </div>
+      </div>
+      <MobileFooter icon='' />
     </>
   )
 }

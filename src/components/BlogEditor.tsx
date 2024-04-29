@@ -14,11 +14,12 @@ export const BlogEditor = () => {
   const dispatch = useDispatch()
   const blog = useSelector((state: RootState) => state.editor.blog);
   
-  const { textEditor, setTextEditor } = useContext(EditorContext)
+  const { setTextEditor } = useContext(EditorContext)
 
   useEffect(() => {
     setTextEditor(new EditorJS({
       holder: 'textEditor',
+      // @ts-ignore
       data: blog.content,
       tools: tools,
       placeholder: "Let's write an awesome story...",
@@ -29,8 +30,7 @@ export const BlogEditor = () => {
     const img = e.target.files?.[0]
     if (img) {
       const LoadingToast = toast.loading('Uploading...')
-      const blobUrl = URL.createObjectURL(img);
-      uploadImage(blobUrl).then((url) => {
+      uploadImage(img as unknown as string).then((url) => {
         if (url) {
           toast.dismiss(LoadingToast)
           toast.success('Uploaded 👍')

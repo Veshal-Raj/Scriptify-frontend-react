@@ -1,4 +1,4 @@
-import { createContext, useState } from "react"
+import React, { createContext, useState } from "react"
 import { BlogEditor } from "../components/BlogEditor"
 import { PublishForm } from "../components/PublishForm"
 import MobileFooter from "../components/MobileFooter"
@@ -12,7 +12,18 @@ const blogStructure = {
     author: {personal_info: {}}
 }
 
-export const EditorContext = createContext({})
+type SetEditorState =  React.Dispatch<React.SetStateAction<string>>
+
+
+
+export const EditorContext = createContext<{
+  blog: any;
+  setBlog: React.Dispatch<any>;
+  editorState: string;
+  setEditorState: SetEditorState;
+  textEditor: any;
+  setTextEditor: React.Dispatch<any>;
+}>({} as any);
 
 const Write = () => {
     const [blog, setBlog ] = useState(blogStructure)

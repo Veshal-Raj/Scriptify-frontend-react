@@ -1,7 +1,16 @@
 import { createSlice } from "@reduxjs/toolkit";
 
+
 export const initialState = {
-    selectedUser: null,
+    selectedUser:  {
+        online: false, 
+        lastSeen: "", 
+        profileImage: "", 
+        name: "", 
+        username: "",
+        userId: null
+    
+    },
     searchUserList: [],
 };
 

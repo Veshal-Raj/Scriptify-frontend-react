@@ -5,16 +5,17 @@ import { chatUserSearchApi } from '../../api/user';
 import { IUserList } from '../../@types/Tchat';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSearchUserList } from '../../redux/slice/chatSlice';
+import { RootState } from '../../redux/appStore';
 
 const UserSearch = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [searchUserResult, setSearchUserResult] = useState<IUserList[]>([])
-  const { userData } = useSelector(state => state.user)
+  const { userData } = useSelector((state: RootState) => state.user)
   const dispatch = useDispatch()
-  const userId = userData._id
+  const userId = userData?._id
 
-  const { data: chatSearchResult, isLoading } = useQuery({
+  const { data: chatSearchResult } = useQuery({
     queryKey: ['chatSearch', debouncedSearchTerm],
     queryFn: () => chatUserSearchApi(debouncedSearchTerm)
   });

@@ -4,6 +4,8 @@ const adminRoutes = {
     getAllBlogs: '/admin/getAllBlogs',
     changeBlogStatus: '/admin/changeBlogStatus',
     getAllReports: '/admin/getAllReports',
+    getUserSubscribedData: '/admin/getUserSubscribedData',
+    getTotalBlogData: '/admin/getTotalBlogData'
     
 }
 

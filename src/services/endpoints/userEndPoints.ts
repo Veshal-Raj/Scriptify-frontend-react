@@ -44,7 +44,8 @@ const userRoutes = {
     forgotPasswordOtp: '/user/forgotPasswordOtp',
     changePasswordNotLoggedIn: '/user/changePasswordNotLoggedIn',
     resendOtp: '/user/resendOtp',
-    googleAuthUser: '/user/googleAuth'
+    googleAuthUser: '/user/googleAuth',
+    logout: '/user/logout'
 }   
 
 export default userRoutes;

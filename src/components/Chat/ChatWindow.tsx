@@ -3,31 +3,30 @@ import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Avatar from '@mui/material/Avatar';
 import { Box } from '@mui/material';
-import { IConversation } from '../../@types/Tchat';
+import { IConversation, IUserList } from '../../@types/Tchat';
 import { useSelector } from 'react-redux';
 import { useEffect, useRef } from 'react';
 import { timeAgo } from '../../hooks/useDate';
+import { RootState } from '../../redux/appStore';
 
 
 interface Props {
     conversationData: IConversation[];
-    selectedUserId: string;
+    selectedUserId: string | IUserList;
 }
 
 const ChatWindow: React.FC<Props> = ({ conversationData, selectedUserId }) => {
-    const messagesEndRef =  useRef<HTMLDivElement>(null);
-    const { userData } = useSelector(state => state.user)
-    const cData = conversationData[0]
-    const { selectedUser } = useSelector(state => state.chat)   
+    const messagesEndRef = useRef<HTMLDivElement>(null);
+    const { userData } = useSelector((state: RootState) => state.user)
 
     const scrollToBottom = () => messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
 
-    const userId = userData._id
+    const userId = userData?._id
 
-    useEffect(()=>{
+    useEffect(() => {
         scrollToBottom()
     }, [conversationData])
-   
+
     return (
         <>
             <Box className='bg-[#E1DFEA] h-[100%] pt-5 pb-10 relative' sx={{ overflowY: 'auto', maxHeight: 'calc(100vh - 130px)' }} >
@@ -64,15 +63,17 @@ const ChatWindow: React.FC<Props> = ({ conversationData, selectedUserId }) => {
                             </Grid>
                             <Grid item >
                                 <Box sx={{ padding: 1 }}>
-                                    {conversation.sender.id === userId ? <Avatar  src={conversation.sender.profile_img} /> : null}
+                                    {conversation.sender.id === userId ? <Avatar src={conversation.sender.profile_img} /> : null}
                                 </Box>
                             </Grid>
                         </Grid>
                     </Grid>
                 ))}
-            <div ref={messagesEndRef} />
+                <div ref={messagesEndRef} />
             </Box>
-            <p className='hidden' >{selectedUserId}</p>
+            <p className='hidden'>
+                {typeof selectedUserId === 'string' ? selectedUserId : JSON.stringify(selectedUserId)}
+            </p>
         </>
     );
 };

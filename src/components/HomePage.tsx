@@ -1,4 +1,4 @@
-import { MouseEvent,  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import InPageNavigation from "./InPageNavigation";
 import { motion, AnimatePresence } from "framer-motion";
 import BlogPostCard from "./BlogPostCard";
@@ -42,14 +42,14 @@ const HomePage = () => {
         }
       })
     
-      const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>, index: number) => {
+      const handleClick = (e: React.MouseEvent<HTMLDivElement>, index: number) => {
         const chipIndex = index ;
         if (selectedChip === chipIndex) {
             setSelectedChip(null);
             setShowSkeleton(true);
             setPageState('home'); 
             setShowSkeleton(false);
-            setBlogs(latestBlog.response);
+            setBlogs(latestBlog?.response);
         } else {
             setSelectedChip(chipIndex);
             setShowSkeleton(true);
@@ -61,7 +61,7 @@ const HomePage = () => {
             if (page === text) {
                 setPageState('home');
                 setShowSkeleton(false);
-                setBlogs(latestBlog.response);
+                setBlogs(latestBlog?.response);
             }
         }
     };
@@ -72,7 +72,7 @@ const HomePage = () => {
     
     useEffect(() => {
         if (latestBlog) {
-            setBlogs(latestBlog.response || []);
+            setBlogs(latestBlog?.response || []);
         }
     }, [latestBlog]);
 
@@ -90,7 +90,7 @@ const HomePage = () => {
 
      const handleTagFilter = async (tag: string) => {
         setShowSkeleton(true);
-        const response = await filterbyTags(tag );
+        const response = await filterbyTags({tag} );
         if (response.data.response) {
             setBlogs(response.data.response);
             setShowSkeleton(false);
@@ -99,7 +99,7 @@ const HomePage = () => {
     };
 
     const resetBlogs = () => {        
-        setBlogs(latestBlog.response);
+        setBlogs(latestBlog?.response);
         setPageState('home')
     }
 
@@ -118,18 +118,13 @@ const HomePage = () => {
                             ) : (
                                 <AnimatePresence>
                                 {blogs.map((blog: any, i: number) => (
-                                    <motion.div
-                                        key={i}
+                                    <motion.div key={i}
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -20 }}
                                         transition={{ duration: 0.5, delay: i * 0.3 }}
                                     >
-                                        <BlogPostCard
-                                            content={blog}
-                                            author={blog?.author?.personal_info}
-                                            index={i}
-                                        />
+                                        <BlogPostCard content={blog} author={blog?.author?.personal_info} index={i} />
                                     </motion.div>
                                 ))}
                             </AnimatePresence>
@@ -145,8 +140,7 @@ const HomePage = () => {
                         ) : (
                             <AnimatePresence>
                                 {trendingBlogs.map((blog, i) => (
-                                    <motion.div
-                                        key={i}
+                                    <motion.div key={i}
                                         initial={{ opacity: 0, y: 20 }}
                                         animate={{ opacity: 1, y: 0 }}
                                         exit={{ opacity: 0, y: -20 }}

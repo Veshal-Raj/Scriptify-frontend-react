@@ -71,6 +71,7 @@ export default function Navbar() {
       textEditor.save().then((data: { blocks: string | unknown[]; }) => {
         if (data.blocks.length) {
           dispatch(setBlog({ ...blog, content: data }));
+          // @ts-ignore
           dispatch(setEditorState('publish'));
           setEditorState('publish')
         } else toast.error('write something before publish.')

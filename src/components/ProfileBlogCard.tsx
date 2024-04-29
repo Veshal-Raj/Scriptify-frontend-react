@@ -8,12 +8,12 @@ import { useEffect } from "react";
 interface ProfileBlogCardProps {
   blog: {
      activity: {
-       total_likes?: number | undefined;
+       total_likes?: number ;
      };
-     blog_id?: string | undefined;
-     title?: string | undefined;
-     banner?: string | undefined;
-     tags?: string[] | undefined;
+     blog_id?: string ;
+     title?: string ;
+     banner?: string ;
+     tags?: string[] ;
      publishedAt: string | number | Date;
   };
   index: number;

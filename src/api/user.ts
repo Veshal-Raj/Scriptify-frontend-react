@@ -33,8 +33,9 @@ export const login = async (userData: userFormData) => {
   }
 };
 
-export const getLatestBlog = async (page = 1) => {
+export const getLatestBlog = async () => {
   try {
+    const page = 1
     const response = await Api.get(userRoutes.latestBlog, { params: { page } });
     return response?.data;
   } catch (error) {
@@ -255,7 +256,7 @@ export const reportBlogApi = async (data: reportBlogData) => {
   }
 };
 
-export const checkUserSubscribedApi = async (userId: string) => {
+export const checkUserSubscribedApi = async (userId: string | undefined) => {
   try {
     return await Api.post(userRoutes.checkUserSubscribed, userId);
   } catch (error) {
@@ -416,3 +417,12 @@ export const googleAuthUserApi = async (data: GoogleAuthData) => {
     throw error;
   }
 };
+
+export const logoutApi = async (userId: string) => {
+  try {
+    return await Api.post(userRoutes.logout, {userId})
+  } catch (error) {
+    console.error(error);
+    throw error
+  }
+}

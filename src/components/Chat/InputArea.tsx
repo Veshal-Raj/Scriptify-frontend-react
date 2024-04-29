@@ -8,15 +8,21 @@ import { toast } from 'sonner';
 import { useSelector } from 'react-redux';
 import { useMutation } from '@tanstack/react-query';
 import { sendChatApi } from '../../api/user';
-import { INewConversation } from '../../@types/Tchat';
+import { IConversation, IUserList } from '../../@types/Tchat';
 import EmojiPicker from 'emoji-picker-react';
+import { RootState } from '../../redux/appStore';
 
+interface InputAreaProps {
+  setConversationData: (data: any) => void;
+  socket: any; 
+  selectedUserId: string | IUserList; 
+ }
 
-const InputArea = ({ setConversationData, socket, selectedUserId }) => {
+const InputArea = ({ setConversationData, socket, selectedUserId }: InputAreaProps) => {
   const [message, setMessage] = useState('')
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const selectedUser = useSelector((state) => state.chat.selectedUser);
-  const { userData } = useSelector(state => state.user)
+  const selectedUser = useSelector((state: RootState) => state.chat.selectedUser);
+  const { userData } = useSelector((state: RootState) => state.user)
 
   const { mutate: sendChat } = useMutation({
     mutationFn: sendChatApi,
@@ -35,16 +41,17 @@ const InputArea = ({ setConversationData, socket, selectedUserId }) => {
       toast.info('Type something...')
       return; // Prevent sending message if it's empty
     }
-    const newConversation: INewConversation = {
-      sender: { id: userData._id, name: userData.personal_info.username, profile_img: userData.personal_info.profile_img },
-      receiver: { id: selectedUser.userId, name: selectedUser.username, profile_img: selectedUser.profileImage },
+    const newConversation: IConversation = {
+      sender: { id: userData?._id, name: userData?.personal_info.username ?? '', profile_img: userData?.personal_info.profile_img ?? '' },
+      receiver: { id: selectedUser ? selectedUser?.userId ?? undefined : undefined, name: selectedUser.username, profile_img: selectedUser.profileImage },
       message,
-      time: new Date()
-    }
+      time: new Date(),
+    } 
 
+    
     sendChat(newConversation)
 
-    setConversationData((prevData) => [...prevData, newConversation])
+    setConversationData((prevData: IConversation[]) => [...prevData, newConversation])
     await socket.emit("send_message", newConversation)
     setMessage('')
   }

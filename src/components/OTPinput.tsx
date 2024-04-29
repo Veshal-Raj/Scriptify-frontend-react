@@ -6,6 +6,7 @@ import BackdropLoading from "./UI/BackdropLoading";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slice/userSlice";
 import Timer from "./UI/Timer";
+import { toast } from "sonner";
 
 type Props = {
   length?: number;
@@ -36,11 +37,18 @@ const OtpInput: React.FC<Props> = ({
     mutationFn: verifyOTP,
     onSuccess: (response) => {
       console.log('otp verification -->> ', response)
-      if (response.status === 200) {
+      if (response.data.status === 404) {
+        toast.error('OTP mismatch')
+        setIsSubmitting(false)
+        return
+        
+      } else if (response.status === 200) {
         dispatch(setUser(response.data))
         setTimeout(() => navigate('/user/feed'), 800)
       }
-    }
+    },
+   
+    
   })
 
     // const { mutate: forgotPasswordOtp} = useMutation({

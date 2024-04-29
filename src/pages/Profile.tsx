@@ -50,8 +50,20 @@ export const profileDataStructure = {
 }
 
 interface Blog {
-  id: string; 
- }
+  id?: string;
+  //   activity?: {
+  //     total_likes?: number;
+  //  };
+  //  publishedAt?: string | number | Date;
+  activity: {
+    total_likes?: number | undefined;
+  };
+  blog_id?: string | undefined;
+  title?: string | undefined;
+  banner?: string | undefined;
+  tags?: string[] | undefined;
+  publishedAt: string | number | Date;
+}
 
 const Profile = () => {
   const { id: ProfileId } = useParams()
@@ -65,6 +77,7 @@ const Profile = () => {
   const { userData } = useSelector((state: RootState) => state.user)
 
   const userId = userData?._id
+  const role = userData?.role
   console.log('idddd', userId)
   console.log('profileIddddd', ProfileId)
   const isSameUser = userId === ProfileId;
@@ -72,11 +85,11 @@ const Profile = () => {
   const {
     personal_info: { username, profile_img, bio },
     social_links,
-    account_info: {  total_reads },
+    account_info: { total_reads },
     joinedAt,
   } = profile;
 
-  let {account_info: { total_posts}} = profile
+  let { account_info: { total_posts } } = profile
 
 
   const { mutate: getProfileDetails } = useMutation({
@@ -98,7 +111,7 @@ const Profile = () => {
   })
 
   const { data: userBlogs, isLoading: blogsLoading, refetch } = useQuery({
-    queryKey: ["fetchUserBlogs"], 
+    queryKey: ["fetchUserBlogs"],
     queryFn: async () => {
       if (ProfileId) {
         const response = await fetchUserBlogs(ProfileId);
@@ -145,7 +158,11 @@ const Profile = () => {
             />
           </Suspense>
           <div className="flex gap-4 mt-2">
-            {isSameUser && (<Link to='/user/settings/edit-profile' className="btn-dark bg-gray-50 text-black px-5 py-3 rounded-md">Edit Profile </Link>)}
+            {isSameUser && (
+              <Link to={role === "admin" ? '/admin/settings/edit-profile' : '/user/settings/edit-profile'} className="btn-dark bg-gray-50 text-black px-5 py-3 rounded-md">
+                Edit Profile
+              </Link>
+            )}
             {!isSameUser && <Tooltip title="Chat" placement="right">
               <IconButton className="p-5">
                 <ForumIcon />

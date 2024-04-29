@@ -3,10 +3,10 @@ export interface CommentDrawerProps {
     onClose: () => void;
     title: string;
     commentData: {
-        userId: string;
+        userId: string | undefined;
         authorId: string;
         blogId: string;
-        _id: string;
+        _id: string | boolean;
     };
 
 }

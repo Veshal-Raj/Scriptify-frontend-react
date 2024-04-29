@@ -12,6 +12,7 @@ import { fetchAllUsersApi } from '../../api/chat';
 import {  IUserList } from '../../@types/Tchat';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedUser } from '../../redux/slice/chatSlice';
+import { RootState } from '../../redux/appStore';
 
 type UserClickHandler = (user: IUserList) => void;
 
@@ -24,9 +25,9 @@ const UserList: React.FC<UserListProps> = ({ onUserClick}) => {
   const isSmallScreen = useMediaQuery('(max-width:600px)');
   const maxHeight = isSmallScreen ? 'auto' : '655px';
   const [userListData, setUserListData ] = useState<IUserList[]>([])
-  const { userData } = useSelector(state => state.user)
-  const searchUserList = useSelector((state)=>state?.chat?.searchUserList)
-  const userId = userData._id
+  const { userData } = useSelector((state: RootState) => state.user)
+  const searchUserList = useSelector((state: RootState)=>state?.chat?.searchUserList)
+  const userId = userData?._id
 
   const { data: allUserForList, refetch } = useQuery({
     queryKey: ['fetchAllUserForChatList'],
@@ -55,7 +56,7 @@ const UserList: React.FC<UserListProps> = ({ onUserClick}) => {
   
   const handleUserClick = (user: IUserList) => {
     dispatch(setSelectedUser(user))    
-    onUserClick(user.userId)
+    onUserClick(user)
   }
 
   return (
@@ -85,7 +86,7 @@ const UserList: React.FC<UserListProps> = ({ onUserClick}) => {
                 />
               </div>
               <div style={{ color: 'green' }}>
-                {new Date(user.time).toLocaleString()}</div>
+                {user.time ? new Date(user.time).toLocaleString(): 'N/A'}</div>
             </ListItem>
           ))}
         </List>

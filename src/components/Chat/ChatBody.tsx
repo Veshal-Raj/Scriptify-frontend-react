@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import UserSearch from './UserSearch'
 import UserList from './UserList'
 import ChatWindow from './ChatWindow'
@@ -12,6 +12,7 @@ import { useSelector } from 'react-redux'
 import { useQuery } from '@tanstack/react-query'
 import { getChatApi } from '../../api/user'
 import { DefaultEventsMap } from '@socket.io/component-emitter'
+import { RootState } from '../../redux/appStore'
 
 // const ENDPOINT = import.meta.env.SOCKET_SERVER_ENDPOINT
 const ENDPOINT = 'http://localhost:5000'
@@ -21,12 +22,12 @@ let socket: Socket<DefaultEventsMap, DefaultEventsMap>
 socket = io(ENDPOINT)
 
 const ChatBody = () => {
-  const [selectedUser, setSelectedUser] = useState<IUserList | null>(null);
+  const [selectedUser, setSelectedUser] = useState<IUserList |  null>(null);
   const [conversationData, setConversationData] = useState<IConversation[] | INewConversation[]>([])
-  const selectedUserFromRedux: IUserList | null = useSelector((state) => state.chat.selectedUser);
-  const selectedUserId = selectedUserFromRedux ? selectedUserFromRedux.userId : '';
-  const { userData } = useSelector(state => state.user)
-  const userId = userData._id
+  const selectedUserFromRedux = useSelector((state: RootState) => state.chat.selectedUser)  as IUserList | null;
+  const selectedUserId = selectedUserFromRedux ? selectedUserFromRedux?.userId : '';
+  const { userData } = useSelector((state: RootState) => state.user)
+  const userId = userData?._id
 
   const isSmallScreen = useMediaQuery('(max-width:600px)');
 
@@ -36,7 +37,13 @@ const ChatBody = () => {
 
   const {data: userChatData, refetch: refetchUserChatData } = useQuery({
     queryKey: ["initialUserChat"],
-    queryFn: () => getChatApi(userId, selectedUser)
+    queryFn: async () => {
+      if (userId && selectedUser  && selectedUser.userId) {
+
+        const result = await getChatApi(userId, selectedUser.userId)
+        return result
+      }
+    }
   })
 
   
@@ -46,7 +53,7 @@ const ChatBody = () => {
 
   useEffect(() => {
     socket = io(ENDPOINT)
-    socket.emit("setup", userData._id)
+    socket.emit("setup", userData?._id)
     
   }, [selectedUserId])
 

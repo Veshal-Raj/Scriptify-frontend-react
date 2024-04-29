@@ -9,24 +9,26 @@ import { timeAgo } from "../hooks/useDate";
 import { Link } from "react-router-dom";
 import { BlogContext } from "./ShowBlogContent";
 import { CommentDrawerProps, CommentResponse } from "../@types/Tcomment";
+import { BlogData } from "../@types/TuserApi";
 
 
 const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title, commentData }) => {
 
     const { setSingleBlogData } = useContext(BlogContext);
 
+
     const [commentText, setCommentText] = useState(''); // onchange text
     const [comments, setComments] = useState<CommentResponse[]>([]); // comment from the backend
     const [showEmojiPicker, setShowEmojiPicker] = useState(false);
     const [commentUser, setCommentUser] = useState('') // user typed comment
     const [isReply, setIsReply] = useState<boolean>(false);
-    const [parentId, setParentId] = useState('')
+    const [, setParentId] = useState('')
 
 
 
     const { data: initialComments, refetch: refetchInitialComments } = useQuery({
         queryKey: ['initialLoadingComments'],
-        queryFn: () => initialCommentsApi(commentData._id)
+        queryFn: () => typeof commentData._id === 'string' ? initialCommentsApi(commentData._id) : Promise.reject(new Error('Invalid ID type')),
     })
 
 
@@ -35,12 +37,14 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title, com
         onSuccess: (response) => {
             const responseData: CommentResponse = response.data.response;
             setComments([responseData, ...comments]);
-            setSingleBlogData(prevState => ({
+            setSingleBlogData((prevState: BlogData) => ({
                 ...prevState,
+                title: prevState.title || '',
                 activity: {
                     ...prevState.activity,
                     total_comments: prevState.activity.total_comments + 1
-                }
+                },
+                blogId: typeof prevState.blogId === 'string' ? prevState.blogId : '',
             }));
 
         }
@@ -71,8 +75,12 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title, com
     useEffect(() => {
         if (commentUser.length) {
             const data = {
-                commentData: commentData,
-                comment: commentUser
+                commentData: {
+                    ...commentData,
+                    userId: commentData.userId ?? '', // Provide a default value if userId is undefined
+                    _id: typeof commentData._id === 'string' ? commentData._id : '',
+                },
+                comment: [commentUser]
             }
             commentBlog(data)
         }
@@ -85,6 +93,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title, com
     };
 
     const toggleReply = (commentedUserId: string) => {
+        console.log('-------', commentedUserId)
         setIsReply(!isReply)
         setParentId(commentedUserId)
     };
@@ -125,6 +134,13 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title, com
                                     primary={
                                         <React.Fragment>
                                             <Typography component="span" variant="subtitle1" color="textPrimary" className="capitalize" >
+                                                {/* {comment.commentedUser && comment.commentedUser.username ? (
+                                                    <Link to={`/user/${comment.commentedUser.id}`}>
+                                                        <span className="text-blue-800 cursor-pointer pl-2 underline">@{comment.commentedUser.username}</span>
+                                                    </Link>
+                                                ) : (
+                                                    <span>Unknown User</span>
+                                                )} */}
                                                 {comment.commentedUser.username}
                                                 <Link to={`/user/${comment.commentedUser.id}`}>
                                                     <span className="text-blue-800 cursor-pointer pl-2 underline">@{comment.commentedUser.username}</span>
@@ -143,7 +159,7 @@ const CommentDrawer: React.FC<CommentDrawerProps> = ({ open, onClose, title, com
                                             {comment.commentId && <Button onClick={() => toggleReply(comment.commentId ?? '')} color="primary">
                                                 Reply
                                                 {comment.commentId}
-                                            </Button> }
+                                            </Button>}
                                         </React.Fragment>
                                     }
                                 />
